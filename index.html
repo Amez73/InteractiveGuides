@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Guides — Capitalism, Empire & Palestine</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #0C0D0A;
+    --surface:  #141510;
+    --border:   #252818;
+    --olive:    #7A9A3A;
+    --olive-dim:#3A4A1A;
+    --sand:     #C8B882;
+    --red:      #C04030;
+    --text:     #E4E0D4;
+    --muted:    #706E5A;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 17px; line-height: 1.75; min-height: 100vh; }
+  .wrap { max-width: 680px; margin: 0 auto; padding: 4.5rem 1.25rem 5rem; }
+
+  .eyebrow { font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--olive); margin-bottom: .9rem; }
+  h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; margin-bottom: 1.2rem; }
+  h1 em { font-style: italic; color: var(--sand); }
+  .lede { color: #BCB8A8; margin-bottom: 2.6rem; font-size: 1.05rem; }
+
+  .cards { display: flex; flex-direction: column; gap: 1.1rem; }
+  a.card {
+    display: block; text-decoration: none; color: inherit;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 1.5rem 1.7rem; transition: border-color .2s, transform .2s, background .2s;
+  }
+  a.card:hover { border-color: var(--olive); transform: translateY(-2px); background: rgba(122,154,58,.05); }
+  .part { font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: var(--olive); margin-bottom: .5rem; }
+  .card h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; line-height: 1.2; margin-bottom: .5rem; color: var(--text); }
+  .card p { color: #9C9A88; font-size: .93rem; margin: 0; }
+  .card .go { color: var(--sand); font-weight: 600; }
+
+  .footer { margin-top: 3rem; padding-top: 1.6rem; border-top: 1px solid var(--border); font-size: .82rem; color: var(--muted); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="eyebrow">Interactive Guides</p>
+    <h1>Things we're <em>not</em> taught to see clearly</h1>
+    <p class="lede">Three connected, self-paced guides on how the economic system works, how it reaches across the world, and what that looks like on the ground. Read them in order, or start wherever you like — each links to the others.</p>
+
+    <div class="cards">
+      <a class="card" href="communist-theory-interactive.html">
+        <div class="part">Part 1 · The Engine</div>
+        <h2>How Capitalism Actually Works</h2>
+        <p>A zero-to-hero walk through the mechanics — where profit comes from, why crises recur, and what the alternatives actually proposed. <span class="go">Start reading →</span></p>
+      </a>
+
+      <a class="card" href="imperialism-guide.html">
+        <div class="part">Part 2 · The Global Picture</div>
+        <h2>Where Did the Wealth Actually Go?</h2>
+        <p>The system extended outward — colonial extraction, debt, coups, and why there are no poor nations, only extracted ones. <span class="go">Start reading →</span></p>
+      </a>
+
+      <a class="card" href="palestine-guide.html">
+        <div class="part">Part 3 · The Case Study</div>
+        <h2>Palestine &amp; Israel — The Full History</h2>
+        <p>From Ottoman Palestine to Gaza today: the history, the occupation, the US role, and the record — the engine and the empire in one place. <span class="go">Start reading →</span></p>
+      </a>
+    </div>
+
+    <p class="footer">Self-paced educational guides. Sources are cited throughout each guide.</p>
+  </div>
+</body>
+</html>
