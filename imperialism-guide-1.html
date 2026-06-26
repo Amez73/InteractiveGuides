@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Global Picture — Where Did the Wealth Actually Go?</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #0D0D0B;
+    --surface:  #181710;
+    --border:   #2A2718;
+    --gold:     #C8942A;
+    --gold-dim: #7A5A18;
+    --rust:     #B04A1A;
+    --text:     #E8E2D8;
+    --muted:    #7A7060;
+    --track:    #201E14;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  #app { max-width: 680px; margin: 0 auto; padding: 0 1.25rem; }
+
+  .passage { display: none; padding: 3rem 0 5rem; animation: fadeIn .35s ease; }
+  .passage.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; } }
+
+  /* ── Progress ── */
+  #progress-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 3px; background: var(--border); }
+  #progress-fill { height: 100%; background: var(--gold); transition: width .4s ease; }
+
+  /* ── Nav ── */
+  #station-nav {
+    position: fixed; top: 3px; left: 0; right: 0; z-index: 99;
+    background: rgba(13,13,11,.94); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    gap: .5rem; padding: .55rem 1rem;
+    font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+    font-weight: 500; color: var(--muted); flex-wrap: wrap;
+  }
+  .nav-stop { cursor: pointer; padding: .2rem .55rem; border-radius: 2rem; transition: color .2s, background .2s; white-space: nowrap; }
+  .nav-stop:hover { color: var(--text); }
+  .nav-stop.visited { color: var(--muted); }
+  .nav-stop.current { color: var(--gold); background: rgba(200,148,42,.12); }
+  .nav-sep { color: var(--border); }
+
+  /* ── Typography ── */
+  .eyebrow { font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--gold); margin-bottom: .9rem; }
+  h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; margin-bottom: 1.5rem; color: var(--text); }
+  h1 em { font-style: italic; color: var(--gold); }
+  h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.5rem, 4vw, 2rem); line-height: 1.2; margin-bottom: 1.2rem; }
+  p { margin-bottom: 1.15rem; color: #C0B8A8; }
+  p:last-of-type { margin-bottom: 0; }
+  strong { color: var(--text); font-weight: 600; }
+
+  /* ── Pull quote ── */
+  .pull {
+    border-left: 3px solid var(--gold-dim);
+    padding: .6rem 1.2rem; margin: 1.8rem 0;
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.15rem; font-style: italic;
+    color: #AAA390; line-height: 1.5;
+  }
+
+  /* ── Callout ── */
+  .callout {
+    background: rgba(200,148,42,.07); border: 1px solid rgba(200,148,42,.22);
+    border-radius: 6px; padding: 1.1rem 1.4rem; margin: 1.6rem 0;
+    font-size: .93rem; color: #B8AA88;
+  }
+  .callout strong { color: var(--gold); }
+
+  .callout.dark {
+    background: rgba(176,74,26,.07); border-color: rgba(176,74,26,.25);
+    color: #B8A090;
+  }
+  .callout.dark strong { color: #D07050; }
+
+  /* ── Math / data block ── */
+  .math-block {
+    background: var(--track); border: 1px solid var(--border);
+    border-left: 3px solid var(--gold); border-radius: 6px;
+    padding: 1.4rem 1.6rem; margin: 1.8rem 0; font-size: .93rem;
+  }
+  .math-block .label { font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--gold); margin-bottom: .9rem; }
+  .math-row { display: flex; justify-content: space-between; align-items: baseline; padding: .35rem 0; border-bottom: 1px solid var(--border); gap: 1rem; }
+  .math-row:last-child { border-bottom: none; }
+  .math-row .desc { color: #8A8070; font-size: .88rem; }
+  .math-row .val { font-weight: 600; white-space: nowrap; }
+  .math-row .val.pos { color: #6BCB77; }
+  .math-row .val.neg { color: #D07070; }
+  .math-row .val.gap { color: var(--gold); }
+
+  /* ── Stat grid ── */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: .85rem; margin: 1.8rem 0; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1.2rem 1.3rem; }
+  .stat-number { font-family: 'DM Serif Display', serif; font-size: 2rem; line-height: 1; color: var(--gold); margin-bottom: .3rem; }
+  .stat-label { font-size: .82rem; color: var(--muted); line-height: 1.45; margin: 0; }
+  .stat-source { font-size: .68rem; color: #3A3520; margin-top: .4rem; margin-bottom: 0; }
+
+  /* ── Timeline ── */
+  .timeline { margin-top: 1.8rem; position: relative; padding-left: 1.6rem; }
+  .timeline::before { content: ''; position: absolute; left: 0; top: .5rem; bottom: .5rem; width: 2px; background: var(--border); }
+  .t-item { position: relative; margin-bottom: 2rem; }
+  .t-item::before { content: ''; position: absolute; left: -1.75rem; top: .45rem; width: 10px; height: 10px; border-radius: 50%; background: var(--gold); border: 2px solid var(--bg); box-shadow: 0 0 0 2px var(--gold); }
+  .t-year { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--gold); margin-bottom: .25rem; }
+  .t-title { font-weight: 700; margin-bottom: .3rem; color: var(--text); }
+  .t-desc { font-size: .93rem; color: var(--muted); line-height: 1.6; }
+  .t-desc strong { color: #A09080; }
+
+  /* ── Case study score cards ── */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin: 1.2rem 0; }
+  @media (max-width:480px) { .sc-grid { grid-template-columns: 1fr; } }
+  .sc-box { border-radius: 5px; padding: .9rem 1rem; font-size: .83rem; line-height: 1.55; }
+  .sc-box.win { background: rgba(107,203,119,.07); border: 1px solid rgba(107,203,119,.2); color: #9EDB9E; }
+  .sc-box.loss { background: rgba(208,112,112,.07); border: 1px solid rgba(208,112,112,.2); color: #D49090; }
+  .sc-box-head { font-weight: 700; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; margin-bottom: .5rem; }
+  .sc-box.win .sc-box-head { color: #6BCB77; }
+  .sc-box.loss .sc-box-head { color: #D07070; }
+  .sc-box ul { padding-left: 1rem; margin: 0; }
+  .sc-box li { margin-bottom: .3rem; }
+  .sc-lesson { background: rgba(200,148,42,.07); border: 1px solid rgba(200,148,42,.2); border-radius: 5px; padding: .9rem 1rem; margin-top: 1rem; font-size: .87rem; color: #C0AA80; }
+  .sc-lesson strong { color: var(--gold); }
+
+  /* ── Dive banner ── */
+  .dive-banner { display: flex; align-items: center; gap: .8rem; background: rgba(200,148,42,.08); border: 1px solid rgba(200,148,42,.2); border-radius: 6px; padding: .7rem 1.1rem; margin-bottom: 2rem; font-size: .82rem; color: var(--gold); font-weight: 500; letter-spacing: .04em; }
+  .dive-banner::before { content: '◆'; font-size: .65rem; }
+
+  /* ── Buttons ── */
+  .btn-group { display: flex; flex-direction: column; gap: .75rem; margin-top: 2.5rem; }
+  .btn { display: block; width: 100%; padding: .95rem 1.4rem; border-radius: 6px; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: .95rem; font-weight: 500; text-align: left; transition: background .18s, transform .1s; position: relative; }
+  .btn:active { transform: scale(.99); }
+  .btn-primary { background: var(--gold); color: #0D0D0B; }
+  .btn-primary:hover { background: #D8A030; }
+  .btn-primary::after { content: '→'; position: absolute; right: 1.2rem; top: 50%; transform: translateY(-50%); opacity: .6; }
+  .btn-dive { background: var(--track); color: var(--text); border: 1px solid var(--border); }
+  .btn-dive:hover { background: #2A2718; border-color: #3A3520; }
+  .btn-dive::before { content: '↳ '; color: var(--gold); }
+  .btn-back { background: transparent; color: var(--muted); border: 1px solid var(--border); font-size: .87rem; }
+  .btn-back:hover { color: var(--text); border-color: #444; }
+  .btn-back::before { content: '← '; }
+  .btn-ext { background: rgba(200,148,42,.1); color: var(--gold); border: 1px solid rgba(200,148,42,.3); font-size: .9rem; }
+  .btn-ext:hover { background: rgba(200,148,42,.18); }
+  .btn-ext::after { content: ' ↗'; position: absolute; right: 1.2rem; top: 50%; transform: translateY(-50%); opacity: .7; }
+
+  /* ── Track preview ── */
+  .track-preview { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem 1.4rem; margin: 2rem 0; }
+  .tp-label { font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 600; color: var(--muted); margin-bottom: 1rem; }
+  .track-line { display: flex; align-items: center; flex-wrap: wrap; gap: .3rem; font-size: .82rem; }
+  .track-stop { background: var(--track); border: 1px solid var(--border); border-radius: 3px; padding: .25rem .65rem; color: var(--muted); white-space: nowrap; }
+  .track-stop.main { color: var(--text); border-color: #3A3520; }
+  .track-conn { color: var(--border); font-size: .8rem; }
+
+  /* ── Divider ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+  .spacer { height: 4rem; }
+  .subtitle { font-size: 1.1rem; color: var(--muted); margin-bottom: 2.5rem; font-weight: 300; line-height: 1.6; }
+
+  /* ── Final quote ── */
+  .final-quote { text-align: center; padding: 2.5rem 1rem; border: 1px solid var(--border); border-radius: 8px; margin: 2rem 0; background: var(--surface); }
+  .final-quote blockquote { font-family: 'DM Serif Display', serif; font-size: clamp(1.1rem, 3vw, 1.4rem); font-style: italic; color: var(--text); line-height: 1.6; margin-bottom: .8rem; }
+  .final-quote cite { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-style: normal; }
+
+  /* ── Companion badge ── */
+  .companion-badge {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: rgba(200,148,42,.1); border: 1px solid rgba(200,148,42,.25);
+    border-radius: 3px; padding: .3rem .8rem;
+    font-size: .72rem; font-weight: 600; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem;
+  }
+  .companion-badge::before { content: '◈'; }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"><div id="progress-fill" style="width:0%"></div></div>
+
+<nav id="station-nav">
+  <span class="nav-stop current" data-passage="start" onclick="go('start')">Intro</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s1" onclick="go('s1')">The Thesis</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s2" onclick="go('s2')">How It Works</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s3" onclick="go('s3')">The Record</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s4" onclick="go('s4')">The Propaganda</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s5" onclick="go('s5')">Now What?</span>
+</nav>
+
+<div id="app">
+
+  <!-- ══ START ══ -->
+  <div class="passage active" id="passage-start">
+    <div style="padding-top:4rem;">
+      <div class="companion-badge">Companion Guide · Part 2</div>
+      <h1>The Global Picture — Where Did the <em>Wealth</em> Actually Go?</h1>
+      <p class="subtitle">A companion to the communist theory guide. No prior reading required — but the two fit together.</p>
+
+      <div class="track-preview">
+        <p class="tp-label">Your route</p>
+        <div class="track-line">
+          <span class="track-stop main">The Thesis</span>
+          <span class="track-conn">──▶</span>
+          <span class="track-stop main">How It Works</span>
+          <span class="track-conn">──▶</span>
+          <span class="track-stop main">The Record</span>
+          <span class="track-conn">──▶</span>
+          <span class="track-stop main">The Propaganda</span>
+          <span class="track-conn">──▶</span>
+          <span class="track-stop main">Now What?</span>
+        </div>
+        <p style="font-size:.8rem;color:var(--muted);margin-top:.9rem;margin-bottom:0;">Each station has optional <span style="color:var(--gold)">◆ Deep Dives</span> into specific countries and cases.</p>
+      </div>
+
+      <p>There's a question that doesn't get asked enough: <strong>why are some countries poor?</strong></p>
+
+      <p>The usual answer blames something inside those countries — corruption, culture, bad governance. That answer is comfortable because it lets the rest of the world off the hook.</p>
+
+      <p>This guide makes a different case: <strong>most of the world's poorest countries aren't poor because wealth never existed there. They're poor because it was taken.</strong> Colonialism. Debt. Coups. Trade rules written by the winners. The extraction didn't stop when the flags came down — it just changed its name.</p>
+
+      <p>No prior reading required. Follow the money.</p>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="go('s1')">Station 1: The Thesis — there are no poor nations, only extracted ones</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ STATION 1: THE THESIS ══ -->
+  <div class="passage" id="passage-s1">
+    <p class="eyebrow">Station 1 of 5</p>
+    <h2>There Are No Poor Nations</h2>
+
+    <p>Here's the thesis in one sentence: <strong>the countries we call "poor" aren't poor because wealth never existed there. They're poor because the wealth was taken.</strong></p>
+
+    <p>Not as a metaphor. Literally taken — extracted by colonial powers over centuries, and still leaving today through debt repayments, corporate profit transfers, and rigged trade rules.</p>
+
+    <p>The standard story is that rich countries got rich through hard work, good institutions, and smart governance — and poor countries just haven't caught up yet. That story skips a step. It skips the part where rich countries spent 300 years forcibly extracting resources, labour, and land from the places that are now poor.</p>
+
+    <div class="pull">
+      "Africa is not poor. Africa is being looted."
+    </div>
+
+    <p>The numbers make this concrete:</p>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <p class="stat-number">$150T</p>
+        <p class="stat-label">Wealth extracted from the Global South since colonialism began, in today's dollars</p>
+        <p class="stat-source">Hickel et al., New Political Economy, 2021</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-number">$45B</p>
+        <p class="stat-label">Net transfer <em>out of</em> developing countries to wealthy ones — every single year, right now</p>
+        <p class="stat-source">Global Financial Integrity / UNCTAD</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-number">10:1</p>
+        <p class="stat-label">Capital leaving Africa vs. aid coming in — Africa is a net lender to the rich world</p>
+        <p class="stat-source">African Development Bank, 2020</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-number">$45T</p>
+        <p class="stat-label">Drained from India alone under British colonial rule, 1765–1938</p>
+        <p class="stat-source">Utsa Patnaik, Columbia University Press, 2018</p>
+      </div>
+    </div>
+
+    <p>These figures are contested in their exact size — historical accounting is hard. What isn't contested is the direction. The wealth moved. The question is just how much.</p>
+
+    <p>So how does the extraction actually work? That's next.</p>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="go('s2')">Station 2: How the extraction actually works →</button>
+    </div>
+  </div>
+
+  <!-- ══ STATION 2: HOW IT WORKS ══ -->
+  <div class="passage" id="passage-s2">
+    <p class="eyebrow">Station 2 of 5</p>
+    <h2>How It Works — The Modern Mechanics</h2>
+
+    <p>Formal colonialism — the kind with governors and flags and gunboats — mostly ended by the 1970s. What replaced it is subtler but in many ways more durable, because it doesn't require military occupation. It operates through debt, trade rules, and the threat of capital flight.</p>
+
+    <p><strong>Mechanism 1: Structural Adjustment.</strong> When developing countries needed loans in the 1970s–90s, the IMF and World Bank provided them — on conditions. Borrowing countries had to cut public spending (healthcare, education, food subsidies), privatise state industries, liberalise trade (remove tariffs protecting local industry), and deregulate their financial sectors. These were called "Structural Adjustment Programmes."</p>
+
+    <p>The result, across dozens of countries in Africa, Latin America, and Asia, was remarkably consistent: the industries that had been developing behind protective tariffs collapsed when exposed to competition from heavily subsidised Western producers. Public services were cut. Unemployment rose. The loans were repaid — at interest — transferring wealth to Western financial institutions. The promised development didn't arrive.</p>
+
+    <div class="callout">
+      <strong>The cotton example:</strong> West African countries like Burkina Faso grow some of the world's highest-quality cotton at very low cost. Under structural adjustment, they were required to remove tariffs and subsidies for their farmers. Meanwhile, the US Farm Bill provided American cotton farmers with $4 billion in annual subsidies — allowing US cotton to be sold on world markets below its cost of production. West African cotton farmers couldn't compete. Their industry collapsed. This is not a free market. It is a rigged market, and the rigging is documented in WTO filings.
+    </div>
+
+    <p><strong>Mechanism 2: Debt Traps and Interest.</strong> Many developing countries carry debt loads that permanently drain their national income. Zambia currently spends more on debt service than on healthcare. The Dominican Republic, for most of the 20th century, paid reparations to France — for the "lost property" of slaveholders after the Haitian Revolution. Haiti only finished paying those reparations in 1947. They had borrowed from French and American banks to pay them, at interest. The cycle of debt for having the audacity to free themselves from slavery lasted 122 years.</p>
+
+    <p><strong>Mechanism 3: Transfer Pricing and Tax Avoidance.</strong> Multinational corporations operating in developing countries routinely use a technique called transfer pricing to move profits out before they can be taxed. A mining company extracts copper from Zambia, sells it to its own subsidiary in Switzerland at an artificially low price, then sells it to the market at the real price. The profit appears in Switzerland, where tax rates are low. Zambia gets royalties; the profit disappears. The IMF estimates this costs developing countries $200 billion annually — more than they receive in aid.</p>
+
+    <p><strong>Mechanism 4: Capital Keeps Capitalism's Logic.</strong> Remember from the main guide: capitalism requires infinite growth. When domestic markets are saturated, capital looks outward. Cheap labour, accessible natural resources, and weak regulatory environments in the Global South are not accidental — they are features that global capital actively seeks and, when threatened with regulation, actively defends. The connection between this logic and imperialism isn't incidental. It's structural.</p>
+
+    <div class="btn-group">
+      <button class="btn btn-dive" onclick="go('dive_cia')">◆ Deep Dive: CIA interventions — the coups you weren't taught</button>
+      <button class="btn btn-dive" onclick="go('dive_debt')">◆ Deep Dive: The debt system — how poor countries pay rich ones</button>
+      <button class="btn btn-dive" onclick="go('dive_congo')">◆ Deep Dive: The Congo — the most extracted place on earth</button>
+      <button class="btn btn-primary" onclick="go('s3')">Skip the deep dives — continue to Station 3</button>
+    </div>
+  </div>
+
+  <!-- ══ DEEP DIVE: CIA COUPS ══ -->
+  <div class="passage" id="passage-dive_cia">
+    <div class="dive-banner">Deep Dive — CIA Interventions</div>
+    <h2>The Coups You Weren't Taught</h2>
+
+    <p>One of the most documented but least discussed facts of 20th-century history is the systematic US policy of overthrowing democratically elected governments that threatened American corporate interests. This is not a conspiracy theory — these operations are now declassified, confirmed by the CIA itself, and in several cases formally apologised for by subsequent US administrations.</p>
+
+    <p>The pattern is consistent: a country elects a government that proposes nationalising a foreign-owned resource (oil, fruit, minerals), or land reform that would redistribute land held by US corporations. The US government characterises this as "communist." The CIA organises, funds, and in some cases directly executes a coup. A military dictatorship friendly to US business interests takes over. It typically tortures and murders the democratic opposition.</p>
+
+    <div class="timeline">
+      <div class="t-item">
+        <p class="t-year">1953 — Iran</p>
+        <p class="t-title">Operation AJAX</p>
+        <p class="t-desc">Prime Minister Mohammad Mosaddegh was democratically elected and proposed nationalising Iran's oil industry, then controlled by Anglo-Persian Oil Company (now BP). The CIA and British intelligence organised a coup. Mosaddegh was imprisoned. The Shah was installed. He ruled with SAVAK, his secret police, until the 1979 revolution — whose anti-American character the US intervention helped create. <strong>Confirmed and apologised for by the CIA in 2013.</strong></p>
+      </div>
+      <div class="t-item">
+        <p class="t-year">1954 — Guatemala</p>
+        <p class="t-title">Operation PBSUCCESS</p>
+        <p class="t-desc">President Jacobo Árbenz proposed land reform that would redistribute unused land from United Fruit Company (a US corporation) to Guatemalan peasants. The CIA organised a coup. Árbenz was replaced by a military dictatorship. A 36-year civil war followed in which 200,000 people were killed, mostly indigenous Maya. <strong>The Guatemalan genocide was committed by governments the US armed and trained.</strong></p>
+      </div>
+      <div class="t-item">
+        <p class="t-year">1960 — Congo</p>
+        <p class="t-title">Assassination of Patrice Lumumba</p>
+        <p class="t-desc">Patrice Lumumba, the Congo's first democratically elected Prime Minister, wanted to use the country's enormous mineral wealth for Congolese people. The CIA and Belgian intelligence organised his removal and assassination within months of independence. Mobutu Sese Seko, a US-backed dictator, ruled for 32 years, stealing billions while the country collapsed. <strong>The Belgian government formally apologised in 2002.</strong></p>
+      </div>
+      <div class="t-item">
+        <p class="t-year">1973 — Chile</p>
+        <p class="t-title">Coup Against Salvador Allende</p>
+        <p class="t-desc">Salvador Allende was democratically elected on a platform of nationalising Chilean copper mines (owned by US corporations Anaconda and Kennecott). The Nixon administration, working with the CIA, organised economic destabilisation and supported the military coup led by Augusto Pinochet. Allende died on the day of the coup. Pinochet's regime tortured and disappeared over 3,000 people. <strong>US involvement confirmed by declassified documents released in 1999.</strong></p>
+      </div>
+      <div class="t-item">
+        <p class="t-year">1953–2003 — Ongoing</p>
+        <p class="t-title">The Full List</p>
+        <p class="t-desc">These are the most documented cases. The full list of confirmed or credibly alleged US interventions includes: Brazil (1964), Indonesia (1965 — 500,000 killed), Greece (1967), Bolivia (multiple), Nicaragua (Contra war), Haiti (multiple), Venezuela (2002 attempt). Each followed similar patterns: elected government, resource threat to US interests, "communist" characterisation, destabilisation or coup.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>The pattern:</strong> In almost every case, the governments targeted were not Stalinist dictatorships. They were social democrats, nationalists, and reformers who wanted their countries' resources to benefit their own people. The "communist" label was applied to any government that threatened US corporate access — regardless of whether it had any connection to the Soviet Union. Anticommunism was often a justification for what was fundamentally a defence of profit.
+    </div>
+
+    <p>This history matters for understanding the present. Many of the instabilities, refugee crises, and failed states that produce today's migration crises trace directly to these interventions. The countries whose governments were overthrown didn't get to develop democratic institutions over decades. They got military dictatorships, civil wars, and debt. And then they were told their poverty was their own fault.</p>
+
+    <div class="btn-group">
+      <button class="btn btn-back" onclick="go('s2')">Back to Station 2</button>
+      <button class="btn btn-dive" onclick="go('dive_debt')">◆ Next: The debt system</button>
+      <button class="btn btn-dive" onclick="go('dive_congo')">◆ Next: The Congo</button>
+      <button class="btn btn-primary" onclick="go('s3')">Continue to Station 3 →</button>
+    </div>
+  </div>
+
+  <!-- ══ DEEP DIVE: DEBT ══ -->
+  <div class="passage" id="passage-dive_debt">
+    <div class="dive-banner">Deep Dive — The Debt System</div>
+    <h2>How Poor Countries Pay Rich Ones</h2>
+
+    <p>Here is a fact that inverts the conventional narrative about foreign aid: <strong>the Global South is a net creditor to the Global North.</strong> More money flows from poor countries to rich ones every year than flows in the reverse direction — including aid.</p>
+
+    <p>Understanding this requires understanding how the debt system works — and how it was designed.</p>
+
+    <p>In the 1970s, oil-producing countries deposited enormous revenues in Western banks. Those banks needed to lend that money to earn returns. They found willing borrowers in newly independent developing countries, which needed capital to build infrastructure and industrialise. Loans were made at variable interest rates.</p>
+
+    <p>In 1979, the US Federal Reserve dramatically raised interest rates to combat domestic inflation. The effect on developing countries was catastrophic: their variable-rate dollar debt suddenly cost two to three times more to service. Countries across Latin America and Africa were instantly insolvent. They needed refinancing — which the IMF provided, with structural adjustment conditions attached.</p>
+
+    <div class="math-block">
+      <p class="label">How the debt cycle extracts — a simplified model</p>
+      <div class="math-row"><span class="desc">Loan issued to developing country</span><span class="val">$1 billion</span></div>
+      <div class="math-row"><span class="desc">Interest rate (post-1979 shock)</span><span class="val neg">~18–20%</span></div>
+      <div class="math-row"><span class="desc">Annual interest payment required</span><span class="val neg">$180–200M</span></div>
+      <div class="math-row"><span class="desc">Required SAP: cut public spending to free up payment</span><span class="val neg">Healthcare, education, subsidies cut</span></div>
+      <div class="math-row"><span class="desc">Country's debt after 10 years of payments</span><span class="val gap">Often larger than original loan</span></div>
+    </div>
+
+    <p><strong>Haiti</strong> is the most extreme case. After the Haitian Revolution (1791–1804) — the only successful slave revolt in history — France demanded reparations for the "lost property" of slaveholders: 150 million gold francs. Haiti, under threat of re-enslavement and blockade, agreed. It borrowed from French and American banks to pay. The final payment was made in 1947 — 143 years after independence. Estimates suggest Haiti paid the equivalent of $21 billion in today's money for the crime of freeing itself.</p>
+
+    <p><strong>Zambia</strong> today spends more on external debt service than on its entire public health system. It borrowed to build infrastructure; structural adjustment required opening its copper mines to foreign ownership; transfer pricing by mining multinationals means most copper profits leave the country before they can be taxed. The debt remains. The copper wealth is elsewhere.</p>
+
+    <p><strong>The overall picture:</strong> According to Global Financial Integrity, developing countries lost $8.7 trillion to illicit financial flows between 2004 and 2013 — capital flight, transfer pricing, and tax avoidance by multinationals operating in their territory. Over the same period, they received roughly $2 trillion in aid. They are lending the world $4 for every $1 they receive in charity.</p>
+
+    <div class="sc-lesson">
+      <strong>The structural insight:</strong> The debt system isn't a series of unfortunate coincidences. It was built at Bretton Woods in 1944, explicitly designed by the US and UK to maintain dollar hegemony and Western financial dominance in the post-colonial era. Decolonisation changed the flags; Bretton Woods kept the money flowing in the same direction. Understanding this doesn't require malicious intent from every participant — it just requires following the incentive structures that were built in.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-back" onclick="go('s2')">Back to Station 2</button>
+      <button class="btn btn-dive" onclick="go('dive_cia')">◆ Next: CIA coups</button>
+      <button class="btn btn-dive" onclick="go('dive_congo')">◆ Next: The Congo</button>
+      <button class="btn btn-primary" onclick="go('s3')">Continue to Station 3 →</button>
+    </div>
+  </div>
+
+  <!-- ══ DEEP DIVE: CONGO ══ -->
+  <div class="passage" id="passage-dive_congo">
+    <div class="dive-banner">Deep Dive — The Democratic Republic of Congo</div>
+    <h2>The Most Extracted Place on Earth</h2>
+
+    <p>The Democratic Republic of Congo sits on an estimated $24 trillion in mineral wealth — the largest untapped mineral reserves of any country on earth. It contains 70% of the world's coltan (essential for every smartphone and laptop battery), vast copper and cobalt reserves, diamonds, gold, and uranium (the bomb dropped on Hiroshima used Congolese uranium).</p>
+
+    <p>The DRC is also one of the poorest countries on earth, with a GDP per capita of around $600 and life expectancy of 61 years. The relationship between these two facts is the story of the DRC.</p>
+
+    <p><strong>Belgian colonialism (1885–1960)</strong> under King Leopold II is one of the most documented atrocities in colonial history. The Congo Free State was Leopold's personal property — not a Belgian colony but a private enterprise. Congolese people were forced to harvest wild rubber under a quota system enforced by the severing of hands for underperformance. Between 1885 and 1908, the Congolese population fell by an estimated 10 million people — through murder, starvation, disease driven by forced labour, and flight. Leopold extracted an estimated $1.1 billion in today's money while this occurred.</p>
+
+    <p>After Belgian colonialism ended and Lumumba was assassinated (see the CIA deep dive), Mobutu Sese Seko — installed and supported by the US and Belgium — ruled for 32 years. He renamed the country Zaire, renamed himself, and stole an estimated $5 billion from state mining revenues, depositing it in Swiss banks while the country's infrastructure collapsed. He was supported by the US throughout, as an anticommunist ally, until the Cold War ended and he became inconvenient.</p>
+
+    <div class="math-block">
+      <p class="label">DRC mineral wealth vs. DRC poverty — 2023</p>
+      <div class="math-row"><span class="desc">Estimated mineral reserves in the DRC</span><span class="val gap">$24 trillion</span></div>
+      <div class="math-row"><span class="desc">Annual GDP of the DRC</span><span class="val neg">~$60 billion</span></div>
+      <div class="math-row"><span class="desc">GDP per capita</span><span class="val neg">~$600</span></div>
+      <div class="math-row"><span class="desc">% of coltan in your phone from DRC</span><span class="val">~70%</span></div>
+      <div class="math-row"><span class="desc">% of profit from that coltan staying in DRC</span><span class="val neg">Minimal — most extracted via transfer pricing</span></div>
+    </div>
+
+    <p>Today the DRC's eastern provinces have been in near-continuous armed conflict since 1996 — a conflict that is substantially a resource war, with multiple armed factions controlling mines and selling minerals through neighbouring countries to international supply chains. The phones, laptops, and electric vehicles whose batteries require Congolese cobalt and coltan reach consumers with no traceable connection to the conflict that extracts them.</p>
+
+    <p>The DRC is not poor because Congolese people lack initiative or the country lacks resources. It is poor because every external actor with the power to shape its political economy over 140 years has extracted from it rather than invested in it — and the current global supply chain continues that extraction through market mechanisms rather than colonial administration.</p>
+
+    <div class="sc-lesson">
+      <strong>What the DRC tells us:</strong> Resource wealth without political sovereignty is not wealth — it is a liability that attracts extraction. The DRC's mineral abundance has been the cause of its poverty, not despite external intervention but because of it. Understanding this requires no conspiracy: just the documented history of who controlled what, when, and where the money went.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-back" onclick="go('s2')">Back to Station 2</button>
+      <button class="btn btn-dive" onclick="go('dive_cia')">◆ Next: CIA coups</button>
+      <button class="btn btn-dive" onclick="go('dive_debt')">◆ Next: The debt system</button>
+      <button class="btn btn-primary" onclick="go('s3')">Continue to Station 3 →</button>
+    </div>
+  </div>
+
+  <!-- ══ STATION 3: THE RECORD ══ -->
+  <div class="passage" id="passage-s3">
+    <p class="eyebrow">Station 3 of 5</p>
+    <h2>The Record — What Western Powers Actually Did</h2>
+
+    <p>A complete accounting of Western imperial violence is beyond any single document. What follows is a representative sample — chosen not to produce outrage but to calibrate scale. These are not allegations. They are documented history, most of it from Western sources.</p>
+
+    <div class="timeline">
+      <div class="t-item">
+        <p class="t-year">1619–1865</p>
+        <p class="t-title">Transatlantic Slave Trade</p>
+        <p class="t-desc">An estimated 12.5 million Africans were transported to the Americas as enslaved people; approximately 2 million died in transit. The labour of enslaved people built the agricultural wealth of the American South, the Caribbean sugar industry, and contributed substantially to British industrial capital. Reparations have never been paid to descendants. The US only finished paying off bonds used to compensate <em>slaveholders</em> (not the enslaved) for emancipation in 2015.</p>
+      </div>
+      <div class="t-item">
+        <p class="t-year">1757–1947</p>
+        <p class="t-title">British Colonialism in India</p>
+        <p class="t-desc">Economist Utsa Patnaik's research estimates Britain extracted $45 trillion from India between 1765 and 1938. India's share of global GDP fell from ~25% in 1700 to ~4% by 1950. The Bengal Famine of 1943 killed 2–3 million people while India exported food to Britain under colonial policy. Winston Churchill was warned; he responded by questioning why Gandhi hadn't died yet.</p>
+      </div>
+      <div class="t-item">
+        <p class="t-year">1885–1960</p>
+        <p class="t-title">The Scramble for Africa</p>
+        <p class="t-desc">European powers divided the African continent at the Berlin Conference without a single African representative present. Colonial administration used forced labour, imposed taxation (to force people into wage labour for colonial industries), destroyed existing political institutions, and extracted resources continuously. Belgium's Congo is the most extreme documented case but not unique in kind.</p>
+      </div>
+      <div class="t-item">
+        <p class="t-year">1945–1991</p>
+        <p class="t-title">Cold War Interventions</p>
+        <p class="t-desc">The US conducted or supported regime changes in over 50 countries during the Cold War, according to political scientist Lindsey O'Rourke's count in <em>Covert Regime Change</em> (2018). The Soviet Union conducted its own interventions in Eastern Europe, Afghanistan, and elsewhere. The Cold War was substantially fought in the Global South using Global South populations as proxy combatants, with consequences — civil wars, dictatorships, destroyed institutions — that outlasted it by decades.</p>
+      </div>
+      <div class="t-item">
+        <p class="t-year">1980s–2000s</p>
+        <p class="t-title">Structural Adjustment</p>
+        <p class="t-desc">Over 70 countries underwent IMF and World Bank structural adjustment programmes. The UN's own assessment found that in Sub-Saharan Africa, structural adjustment produced declining incomes, rising inequality, and the deterioration of health and education systems in most countries that underwent it. The countries that ignored IMF advice — most notably South Korea, Taiwan, China, and Botswana — generally outperformed those that followed it.</p>
+      </div>
+    </div>
+
+    <div class="callout dark">
+      <strong>A note on balance:</strong> This guide focuses on Western and specifically US imperialism because that is the dominant global power whose history is most relevant to understanding current structures. This is not a claim that other imperial powers — Soviet, Ottoman, Chinese, Mongol, Japanese — were benign. Empire as a practice has been conducted by many civilisations throughout history. What distinguishes Western imperialism in the modern period is not its uniqueness but its <em>scale and its ongoing structural consequences</em> — the economic relationships it created are still operating.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="go('s4')">Station 4: The Propaganda — how this history gets hidden →</button>
+    </div>
+  </div>
+
+  <!-- ══ STATION 4: THE PROPAGANDA ══ -->
+  <div class="passage" id="passage-s4">
+    <p class="eyebrow">Station 4 of 5</p>
+    <h2>The Propaganda — How This History Gets Hidden</h2>
+
+    <p>If all of the preceding history is documented, acknowledged by governments, available in university libraries — why don't most people in wealthy countries know it?</p>
+
+    <p>This is worth examining carefully, because the answer isn't simply "people are stupid" or "there's a shadowy conspiracy." It's more structural and more interesting than that.</p>
+
+    <p><strong>The curriculum problem.</strong> In most Western school systems, history is taught from inside the national experience. American students learn about the founding fathers, the Civil War, WWII, and the Civil Rights movement. They don't learn about the 1953 Iran coup, the role of the United Fruit Company in Guatemala, or the Bengal Famine as a policy outcome. This isn't a conspiracy — it's a curriculum shaped by the values of the society producing it, which naturally centres its own narrative and its own heroes.</p>
+
+    <p><strong>The language problem.</strong> The vocabulary available for discussing these events shapes what can be thought about them. "Development aid" sounds like generosity; it doesn't prompt the question of why development is needed. "Free trade" sounds like a neutral expansion of opportunity; it doesn't flag that the terms of trade can be structured to favour one party. "Failed states" locates the failure inside the country; it doesn't ask what external forces shaped the state's conditions. Language does political work, mostly invisibly.</p>
+
+    <p><strong>The incentive problem.</strong> News organisations in wealthy countries are owned by wealthy people and funded by advertising from large corporations. They are not deliberately suppressing the history of imperialism — but they are unlikely to platform it aggressively, because it raises uncomfortable questions about the economic arrangements that fund them. Stories about individual corruption in developing countries are more publishable than structural analyses of transfer pricing.</p>
+
+    <p><strong>The "communist" label.</strong> As the CIA dive showed, any government or movement that challenged Western corporate interests in the 20th century was characterised as "communist" — regardless of its actual ideology. This had two effects: it delegitimised genuine democrats and nationalists, and it trained Western populations to associate any critique of capital with Soviet totalitarianism. The reflex is still active. "Anti-capitalism" still triggers association with gulags rather than with Mondragon cooperatives or Walter Rodney's historical analysis.</p>
+
+    <div class="pull">
+      "The most effective propaganda is the kind you don't know you've received, because it arrived as the default assumption — the thing everyone just knows."
+    </div>
+
+    <p><strong>What this isn't saying.</strong> This is not saying that Western societies are uniquely evil, that individuals in them are personally guilty for colonial history, or that everything reported in mainstream media is false. It is saying that the picture of global inequality most people carry — where poor countries are poor due to internal factors and rich countries are rich due to merit and good institutions — is incomplete in ways that serve specific interests. Completing the picture doesn't require abandoning critical thinking. It requires applying it more consistently.</p>
+
+    <div class="btn-group">
+      <button class="btn btn-dive" onclick="go('dive_media')">◆ Deep Dive: How media frames Global South poverty</button>
+      <button class="btn btn-primary" onclick="go('s5')">Station 5: Now What? →</button>
+    </div>
+  </div>
+
+  <!-- ══ DEEP DIVE: MEDIA ══ -->
+  <div class="passage" id="passage-dive_media">
+    <div class="dive-banner">Deep Dive — How Media Frames Global South Poverty</div>
+    <h2>The Story That Gets Told — and the One That Doesn't</h2>
+
+    <p>The academic field of media studies has produced substantial research on how Western media covers the Global South. The patterns are consistent enough to be treated as structural rather than accidental.</p>
+
+    <p><strong>The depoliticisation of poverty.</strong> When Western media covers poverty in Africa or Latin America, it most commonly frames it as a humanitarian crisis requiring charitable response — images of suffering, appeals to viewers' generosity, donations to NGOs. This framing is not false, but it is radically incomplete: it presents poverty as a natural disaster or a medical condition rather than as a political outcome with specific causes and beneficiaries. It generates sympathy without generating understanding.</p>
+
+    <p><strong>The corruption frame.</strong> Stories about developing country governments focus heavily on corruption — leaders stealing public funds, embezzlement, mismanagement. Corruption in developing countries is real and damaging. But this frame consistently omits context: the multinational corporations that pay the bribes, the Western banks that accept the stolen funds (Switzerland, Luxembourg, and the UK's overseas territories are the world's largest tax havens), and the structural conditions — low public sector wages, weak institutional capacity — that colonialism created and structural adjustment maintained.</p>
+
+    <p><strong>The charity vs. justice frame.</strong> Development coverage almost universally uses the language of charity: rich countries "give" aid to poor ones. This frame positions wealthy countries as generous donors and poor countries as grateful recipients. The alternative frame — justice, or reparations, or the return of extracted wealth — rarely appears, because it would recast the relationship from generosity to obligation. The charity frame requires no structural change; the justice frame does.</p>
+
+    <div class="callout">
+      <strong>A concrete comparison:</strong> When a Western bank is implicated in laundering money from a developing country dictator — as happened repeatedly with Deutsche Bank, HSBC, and others — the story is typically framed as a banking scandal. The structural question — why do Western financial systems make it so easy to extract and hide wealth from poor countries? — gets less coverage. When a developing country government is corrupt, it is a story about that country. When a Western bank enables it, it is a story about the bank. The country's poverty remains unexplained.
+    </div>
+
+    <p><strong>The solution: reading widely and sourcing differently.</strong> None of this means mainstream sources are useless. It means they should be read alongside sources that don't share their structural incentives: academic development economics (Jason Hickel, Utsa Patnaik, Ha-Joon Chang), investigative journalism focused on financial flows (Global Financial Integrity, Tax Justice Network), and writers from the Global South covering their own countries' political economies (not just Western correspondents parachuted in).</p>
+
+    <div class="btn-group">
+      <button class="btn btn-back" onclick="go('s4')">Back to Station 4</button>
+      <button class="btn btn-primary" onclick="go('s5')">Continue to Station 5: Now What? →</button>
+    </div>
+  </div>
+
+  <!-- ══ STATION 5: NOW WHAT ══ -->
+  <div class="passage" id="passage-s5">
+    <p class="eyebrow">Station 5 of 5</p>
+    <h2>Now What?</h2>
+
+    <p>Understanding imperial extraction doesn't automatically point to a single political conclusion. Different people with a clear view of this history have reached different positions on what should be done about it — and the disagreements are genuine, not just political tribalism.</p>
+
+    <p><strong>The reparations argument</strong> holds that the extraction was large enough and recent enough that direct financial transfers are both morally required and practically calculable. The Caricom nations have been pursuing a formal reparations claim against European colonial powers since 2013. Some municipalities and universities in the US and UK have begun voluntary reparations processes. The objections — who pays, who receives, how much, whether living people can be responsible for historical acts — are real, and none of them have easy answers.</p>
+
+    <p><strong>The structural reform argument</strong> focuses less on historical debts and more on current mechanisms: close tax havens, restructure IMF conditionality, cancel odious debt (debt taken on by dictators that populations never benefited from), reform trade rules to allow developing countries to protect emerging industries the way rich countries did when they were developing. These are achievable within existing international institutions and don't require agreement on historical responsibility.</p>
+
+    <p><strong>The consumer and supply chain argument</strong> focuses on the individual end of the extraction chain: the phones we carry contain Congolese minerals mined in conditions that amount to forced labour. The clothes we wear are made in factories where wages are kept low by the same mechanisms of structural adjustment that opened those countries to cheap-labour manufacturing. Awareness of this doesn't mean individual consumer choices can fix structural problems — but it does affect the relationship between personal consumption and global extraction.</p>
+
+    <p><strong>The hardest part</strong> of sitting with this history is that it doesn't produce clean moral categories. Western countries were built partly on extracted wealth, which funded institutions, infrastructure, and knowledge that now genuinely benefit people. The people living in those countries today didn't choose that history. The people living in extracted countries didn't choose it either. The question of what justice looks like across that gap, across generations and across nations, is one of the genuinely hard political questions of the 21st century — and it can't be answered without first understanding what actually happened.</p>
+
+    <div class="final-quote">
+      <blockquote>"There are no poor nations. There are only nations whose wealth has been stolen — and nations doing the stealing."</blockquote>
+      <cite>— Paraphrasing Walter Rodney, <em>How Europe Underdeveloped Africa</em>, 1972</cite>
+    </div>
+
+    <p>That's the guide. What you have is a framework — not a verdict. Where you take it is yours to decide.</p>
+
+    <hr class="divider">
+
+    <p style="font-size:.88rem; color: var(--muted);">If you came here from the communist theory guide, you now have both halves of the picture: how the engine works at home, and how it extends outward. If you arrived here first, the companion guide explains the underlying mechanics.</p>
+
+    <div class="btn-group">
+      <button class="btn btn-ext" onclick="window.open('communist-theory-interactive.html','_blank')">Read the companion guide: How Capitalism Actually Works ↗</button>
+      <button class="btn btn-back" onclick="go('start')" style="justify-content:center;">↩ Start this guide over</button>
+    </div>
+
+    <div class="spacer"></div>
+  </div>
+
+</div><!-- /app -->
+
+<script>
+  const progressMap = {
+    start:0, s1:20, s2:40, s3:60, s4:80, s5:100,
+    dive_cia:40, dive_debt:40, dive_congo:40, dive_media:80
+  };
+  const diveParent = {
+    dive_cia:'s2', dive_debt:'s2', dive_congo:'s2', dive_media:'s4'
+  };
+  const visited = new Set(['start']);
+  let current = 'start';
+
+  function go(id) {
+    document.querySelectorAll('.passage').forEach(p => p.classList.remove('active'));
+    const el = document.getElementById('passage-' + id);
+    if (!el) return;
+    el.classList.add('active');
+    current = id;
+    visited.add(id);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    updateNav();
+  }
+
+  function updateNav() {
+    const pct = progressMap[current] ?? 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+
+    document.querySelectorAll('.nav-stop[data-passage]').forEach(btn => {
+      const p = btn.dataset.passage;
+      btn.classList.remove('current', 'visited');
+      if (p === current) btn.classList.add('current');
+      else if (visited.has(p)) btn.classList.add('visited');
+    });
+
+    if (diveParent[current]) {
+      document.querySelectorAll('.nav-stop').forEach(btn => btn.classList.remove('current'));
+      const parentBtn = document.querySelector(`.nav-stop[data-passage="${diveParent[current]}"]`);
+      if (parentBtn) parentBtn.classList.add('current');
+    }
+  }
+
+  updateNav();
+</script>
+</body>
+</html>

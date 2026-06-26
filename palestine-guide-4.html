@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Palestine & Israel — The Full History</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #0C0D0A;
+    --surface:  #141510;
+    --border:   #252818;
+    --olive:    #7A9A3A;
+    --olive-dim:#3A4A1A;
+    --sand:     #C8B882;
+    --red:      #C04030;
+    --text:     #E4E0D4;
+    --muted:    #706E5A;
+    --track:    #1A1C12;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 17px; line-height: 1.75; min-height: 100vh; }
+  #app { max-width: 680px; margin: 0 auto; padding: 0 1.25rem; }
+
+  .passage { display: none; padding: 3rem 0 5rem; animation: fadeIn .35s ease; }
+  .passage.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; } }
+
+  #progress-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 3px; background: var(--border); }
+  #progress-fill { height: 100%; background: var(--olive); transition: width .4s ease; }
+
+  #station-nav {
+    position: fixed; top: 3px; left: 0; right: 0; z-index: 99;
+    background: rgba(12,13,10,.95); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    gap: .4rem; padding: .5rem 1rem;
+    font-size: .68rem; letter-spacing: .09em; text-transform: uppercase;
+    font-weight: 500; color: var(--muted); flex-wrap: wrap;
+  }
+  .nav-stop { cursor: pointer; padding: .2rem .5rem; border-radius: 2rem; transition: color .2s, background .2s; white-space: nowrap; }
+  .nav-stop:hover { color: var(--text); }
+  .nav-stop.visited { color: var(--muted); }
+  .nav-stop.current { color: var(--olive); background: rgba(122,154,58,.12); }
+  .nav-sep { color: var(--border); }
+
+  .eyebrow { font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--olive); margin-bottom: .9rem; }
+  h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; margin-bottom: 1.5rem; }
+  h1 em { font-style: italic; color: var(--sand); }
+  h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.4rem, 4vw, 1.9rem); line-height: 1.2; margin-bottom: 1.2rem; }
+  h3 { font-family: 'DM Serif Display', serif; font-size: 1.15rem; margin-bottom: .7rem; color: var(--text); }
+  p { margin-bottom: 1.15rem; color: #BCB8A8; }
+  p:last-of-type { margin-bottom: 0; }
+  strong { color: var(--text); font-weight: 600; }
+
+  .pull { border-left: 3px solid var(--olive-dim); padding: .6rem 1.2rem; margin: 1.8rem 0; font-family: 'DM Serif Display', serif; font-size: 1.12rem; font-style: italic; color: #A8A490; line-height: 1.55; }
+
+  .callout { background: rgba(122,154,58,.07); border: 1px solid rgba(122,154,58,.22); border-radius: 6px; padding: 1.1rem 1.4rem; margin: 1.6rem 0; font-size: .93rem; color: #B0B890; }
+  .callout strong { color: var(--olive); }
+  .callout.frame { background: rgba(200,184,130,.07); border-color: rgba(200,184,130,.2); color: #C0B898; }
+  .callout.frame strong { color: var(--sand); }
+  .callout.warn { background: rgba(192,64,48,.07); border-color: rgba(192,64,48,.22); color: #C09888; }
+  .callout.warn strong { color: #D07060; }
+
+  .math-block { background: var(--track); border: 1px solid var(--border); border-left: 3px solid var(--olive); border-radius: 6px; padding: 1.4rem 1.6rem; margin: 1.8rem 0; font-size: .93rem; }
+  .math-block .label { font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--olive); margin-bottom: .9rem; }
+  .math-row { display: flex; justify-content: space-between; align-items: baseline; padding: .35rem 0; border-bottom: 1px solid var(--border); gap: 1rem; }
+  .math-row:last-child { border-bottom: none; }
+  .math-row .desc { color: #807860; font-size: .88rem; }
+  .math-row .val { font-weight: 600; white-space: nowrap; }
+  .math-row .val.pos { color: #8AC878; }
+  .math-row .val.neg { color: #C07868; }
+  .math-row .val.gap { color: var(--sand); }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); gap: .85rem; margin: 1.8rem 0; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1.2rem 1.3rem; }
+  .stat-number { font-family: 'DM Serif Display', serif; font-size: 2rem; line-height: 1; color: var(--sand); margin-bottom: .3rem; }
+  .stat-label { font-size: .82rem; color: var(--muted); line-height: 1.45; margin: 0; }
+  .stat-source { font-size: .68rem; color: #353820; margin-top: .4rem; margin-bottom: 0; }
+
+  .timeline { margin-top: 1.8rem; position: relative; padding-left: 1.6rem; }
+  .timeline::before { content: ''; position: absolute; left: 0; top: .5rem; bottom: .5rem; width: 2px; background: var(--border); }
+  .t-item { position: relative; margin-bottom: 2rem; }
+  .t-item::before { content: ''; position: absolute; left: -1.75rem; top: .45rem; width: 10px; height: 10px; border-radius: 50%; background: var(--olive); border: 2px solid var(--bg); box-shadow: 0 0 0 2px var(--olive); }
+  .t-item.red::before { background: var(--red); box-shadow: 0 0 0 2px var(--red); }
+  .t-year { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--olive); margin-bottom: .25rem; }
+  .t-item.red .t-year { color: var(--red); }
+  .t-title { font-weight: 700; margin-bottom: .3rem; color: var(--text); font-size: .97rem; }
+  .t-desc { font-size: .91rem; color: var(--muted); line-height: 1.65; }
+  .t-desc strong { color: #908878; }
+
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin: 1.2rem 0; }
+  @media (max-width:480px) { .sc-grid { grid-template-columns: 1fr; } }
+  .sc-box { border-radius: 5px; padding: .9rem 1rem; font-size: .83rem; line-height: 1.55; }
+  .sc-box.win { background: rgba(138,200,120,.07); border: 1px solid rgba(138,200,120,.2); color: #9ED890; }
+  .sc-box.loss { background: rgba(192,120,100,.07); border: 1px solid rgba(192,120,100,.2); color: #D09888; }
+  .sc-box-head { font-weight: 700; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; margin-bottom: .5rem; }
+  .sc-box.win .sc-box-head { color: #7AC870; }
+  .sc-box.loss .sc-box-head { color: #C07060; }
+  .sc-box ul { padding-left: 1rem; margin: 0; }
+  .sc-box li { margin-bottom: .3rem; }
+  .sc-lesson { background: rgba(200,184,130,.07); border: 1px solid rgba(200,184,130,.2); border-radius: 5px; padding: .9rem 1rem; margin-top: 1rem; font-size: .87rem; color: #C0B890; }
+  .sc-lesson strong { color: var(--sand); }
+
+  .dive-banner { display: flex; align-items: center; gap: .8rem; background: rgba(122,154,58,.08); border: 1px solid rgba(122,154,58,.2); border-radius: 6px; padding: .7rem 1.1rem; margin-bottom: 2rem; font-size: .82rem; color: var(--olive); font-weight: 500; letter-spacing: .04em; }
+  .dive-banner::before { content: '◆'; font-size: .65rem; }
+
+  .btn-group { display: flex; flex-direction: column; gap: .75rem; margin-top: 2.5rem; }
+  .btn { display: block; width: 100%; padding: .95rem 1.4rem; border-radius: 6px; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: .95rem; font-weight: 500; text-align: left; transition: background .18s, transform .1s; position: relative; }
+  .btn:active { transform: scale(.99); }
+  .btn-primary { background: var(--olive); color: #0C0D0A; }
+  .btn-primary:hover { background: #8AAA40; }
+  .btn-primary::after { content: '→'; position: absolute; right: 1.2rem; top: 50%; transform: translateY(-50%); opacity: .6; }
+  .btn-dive { background: var(--track); color: var(--text); border: 1px solid var(--border); }
+  .btn-dive:hover { background: #202418; border-color: #353820; }
+  .btn-dive::before { content: '↳ '; color: var(--olive); }
+  .btn-back { background: transparent; color: var(--muted); border: 1px solid var(--border); font-size: .87rem; }
+  .btn-back:hover { color: var(--text); }
+  .btn-ext { background: rgba(122,154,58,.1); color: var(--olive); border: 1px solid rgba(122,154,58,.3); font-size: .9rem; }
+  .btn-ext:hover { background: rgba(122,154,58,.18); }
+  .btn-ext::after { content: ' ↗'; position: absolute; right: 1.2rem; top: 50%; transform: translateY(-50%); opacity: .7; }
+
+  .track-preview { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem 1.4rem; margin: 2rem 0; }
+  .tp-label { font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 600; color: var(--muted); margin-bottom: 1rem; }
+  .track-line { display: flex; align-items: center; flex-wrap: wrap; gap: .3rem; font-size: .82rem; }
+  .track-stop { background: var(--track); border: 1px solid var(--border); border-radius: 3px; padding: .25rem .65rem; color: var(--muted); white-space: nowrap; }
+  .track-stop.main { color: var(--text); border-color: #353820; }
+  .track-conn { color: var(--border); font-size: .8rem; }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+  .spacer { height: 4rem; }
+
+  .final-quote { text-align: center; padding: 2.5rem 1rem; border: 1px solid var(--border); border-radius: 8px; margin: 2rem 0; background: var(--surface); }
+  .final-quote blockquote { font-family: 'DM Serif Display', serif; font-size: clamp(1.1rem, 3vw, 1.35rem); font-style: italic; color: var(--text); line-height: 1.6; margin-bottom: .8rem; }
+  .final-quote cite { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-style: normal; }
+
+  .companion-badge { display: inline-flex; align-items: center; gap: .5rem; background: rgba(122,154,58,.1); border: 1px solid rgba(122,154,58,.25); border-radius: 3px; padding: .3rem .8rem; font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--olive); margin-bottom: 1.5rem; }
+  .companion-badge::before { content: '◈'; }
+
+  .subtitle { font-size: 1.05rem; color: var(--muted); margin-bottom: 2rem; font-weight: 300; line-height: 1.65; }
+
+  .frame-box { background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--sand); border-radius: 6px; padding: 1.3rem 1.5rem; margin: 1.8rem 0; }
+  .frame-box .fb-label { font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: var(--sand); margin-bottom: .8rem; }
+  /* ── Video embeds ── */
+  .video-wrap {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+    overflow: hidden;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    margin: 1.2rem 0;
+    background: #000;
+  }
+  .video-wrap iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: none;
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"><div id="progress-fill" style="width:0%"></div></div>
+
+<nav id="station-nav">
+  <span class="nav-stop current" data-passage="start" onclick="go('start')">Intro</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s1" onclick="go('s1')">The Frame</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s2" onclick="go('s2')">The History</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s3" onclick="go('s3')">The Occupation</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s4" onclick="go('s4')">US Role</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s5" onclick="go('s5')">Gaza Now</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s6" onclick="go('s6')">The Record</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s7" onclick="go('s7')">The Question</span>
+</nav>
+
+<div id="app">
+
+  <!-- ══ START ══ -->
+  <div class="passage active" id="passage-start">
+    <div style="padding-top:4rem;">
+      <div class="companion-badge">Companion Guide · Part 3</div>
+      <h1>Palestine &amp; Israel — <em>The Full History</em></h1>
+      <p class="subtitle">From Ottoman Palestine to the present. The context most coverage leaves out.</p>
+
+      <div class="track-preview">
+        <p class="tp-label">Your route</p>
+        <div class="track-line">
+          <span class="track-stop main">The Frame</span>
+          <span class="track-conn">──▶</span>
+          <span class="track-stop main">The History</span>
+          <span class="track-conn">──▶</span>
+          <span class="track-stop main">The Occupation</span>
+          <span class="track-conn">──▶</span>
+          <span class="track-stop main">US Role</span>
+          <span class="track-conn">──▶</span>
+          <span class="track-stop main">Gaza Now</span>
+          <span class="track-conn">──▶</span>
+          <span class="track-stop main">The Record</span>
+          <span class="track-conn">──▶</span>
+          <span class="track-stop main">The Question</span>
+        </div>
+        <p style="font-size:.8rem;color:var(--muted);margin-top:.9rem;margin-bottom:0;">Deep dives available at each station for the full detail.</p>
+      </div>
+
+      <p>Almost every conversation about Palestine and Israel starts in the wrong place. It starts in 1948, or 1967, or October 7, 2023 — depending on who's telling it. And whichever starting point you choose, the other side accuses you of omitting the context that changes everything.</p>
+
+      <p>They're both right. Context changes everything. So this guide starts further back, moves chronologically, and names what it sees — using the same analytical framework it would apply anywhere: who holds power, who doesn't, and where the money and weapons come from.</p>
+
+      <p>One thing stated clearly at the outset: <strong>this is not a conflict between two equal sides.</strong> One party has one of the most powerful militaries on earth, backed unconditionally by the world's dominant superpower. The other has been under military occupation, siege, or dispossession for 75 years. That asymmetry is the starting point, not a conclusion.</p>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="go('s1')">Station 1: The Frame — how to read what follows</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ STATION 1: THE FRAME ══ -->
+  <div class="passage" id="passage-s1">
+    <p class="eyebrow">Station 1 of 7</p>
+    <h2>The Frame — Settler Colonialism</h2>
+
+    <p>To understand Palestine, you need one concept: <strong>settler colonialism.</strong> It's different from regular colonialism, and the distinction matters.</p>
+
+    <p>Regular colonialism extracts — a foreign power takes resources, labour, and land from a population but ultimately intends to leave, or at least to maintain a native population as a workforce. The British in India needed Indians. The Belgians in the Congo needed Congolese labour.</p>
+
+    <p>Settler colonialism eliminates. The goal is not to exploit the existing population but to replace it — to make the land available for permanent settlement by people from elsewhere. The existing population is not a resource to be used; it is an obstacle to be removed. The most documented example in modern history is the colonisation of North America. What happened to Native populations wasn't incidental to the settlement project — it was the settlement project.</p>
+
+    <div class="frame-box">
+      <p class="fb-label">The defining logic of settler colonialism</p>
+      <p style="margin:0; font-size:.93rem; color:#B0A888;">Patrick Wolfe, the historian who formalised the concept, stated it plainly: <strong>"Settler colonialism destroys to replace."</strong> The land is the target. The people on it are in the way. This is not a description of the intent of every individual settler — it is a description of the structural logic of the project as a whole.</p>
+    </div>
+
+    <p>This frame applies directly to Zionist settlement in Palestine. The Zionist movement — founded in 1897 by Theodor Herzl in response to European antisemitism — sought to establish a Jewish homeland. Palestine was chosen as the location, partly for religious and historical reasons, but there was a fundamental problem: Palestine was not empty. It had a population of approximately 500,000 Arab Palestinians, most of whom had lived there for generations.</p>
+
+    <p>The early Zionist leaders were largely honest about this tension, at least in their private correspondence. Herzl's diary discusses the need to "spirit the penniless population across the border." Ze'ev Jabotinsky, founder of Revisionist Zionism (the ideological forefather of Likud, Israel's current governing party), wrote in 1923 that Palestinians would never voluntarily accept displacement and that settlement could only proceed behind an "iron wall" of military force.</p>
+
+    <p>This is not an accusation. It is the documented intellectual history of the movement that founded Israel. Understanding it doesn't require denying the reality of European antisemitism, the horror of the Holocaust, or the genuine need of Jewish refugees for safety. It requires holding those truths alongside the truth of what happened to the people who were already in Palestine.</p>
+
+    <div class="callout frame">
+      <strong>Why the frame matters:</strong> If you see this as a territorial dispute between two peoples with competing claims, the appropriate response is negotiation and compromise. If you see it as a settler colonial situation — where one party is being progressively eliminated from their land by an externally-backed settler project — the analysis is different, the moral stakes are different, and the concept of "both sides" becomes incoherent in a specific way. An occupied people's resistance to occupation cannot be morally equated with the violence of the occupying power. Frantz Fanon argued this in 1961. It remains the correct analytical distinction.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="go('s2')">Station 2: The History — from Ottoman Palestine to 1948 →</button>
+    </div>
+  </div>
+
+  <!-- ══ STATION 2: THE HISTORY ══ -->
+  <div class="passage" id="passage-s2">
+    <p class="eyebrow">Station 2 of 7</p>
+    <h2>The History — Ottoman Palestine to the Nakba</h2>
+
+    <div class="timeline">
+      <div class="t-item">
+        <p class="t-year">Pre-1880s</p>
+        <p class="t-title">Ottoman Palestine</p>
+        <p class="t-desc">Palestine is a province of the Ottoman Empire, home to roughly 500,000 people — predominantly Arab Muslims and Christians, with a small Jewish minority (around 5% of the population) that had lived there continuously for centuries alongside Arab neighbours. The society is agrarian, with established land ownership patterns, trade networks, and a distinct Palestinian Arab cultural identity.</p>
+      </div>
+
+      <div class="t-item">
+        <p class="t-year">1897–1917</p>
+        <p class="t-title">Zionist Settlement Begins</p>
+        <p class="t-desc">The First Zionist Congress, Basle, 1897. Herzl founds the movement with the explicit goal of a Jewish state. Early settlers purchase land from absentee Ottoman landlords, often displacing Palestinian tenant farmers who had worked the land for generations. By 1914, Jewish settlers constitute about 12% of the population. Tensions with Palestinian Arab residents begin immediately over land, labour exclusion policies, and political organisation.</p>
+      </div>
+
+      <div class="t-item">
+        <p class="t-year">1917</p>
+        <p class="t-title">The Balfour Declaration</p>
+        <p class="t-desc">British Foreign Secretary Arthur Balfour writes a letter to Lord Rothschild, a leader of the British Jewish community, declaring British support for "the establishment in Palestine of a national home for the Jewish people." The letter also states this should not prejudice "the civil and religious rights of existing non-Jewish communities in Palestine." <strong>The 500,000 Arab Palestinians are described as "existing non-Jewish communities."</strong> They are never consulted. Britain has no legal authority over Palestine at this point — it is still Ottoman territory. The promise is made by one colonial power about land it doesn't own, to a third party, about a population that is not asked.</p>
+      </div>
+
+      <div class="t-item">
+        <p class="t-year">1920–1947</p>
+        <p class="t-title">The British Mandate</p>
+        <p class="t-desc">After WWI, Britain receives a League of Nations mandate over Palestine. Jewish immigration accelerates — from 60,000 in 1920 to 630,000 by 1947, partly driven by the Holocaust and European antisemitism. Palestinian Arab resistance grows: the 1936–39 Arab Revolt is a general strike and armed uprising against British rule and Zionist immigration, brutally suppressed by British forces with the assistance of Zionist paramilitary organisations. By 1947, Jewish settlers constitute 33% of the population but own about 7% of the land.</p>
+      </div>
+
+      <div class="t-item">
+        <p class="t-year">1947</p>
+        <p class="t-title">The UN Partition Plan</p>
+        <p class="t-desc">Britain, unable to manage the situation, hands the problem to the newly formed United Nations. The UN proposes partitioning Palestine into a Jewish state (56% of the land) and an Arab state (44%), with Jerusalem under international control. The Jewish Agency accepts. Palestinian Arabs and neighbouring Arab states reject it — noting that the 33% of the population that is Jewish is being allocated 56% of the territory, including the most agriculturally productive land, without the consent of the Arab majority who own most of it.</p>
+      </div>
+
+      <div class="t-item red">
+        <p class="t-year">1947–1949</p>
+        <p class="t-title">The Nakba — "The Catastrophe"</p>
+        <p class="t-desc">Before Israel's declaration of independence, Zionist military forces — primarily the Haganah and its elite unit the Palmach — begin military operations in areas allocated to the Jewish state and beyond. What follows is now documented by Israeli historians (Benny Morris, Ilan Pappé) using Israeli military archives: <strong>over 750,000 Palestinian Arabs — more than half the Arab population of Palestine — are expelled or flee their homes.</strong> Over 500 Palestinian villages are depopulated and destroyed. Massacres occur, the most documented being Deir Yassin (April 1948), where 107 villagers are killed by Irgun and Lehi forces. Israel declares independence in May 1948. Arab states invade. Israel wins the war and expands beyond the UN partition lines. The Palestinian refugees are never permitted to return. Their homes and villages are resettled by Jewish immigrants. This is the Nakba.</p>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <strong>On the Nakba's documentation:</strong> For decades, Israel's official position characterised Palestinian displacement as voluntary — Palestinians left because Arab leaders told them to. The opening of Israeli military archives in the 1980s produced a generation of "New Historians" — Israeli scholars including Benny Morris — who documented from internal records that the displacement was organised and in many areas explicitly ordered. Morris, notably, accepts the documentation while defending the expulsions as militarily necessary. The historical facts of what happened are not seriously contested among scholars.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-dive" onclick="go('dive_nakba')">◆ Deep Dive: The Nakba in detail — villages, massacres, the full record</button>
+      <button class="btn btn-primary" onclick="go('s3')">Continue to Station 3: The Occupation →</button>
+    </div>
+  </div>
+
+  <!-- ══ DEEP DIVE: NAKBA ══ -->
+  <div class="passage" id="passage-dive_nakba">
+    <div class="dive-banner">Deep Dive — The Nakba</div>
+    <h2>The Catastrophe — What Actually Happened</h2>
+
+    <p>Between November 1947 and the end of 1948, the demographic and physical landscape of Palestine was transformed in ways that permanently shaped everything that followed. Here is what the historical record — including Israeli military archives and the work of Israeli historians — shows.</p>
+
+    <p><strong>The scale of displacement.</strong> Approximately 750,000 Palestinians — between 80 and 85% of the Arab population of what became Israel — left or were expelled from their homes. They fled to the West Bank, Gaza, Jordan, Lebanon, and Syria, where they and their descendants remain as refugees to this day. The UN counts approximately 5.9 million registered Palestinian refugees globally as of 2023.</p>
+
+    <p><strong>The villages.</strong> Israeli historian Walid Khalidi documented 418 Palestinian villages that were depopulated during the Nakba. Of these, the majority were subsequently demolished — bulldozed, mined, or built over. Some were converted into Israeli communities or parks. The village of Deheisha became a refugee camp. The site of Lifta, on the outskirts of Jerusalem, stands partially intact and is one of the few remaining visible remnants of a pre-1948 Palestinian village.</p>
+
+    <div class="math-block">
+      <p class="label">The Nakba — documented numbers</p>
+      <div class="math-row"><span class="desc">Palestinians displaced, 1947–49</span><span class="val neg">~750,000</span></div>
+      <div class="math-row"><span class="desc">Palestinian villages depopulated</span><span class="val neg">418+</span></div>
+      <div class="math-row"><span class="desc">Villages subsequently demolished</span><span class="val neg">~400</span></div>
+      <div class="math-row"><span class="desc">Documented massacres</span><span class="val neg">At least 24 (Pappé)</span></div>
+      <div class="math-row"><span class="desc">Palestinian refugees and descendants today</span><span class="val gap">~5.9 million (UNRWA)</span></div>
+      <div class="math-row"><span class="desc">Palestinian refugees permitted to return</span><span class="val neg">Zero</span></div>
+    </div>
+
+    <p><strong>Deir Yassin.</strong> On April 9, 1948, forces from the Irgun (led by future Israeli Prime Minister Menachem Begin) and the Lehi attacked the village of Deir Yassin, near Jerusalem. Between 107 and 120 villagers were killed, including women and children. The attack was documented by the International Red Cross. Begin later wrote that the news of Deir Yassin spread across Palestine "like wildfire," contributing to the mass flight of Palestinians from surrounding areas. The psychological effect — the creation of terror to accelerate departure — was understood and, in some cases, deliberately employed.</p>
+
+    <p><strong>Plan Dalet.</strong> Declassified in the 1980s, Plan Dalet was a Haganah military plan adopted in March 1948 that specified operations to "cleanse" areas of Arab villages, with explicit provision for destroying villages and expelling populations that resisted. Historian Ilan Pappé uses Plan Dalet as evidence for his argument that the expulsion was planned ethnic cleansing. Benny Morris disputes the characterisation of it as a blueprint for expulsion while acknowledging that expulsion was the result. The document exists; its content is not disputed.</p>
+
+    <p><strong>The right of return.</strong> UN Resolution 194, passed in December 1948, states that Palestinian refugees wishing to return to their homes and live at peace with their neighbours should be permitted to do so at the earliest practicable date. Israel has rejected this resolution consistently for 75 years. The right of return remains the central unresolved issue of the conflict — and the one whose resolution would most directly challenge the demographic composition of the Israeli state.</p>
+
+    <div class="sc-lesson">
+      <strong>Why the Nakba is the foundation:</strong> Every subsequent development — the 1967 occupation, the settlement project, Gaza, October 7 — is downstream of 1948. The Palestinian refugee population exists because of the Nakba. The territorial claims exist because of the Nakba. The resistance exists because of the Nakba. You cannot understand anything that has happened since without it.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-back" onclick="go('s2')">Back to Station 2</button>
+      <button class="btn btn-primary" onclick="go('s3')">Continue to Station 3: The Occupation →</button>
+    </div>
+  </div>
+
+  <!-- ══ STATION 3: THE OCCUPATION ══ -->
+  <div class="passage" id="passage-s3">
+    <p class="eyebrow">Station 3 of 7</p>
+    <h2>The Occupation — 1967 to the Present</h2>
+
+    <p>In June 1967, Israel fought and won a six-day war against Egypt, Jordan, and Syria. In those six days it captured the West Bank (including East Jerusalem) from Jordan, the Gaza Strip and Sinai Peninsula from Egypt, and the Golan Heights from Syria. The Sinai was later returned to Egypt in a peace deal. Everything else remains under Israeli control.</p>
+
+    <p>The West Bank and Gaza have been under Israeli military occupation for over 57 years — the longest military occupation in the modern world. Everything that follows flows from that fact.</p>
+
+    <div class="timeline">
+      <div class="t-item">
+        <p class="t-year">1967–1977</p>
+        <p class="t-title">The Occupation Begins</p>
+        <p class="t-desc">Israel establishes military administration over the West Bank and Gaza. The first Israeli settlements — civilian communities built on occupied Palestinian land — begin in 1967, immediately after the war. International law, specifically the Fourth Geneva Convention, prohibits an occupying power from transferring its civilian population into occupied territory. Israel has consistently rejected the applicability of this provision.</p>
+      </div>
+
+      <div class="t-item">
+        <p class="t-year">1978–1993</p>
+        <p class="t-title">Settlement Expansion &amp; First Intifada</p>
+        <p class="t-desc">Settlement construction accelerates under Likud governments. By 1993, over 100,000 Israeli settlers live in the West Bank. In 1987, the First Intifada — a Palestinian uprising characterised by stone-throwing, strikes, and civil disobedience — begins in Gaza and spreads to the West Bank. Israel responds with military force. Defence Minister Yitzhak Rabin orders soldiers to "break the bones" of protesters. Over 1,000 Palestinians are killed; 160 Israelis are killed over the uprising's duration.</p>
+      </div>
+
+      <div class="t-item">
+        <p class="t-year">1993</p>
+        <p class="t-title">The Oslo Accords</p>
+        <p class="t-desc">Signed on the White House lawn, the Oslo Accords create the Palestinian Authority, establish the framework of a "two-state solution," and divide the West Bank into Areas A (Palestinian civil and security control), B (Palestinian civil, Israeli security), and C (full Israeli control — covering 60% of the West Bank). Oslo was supposed to be a five-year transition to a Palestinian state. Thirty years later, no Palestinian state exists. Settlement construction accelerated during and after Oslo. Critics argue Oslo functioned as Palestinian management, not liberation — requiring Palestinian leaders to police their own population on Israel's behalf while Israel continued colonising the land.</p>
+      </div>
+
+      <div class="t-item red">
+        <p class="t-year">2000–2005</p>
+        <p class="t-title">The Second Intifada</p>
+        <p class="t-desc">Following the collapse of Camp David negotiations in 2000, the Second Intifada erupts. It is far more violent than the first — Palestinian factions carry out suicide bombings targeting Israeli civilians in buses, restaurants, and markets. <strong>Over 1,000 Israeli civilians are killed.</strong> Israel responds with military operations, targeted assassinations, and the construction of a separation wall through the West Bank. <strong>Over 3,000 Palestinians are killed</strong> in the same period, the majority by Israeli military forces. The wall, ruled illegal by the International Court of Justice in 2004, annexes significant amounts of Palestinian land on its route.</p>
+      </div>
+
+      <div class="t-item red">
+        <p class="t-year">2007–Present</p>
+        <p class="t-title">The Gaza Blockade</p>
+        <p class="t-desc">After Hamas wins Palestinian legislative elections in 2006 and takes control of Gaza in 2007, Israel (with Egyptian cooperation) imposes a comprehensive blockade on the Gaza Strip — controlling all movement of people, goods, fuel, food, and medicine in and out. The blockade has been condemned by the UN as collective punishment, which is prohibited under international law. Gaza's 2.3 million people live in what has been described by the UN as an "open-air prison." Since 2008, Israel has conducted four major military operations in Gaza — 2008–09, 2012, 2014, and 2021 — killing thousands of Palestinian civilians each time.</p>
+      </div>
+
+      <div class="t-item">
+        <p class="t-year">2023</p>
+        <p class="t-title">Settlements Today</p>
+        <p class="t-desc">Over 700,000 Israeli settlers now live in the West Bank and East Jerusalem — a number that has more than doubled since Oslo. The settlement project has rendered a contiguous Palestinian state geographically impossible without the removal of settlements. Most of the international community considers settlements illegal under international law. The United States has historically abstained from condemning them, though even the US position has nominally characterised settlements as "an obstacle to peace."</p>
+      </div>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-dive" onclick="go('dive_settlements')">◆ Deep Dive: The settlements — how they work and what they mean</button>
+      <button class="btn btn-dive" onclick="go('dive_apartheid')">◆ Deep Dive: Why human rights organisations call it apartheid</button>
+      <button class="btn btn-primary" onclick="go('s4')">Continue to Station 4: The US Role →</button>
+    </div>
+  </div>
+
+  <!-- ══ DEEP DIVE: SETTLEMENTS ══ -->
+  <div class="passage" id="passage-dive_settlements">
+    <div class="dive-banner">Deep Dive — The Settlement Project</div>
+    <h2>How Settlements Work — and What They're Doing</h2>
+
+    <p>The word "settlement" makes them sound like small communities. In practice, many are cities. Ariel has a population of 20,000 and a university. Ma'ale Adumim, east of Jerusalem, has 40,000 residents and bisects the West Bank. They have swimming pools, shopping malls, and subsidised housing — built on land that international law considers Palestinian territory under illegal occupation.</p>
+
+    <p><strong>How they expand.</strong> The process is systematic: the Israeli military declares an area "state land" or a "closed military zone." Palestinian landowners are removed or denied access. Infrastructure — roads, electricity, water — is built. Settlers move in, often incentivised by subsidised housing costs 30–40% below Israeli market rates. Over time, the settlement expands, often absorbing more surrounding land through "outposts" — small settler encampments that are technically illegal even under Israeli law, but which the Israeli military protects and which are later retroactively legalised.</p>
+
+    <p><strong>The road system.</strong> To connect settlements to Israel proper, Israel has built a network of roads across the West Bank that Palestinians are prohibited from using. This "bypass road" system physically fragments Palestinian territory into disconnected enclaves. A Palestinian driving between two West Bank cities must navigate checkpoints and circuitous routes around settlement areas. The same journey for an Israeli settler takes a fraction of the time on direct roads.</p>
+
+    <div class="math-block">
+      <p class="label">Settlements — the numbers</p>
+      <div class="math-row"><span class="desc">Israeli settlers in West Bank &amp; East Jerusalem (2023)</span><span class="val neg">700,000+</span></div>
+      <div class="math-row"><span class="desc">Number of settlements and outposts</span><span class="val neg">~280</span></div>
+      <div class="math-row"><span class="desc">West Bank land under full Israeli control (Area C)</span><span class="val neg">60%</span></div>
+      <div class="math-row"><span class="desc">Palestinian building permits approved in Area C per year</span><span class="val neg">~1.5% of applications</span></div>
+      <div class="math-row"><span class="desc">Palestinian structures demolished in West Bank since 1967</span><span class="val neg">~50,000 (OCHA)</span></div>
+      <div class="math-row"><span class="desc">US aid to Israel annually (base)</span><span class="val gap">$3.8 billion</span></div>
+    </div>
+
+    <p><strong>What they're doing to the two-state solution.</strong> The two-state solution — a Palestinian state in the West Bank and Gaza alongside Israel — has been the nominal framework of international diplomacy since Oslo. But settlements have made it physically difficult to implement. A Palestinian state requires territorial contiguity — land that connects. Settlements, bypass roads, and the wall have carved the West Bank into fragments. Most serious analysts now consider a viable contiguous Palestinian state either impossible or requiring the removal of hundreds of thousands of settlers, which no Israeli government has shown any willingness to consider.</p>
+
+    <div class="sc-lesson">
+      <strong>The strategic logic:</strong> Settlements are not an accident of individual choices. They are a state policy, funded by the Israeli government, protected by the Israeli military, and — critically — continued through every Israeli government regardless of political orientation. Labor governments built settlements. Likud governments built settlements. The settlement project has continued through every peace process, every ceasefire, and every international objection. It is the actual policy, regardless of what Israeli governments say at negotiating tables.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-back" onclick="go('s3')">Back to Station 3</button>
+      <button class="btn btn-dive" onclick="go('dive_apartheid')">◆ Next: Why organisations call it apartheid</button>
+      <button class="btn btn-primary" onclick="go('s4')">Continue to Station 4: The US Role →</button>
+    </div>
+  </div>
+
+  <!-- ══ DEEP DIVE: APARTHEID ══ -->
+  <div class="passage" id="passage-dive_apartheid">
+    <div class="dive-banner">Deep Dive — The Apartheid Question</div>
+    <h2>Why Human Rights Organisations Use That Word</h2>
+
+    <p>In 2021, Human Rights Watch — one of the world's most respected human rights organisations — published a 213-page report concluding that Israeli authorities are committing the crime of apartheid against Palestinians. Amnesty International published a similar finding in 2022. B'Tselem, Israel's leading human rights organisation, reached the same conclusion in 2021.</p>
+
+    <p>The word apartheid is charged, so it's worth being precise about what it means legally. Under the Rome Statute of the International Criminal Court, apartheid is defined as inhumane acts committed in the context of an institutionalised regime of systematic oppression and domination by one racial group over another, with the intent to maintain that regime.</p>
+
+    <p>Here is what the reports document:</p>
+
+    <p><strong>Two separate legal systems.</strong> Israeli settlers in the West Bank live under Israeli civil law — with full civil rights, access to Israeli courts, freedom of movement, and the right to vote in Israeli elections. Palestinians living in the same territory — under Israeli military occupation — live under military law. They are tried in military courts with conviction rates above 99%. They cannot vote in Israeli elections. They require permits to move, build, or access many areas. Two populations living in the same territory under entirely different legal regimes, with rights determined by ethnicity.</p>
+
+    <p><strong>Movement restrictions.</strong> Palestinians in the West Bank require permits to enter East Jerusalem, to travel through Area C, and to exit to Jordan. The permit system is administered by the Israeli military and denials are common. Gaza has been under a comprehensive siege since 2007. Palestinians cannot travel between the West Bank and Gaza — the two territories of the supposed future Palestinian state — without Israeli permission, which is rarely granted.</p>
+
+    <p><strong>Land and resource control.</strong> In Area C (60% of the West Bank), Palestinian construction requires Israeli military permits — which are denied at a rate of approximately 98.5%. Israeli settlers in the same area build freely. Palestinian farmers are regularly denied access to their own agricultural land if it falls near settlement areas. Israeli settlements receive three to four times more water per capita than Palestinian communities in the same area.</p>
+
+    <div class="sc-lesson">
+      <strong>The response to the apartheid designation:</strong> Israel and its supporters reject the term, arguing that Arab citizens of Israel proper have full civil rights (which is largely true, with significant documented inequalities), and that the West Bank situation is a temporary security arrangement pending a peace deal. The counterargument — made by the human rights reports — is that a 57-year "temporary" arrangement with no credible path to change, in which one population expands its presence and rights while the other loses land and freedoms, describes a permanent system regardless of what it is called.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-back" onclick="go('s3')">Back to Station 3</button>
+      <button class="btn btn-dive" onclick="go('dive_settlements')">◆ Next: The settlements</button>
+      <button class="btn btn-primary" onclick="go('s4')">Continue to Station 4: The US Role →</button>
+    </div>
+  </div>
+
+  <!-- ══ STATION 4: US ROLE ══ -->
+  <div class="passage" id="passage-s4">
+    <p class="eyebrow">Station 4 of 7</p>
+    <h2>The US Role — Why America Does This</h2>
+
+    <p>The United States has provided Israel with more foreign aid than any other country in history — over $260 billion in total since 1948, in today's dollars. It provides $3.8 billion annually in military aid guaranteed by a 10-year memorandum of understanding. It has used its UN Security Council veto to block resolutions critical of Israel more than 50 times. It has transferred weapons systems, intelligence, and diplomatic cover through every Israeli military operation, including operations that killed thousands of civilians.</p>
+
+    <p>This is not explained by sentiment or cultural affinity, though those exist. It is explained by the same logic that explains every other chapter of American foreign policy: strategic interest and the imperial mechanics described in the companion guide.</p>
+
+    <p><strong>The strategic asset argument.</strong> In the Cold War framing, Israel served as a reliable pro-Western military power in a region of significant instability. It defeated Soviet-backed Arab states in 1967 and 1973, demonstrating the superiority of US military equipment. It shares intelligence with the US on regional threats. It hosts US military infrastructure. In return for this, it receives unconditional support — a transactional relationship dressed in the language of "shared values."</p>
+
+    <p><strong>The oil politics.</strong> The Middle East contains the majority of the world's proven oil reserves. American strategic positioning in the region — including the relationship with Israel, the relationship with Saudi Arabia, and the wars in Iraq — is substantially about maintaining access to and pricing control over that resource. Israel's military dominance of the region is useful to this project.</p>
+
+    <p><strong>The arms industry.</strong> US military aid to Israel is not simply a gift. It is largely required to be spent on US weapons systems — it is a subsidy to American arms manufacturers. Lockheed Martin, Boeing, Raytheon, and General Dynamics all profit directly from US military aid to Israel. When Israel conducts military operations using US weapons, it produces demand signals for more weapons and demonstrates their effectiveness in real conditions. This is the military-industrial logic the companion guide describes.</p>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <p class="stat-number">$260B</p>
+        <p class="stat-label">Total US aid to Israel since 1948, inflation-adjusted — more than any country in history</p>
+        <p class="stat-source">Congressional Research Service</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-number">$3.8B</p>
+        <p class="stat-label">Annual US military aid to Israel, guaranteed for 10 years under 2016 MOU</p>
+        <p class="stat-source">US State Department</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-number">50+</p>
+        <p class="stat-label">Times the US has vetoed UN Security Council resolutions critical of Israel since 1972</p>
+        <p class="stat-source">UN records</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-number">$14B</p>
+        <p class="stat-label">Emergency military aid package approved by US Congress for Israel, October 2023</p>
+        <p class="stat-source">US Congress</p>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <strong>The veto record:</strong> The UN Security Council has attempted to pass resolutions calling for ceasefires, condemning settlement expansion, and demanding humanitarian access in Gaza. The US has vetoed each of them. In February 2024, the US vetoed a resolution calling for an immediate ceasefire in Gaza as Israeli military operations had killed over 30,000 Palestinians. The US justified the veto by stating it could undermine diplomatic efforts. No ceasefire resulted from those diplomatic efforts.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-dive" onclick="go('dive_lobby')">◆ Deep Dive: The Israel lobby — how it shapes US policy</button>
+      <button class="btn btn-primary" onclick="go('s5')">Continue to Station 5: Gaza Now →</button>
+    </div>
+  </div>
+
+  <!-- ══ DEEP DIVE: LOBBY ══ -->
+  <div class="passage" id="passage-dive_lobby">
+    <div class="dive-banner">Deep Dive — The Israel Lobby</div>
+    <h2>How US Policy Gets Shaped — and By Whom</h2>
+
+    <p>In 2006, political scientists John Mearsheimer and Stephen Walt — mainstream scholars at the University of Chicago and Harvard Kennedy School — published "The Israel Lobby and US Foreign Policy," first as an academic paper and then as a book. It created enormous controversy, but its core argument is empirically grounded.</p>
+
+    <p>The argument is not that there is a Jewish conspiracy. It is that a well-organised, well-funded domestic lobbying coalition — including organisations like AIPAC (the American Israel Public Affairs Committee), the Anti-Defamation League, and a network of evangelical Christian organisations — exerts disproportionate influence on US foreign policy toward Israel, beyond what US strategic interests alone would dictate.</p>
+
+    <p><strong>AIPAC.</strong> AIPAC is one of the most powerful lobbying organisations in Washington. It does not make direct campaign contributions — but it effectively signals to donors which candidates support Israel's interests, and the money follows. Candidates who break with pro-Israel positions routinely face well-funded primary challenges. The result is a Congress where meaningful criticism of Israeli policy is politically dangerous regardless of party.</p>
+
+    <p><strong>Evangelical support.</strong> A significant component of pro-Israel political support in the US comes not from Jewish Americans but from evangelical Christians, who hold theological views about Israel's role in end-times prophecy. This constituency forms a core part of the Republican base and has consistently pushed for unconditional US support of Israeli territorial expansion.</p>
+
+    <p><strong>The limits of the lobby argument.</strong> It's important to be precise: the lobby argument does not explain everything. The US had strategic reasons to support Israel that predate the lobby's current influence. And the lobby doesn't cause the US to act against its interests — it shapes what policymakers understand their interests to be. The argument also risks sliding into antisemitic tropes if stated carelessly, which is why it requires precision: this is about a political lobbying operation, not about Jewish people as a group.</p>
+
+    <div class="sc-lesson">
+      <strong>What the lobby means in practice:</strong> American politicians who might privately favour a more balanced approach to Palestine — conditioning aid, supporting UN resolutions, criticising settlement expansion — find it politically dangerous to say so publicly. The result is a US policy position far to the right of American public opinion, which polling consistently shows is more divided on Israel/Palestine than Congressional votes suggest.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-back" onclick="go('s4')">Back to Station 4</button>
+      <button class="btn btn-primary" onclick="go('s5')">Continue to Station 5: Gaza Now →</button>
+    </div>
+  </div>
+
+  <!-- ══ STATION 5: GAZA NOW ══ -->
+  <div class="passage" id="passage-s5">
+    <p class="eyebrow">Station 5 of 7</p>
+    <h2>Gaza Now — October 7 and After</h2>
+
+    <p>On October 7, 2023, Hamas — the Islamist militant organisation that governs Gaza — launched a large-scale attack on southern Israel. Fighters crossed the fence that seals Gaza and attacked military bases, kibbutzim, and a music festival. <strong>1,139 people were killed — the majority Israeli civilians, including children.</strong> Around 250 people were taken hostage into Gaza.</p>
+
+    <p>October 7 was the deadliest day for Jewish people since the Holocaust. That fact is real and cannot be minimised.</p>
+
+    <p>To understand October 7 without context is to misunderstand it completely. Gaza's 2.3 million people had been under comprehensive siege for 17 years. They had undergone four major military operations. They had no airport, heavily restricted import of goods including food and medicine, and no meaningful political horizon — the two-state solution was being steadily eliminated by settlements, and the Palestinian Authority in the West Bank had been rendered a US-backed security apparatus with no path to statehood. October 7 did not emerge from nowhere. It emerged from 75 years of dispossession and 17 years of siege. That context does not determine the moral evaluation of the attack on civilians. It is required to understand why it happened.</p>
+
+    <div class="callout frame">
+      <strong>On resistance and atrocity:</strong> The killing of civilians — Israeli or Palestinian — is not the same as military resistance to occupation. Hamas's attack on the music festival and the kibbutzim killed civilians who were not combatants, including children. This requires acknowledgement. It also requires acknowledgement that Palestinian civilians in Gaza are not combatants, and that over 90% of casualties in every Israeli military operation in Gaza have been civilians. The violence of an occupied people resisting their occupation cannot be morally equated with the violence of the occupying state — but specific acts within a resistance movement that target civilians can and should be distinguished from the resistance itself.
+    </div>
+
+    <p><strong>The Israeli military response.</strong> Israel declared war on Gaza immediately after October 7. What followed is, by scale and speed, one of the most destructive military campaigns of the 21st century.</p>
+
+    <div class="math-block">
+      <p class="label">Gaza — the numbers from October 7, 2023 to mid-2024</p>
+      <div class="math-row"><span class="desc">Israelis killed on October 7</span><span class="val neg">1,139</span></div>
+      <div class="math-row"><span class="desc">Palestinians killed in Israeli military response (Gaza Ministry of Health)</span><span class="val neg">37,000+</span></div>
+      <div class="math-row"><span class="desc">Percentage of casualties estimated to be women and children</span><span class="val neg">~70%</span></div>
+      <div class="math-row"><span class="desc">Palestinians displaced within Gaza</span><span class="val neg">1.9 million (85% of population)</span></div>
+      <div class="math-row"><span class="desc">Percentage of Gaza's buildings damaged or destroyed</span><span class="val neg">~60% (UN satellite analysis)</span></div>
+      <div class="math-row"><span class="desc">Hospitals fully functioning in Gaza by April 2024</span><span class="val neg">10 of 36</span></div>
+      <div class="math-row"><span class="desc">UN agencies warning of famine conditions</span><span class="val gap">All major UN bodies</span></div>
+    </div>
+
+    <p>In December 2024, Amnesty International formally concluded that Israel is committing genocide against Palestinians in Gaza — following a nine-month investigation, 212 interviews, and analysis of 102 statements by Israeli officials. Human Rights Watch issued a report titled "Extermination and Acts of Genocide." The UN Special Rapporteur on the situation of human rights in the Palestinian territories concluded in March 2024 that "reasonable grounds" exist to believe genocide is being committed. The ICJ in January 2024 found the claim "plausible" and ordered Israel to halt genocidal acts. Israel has continued its operations.</p>
+
+    <p>The United States continued to supply weapons to Israel throughout this period. It vetoed multiple UN ceasefire resolutions. In April 2024, a US State Department report found it was "reasonable to assess" that Israel used US weapons in ways inconsistent with international humanitarian law — but weapons transfers continued regardless.</p>
+
+    <div class="btn-group">
+      <button class="btn btn-dive" onclick="go('dive_genocide')">◆ Deep Dive: The evidence of genocide — what the record actually shows</button>
+      <button class="btn btn-primary" onclick="go('s6')">Continue to Station 6: The Record of Cruelty →</button>
+    </div>
+  </div>
+
+  <!-- ══ DEEP DIVE: GENOCIDE ══ -->
+  <div class="passage" id="passage-dive_genocide">
+    <div class="dive-banner">Deep Dive — The Evidence of Genocide</div>
+    <h2>What the Record Actually Shows</h2>
+
+    <p>The previous version of this section framed genocide as a legally unresolved question requiring careful hedging. That framing understated the evidence. Here is what the documented record shows — from major human rights organisations, UN bodies, medical professionals, Israeli soldiers themselves, and Israeli government officials on record.</p>
+
+    <hr class="divider" style="margin: 1.2rem 0;">
+
+    <h3>The Formal Findings</h3>
+
+    <p><strong>Amnesty International</strong>, in December 2024, formally concluded that Israel is committing genocide against Palestinians in Gaza. This followed a nine-month investigation involving 212 interviews, forensic analysis of 15 air strikes killing at least 334 civilians including 141 children, and review of 102 statements by Israeli officials. Amnesty identified 22 statements from senior officials appearing to call for or justify genocidal acts. Their conclusion: <em>"Israel has persisted in committing genocidal acts, fully aware of the irreparable harm it was inflicting."</em></p>
+
+    <p><strong>Human Rights Watch</strong> published a report titled "Extermination and Acts of Genocide: Israel Deliberately Depriving Palestinians in Gaza of Water" in December 2024, documenting the deliberate deprivation of water as a genocidal act.</p>
+
+    <p><strong>The UN Special Rapporteur</strong> on the situation of human rights in the Palestinian territories concluded in March 2024 that reasonable grounds exist to believe genocide is being committed. The UN Commission of Inquiry documented in 2025 a consistent pattern of children being deliberately targeted by Israeli forces.</p>
+
+    <p><strong>The ICJ</strong> ruled in January 2024 that the genocide claim is "plausible" and ordered Israel to halt genocidal acts and ensure humanitarian access. Israel continued its operations.</p>
+
+    <hr class="divider" style="margin: 1.2rem 0;">
+
+    <h3>The Intent — In Their Own Words</h3>
+
+    <p>Under the Genocide Convention, intent to destroy a group must be demonstrated. Israeli officials have provided this documentation themselves. Law for Palestine has compiled a database of over 500 documented statements of genocidal incitement from Israeli officials. A selection of the most direct:</p>
+
+    <div class="math-block">
+      <p class="label">Documented statements by Israeli officials — on record</p>
+      <div class="math-row"><span class="desc">Defence Minister Yoav Gallant, Oct 9, 2023</span><span class="val neg">"We are fighting human animals and we are acting accordingly"</span></div>
+      <div class="math-row"><span class="desc">Defence Minister Israel Katz, Oct 9, 2023</span><span class="val neg">"They will not receive a drop of water or a single battery until they leave the world"</span></div>
+      <div class="math-row"><span class="desc">PM Netanyahu, Oct 2023 — invoked Amalek</span><span class="val neg">"Remember what Amalek did to you" — biblical command of total annihilation, applied to Gaza</span></div>
+      <div class="math-row"><span class="desc">Finance Minister Smotrich, ICC complaint</span><span class="val neg">"Rafah, Deir al-Balah, Nuseirat — total extermination, erase the memory of the Amalek"</span></div>
+      <div class="math-row"><span class="desc">Minister May Golan</span><span class="val neg">"I am personally proud of the ruins of Gaza... every baby, even 80 years from now, will tell their grandchildren what the Jews did"</span></div>
+      <div class="math-row"><span class="desc">Knesset member Moshe Feiglin, May 2025</span><span class="val neg">"Every child, every baby in Gaza is an enemy... We need to not leave a single Gazan child there"</span></div>
+      <div class="math-row"><span class="desc">Israeli poll, Hebrew University of Jerusalem, June 2025</span><span class="val gap">64% of Israelis largely agreed "there are no innocent people in Gaza"</span></div>
+    </div>
+
+    <hr class="divider" style="margin: 1.2rem 0;">
+
+    <h3>The Deliberate Targeting of Children</h3>
+
+    <p>The UN Commission of Inquiry documented a consistent pattern of children being deliberately targeted. Seventeen medical practitioners who worked across different hospitals in Gaza described treating large numbers of children with single gunshot wounds to the head and upper body, fired by Israeli snipers or quadcopters. One doctor said the pattern suggested Israeli soldiers were "deliberately shooting teenage boys in a game of target practice."</p>
+
+    <p>Foreign doctors collected testimonies from 15 out of 17 practitioners, finding 114 cases of children under 15 with single bullet wounds to the head or chest. Forensic pathologists confirmed the wounds were consistent with long-range sniper or drone fire. Former Dutch army commander Mart de Kruif said the sheer number made "accidents" implausible: "This is not collateral damage. It is intentional."</p>
+
+    <p>US surgeon Mark Perlmutter, who volunteered in Gaza, stated: "I saw two children that were shot twice. No child gets shot twice by mistake."</p>
+
+    <p>On January 29, 2024, five-year-old Hind Rajab was shot and killed along with six family members. When two Red Crescent paramedics drove to rescue her, Israeli forces shelled their ambulance and killed them too.</p>
+
+    <p>Israeli soldiers themselves documented the killing. A Haaretz investigation in December 2024 included testimonies of soldiers admitting to turning killing into an internal competition, classifying victims including children as "terrorists." A sniper in the Nahal Brigade recounted shooting 50–60 bullets per day, including children, and said he was threatened by his battalion commander to shoot at victims regardless of age.</p>
+
+    <hr class="divider" style="margin: 1.2rem 0;">
+
+    <h3>Booby-Trapped Objects</h3>
+
+    <p>Gaza's Director General of Health, Dr. Munir al-Bursh, reported that Israeli forces left behind booby-trapped toys — dolls, teddy bears, coloured balls — in areas following troop withdrawals. He confirmed that hospitals received children daily with severed limbs and disfigured faces after touching objects they believed were toys. Gaza Civil Defense issued public warnings. Israel has documented history of this tactic — in the 1990s, Israeli forces used bombs disguised as toys in Lebanon, including a case where a child was killed after exclaiming "I found a doll!" before it detonated. The specific Gaza incidents have not been independently verified with photographic evidence as of this writing — but the tactic's historical use and the volume of official Palestinian reporting make dismissal difficult.</p>
+
+    <hr class="divider" style="margin: 1.2rem 0;">
+
+    <h3>The Infrastructure of Survival, Systematically Destroyed</h3>
+
+    <p>Before October 2023, Gaza had 178 incubators across eight neonatal intensive care units. Israeli attacks and the siege reduced that to 54 by November 2024. Medical staff described placing three or four infants in a single incubator. At Al-Nasr Paediatric Hospital, Israeli forces cut electricity and prevented staff from evacuating patients, giving them 30 minutes to leave. When a ceasefire allowed access weeks later, investigators found four babies decomposing in the neonatal unit, still attached to defunct life-support machines. At least 15 newborns died of preventable hypothermia between December 2024 and February 2025 as a direct result of conditions imposed by the Israeli siege.</p>
+
+    <div class="callout warn">
+      <strong>The logical conclusion:</strong> When you have 500+ documented statements of exterminatory intent from officials at the highest levels of government; systematic destruction of water, food, medical, and civilian infrastructure; documented deliberate targeting of children by snipers and drones confirmed by forensic pathologists and military experts; booby-trapped objects placed in civilian areas; and two of the world's most credible human rights organisations formally concluding genocide — the question is not whether the evidence supports the conclusion. The question is what it would take for those who deny it to be convinced, and whether that threshold is being applied consistently with how we evaluate any other historical atrocity.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-back" onclick="go('s5')">Back to Station 5</button>
+      <button class="btn btn-primary" onclick="go('s6')">Continue to Station 6: The Record of Cruelty →</button>
+    </div>
+  </div>
+
+  <!-- ══ STATION 6: THE RECORD ══ -->
+  <div class="passage" id="passage-s6">
+    <p class="eyebrow">Station 6 of 7</p>
+    <h2>The Record of Cruelty</h2>
+
+    <p>What follows is documented, sourced, and confirmed by multiple independent organisations. It is on the main track because it cannot be skipped. Each section is sourced — the UN, Amnesty International, Human Rights Watch, B'Tselem, the Committee to Protect Journalists, CNN, the Washington Post, the New York Times, AP reporters on the ground. This is not allegation. This is record.</p>
+
+    <hr class="divider" style="margin: 1.2rem 0;">
+
+    <h3>The Deliberate Targeting of Children</h3>
+
+    <p>Seventeen medical practitioners who worked across multiple Gaza hospitals described treating large numbers of children with single gunshot wounds to the head and upper body — fired by snipers or quadcopters at close range. One doctor said the pattern suggested Israeli soldiers were "deliberately shooting teenage boys in a game of target practice." The UN Commission of Inquiry forensically analysed 15 of 17 cases brought by doctors. In 12, the wounds were consistent with a single gunshot.</p>
+
+    <p>Forensic pathologists consulted by the Dutch newspaper Volkskrant reviewed X-rays and confirmed the wounds were consistent with long-range sniper or drone fire — not shrapnel or crossfire. Former Dutch army commander Mart de Kruif: "This is not collateral damage. It is intentional." US surgeon Mark Perlmutter: "I saw two children that were shot twice. No child gets shot twice by mistake."</p>
+
+    <p>On January 29, 2024, five-year-old Hind Rajab was shot and killed along with six family members in their car in Gaza City. When two Palestinian Red Crescent paramedics drove to rescue her, Israeli forces shelled their ambulance and killed them too.</p>
+
+    <p>According to Gaza's Ministry of Health, nearly 20,000 children have been killed since October 7, 2023. An average of 28 children were killed every single day during the peak of operations. The BBC World Service uncovered more than 160 cases of children shot by Israeli forces — 95 of them hit in the head or chest. Most victims were under 12.</p>
+
+    <p>A Haaretz investigation in December 2024 documented Israeli soldiers admitting to turning killing into an internal competition — classifying victims including children as "terrorists." A sniper in the Nahal Brigade recounted being ordered by his battalion commander to shoot at victims regardless of age.</p>
+
+    <hr class="divider" style="margin: 1.2rem 0;">
+
+    <h3>The Flour Massacre — Shooting the Starving</h3>
+
+    <p>On February 29, 2024, thousands of Palestinians gathered on al-Rashid Street in Gaza City before dawn. It was one of the first aid convoys to reach northern Gaza in over a month. The World Food Programme had warned the day before that more than 500,000 people — one in four — faced famine. People had been eating grass and animal feed.</p>
+
+    <p>At approximately 4:30 am, as aid trucks arrived through an Israeli checkpoint, Israeli tanks and snipers opened fire on the crowd. The shooting continued for approximately ninety minutes. At least 118 people were killed and 760 injured. Many victims were found soaked in flour and blood. Donkey carts carried the wounded to hospital because no ambulances could reach the scene.</p>
+
+    <p>Israel initially claimed the deaths were caused by a stampede. Then that trucks had run people over. Then that soldiers had fired in self-defence at "suspects." CNN interviewed 22 eyewitnesses, all of whom described Israeli soldiers opening fire. An emergency room doctor said 70% of patients required surgery, and that injuries were "not consistent with pushing or trampling" — they were gunshot wounds and artillery shell fragments. Israel denied CNN's request for the full unedited drone footage.</p>
+
+    <p>Israeli National Security Minister Itamar Ben-Gvir praised the soldiers as "heroic fighters" who "acted excellently against a Gaza mob," and called for Israel to stop transferring humanitarian aid into Gaza entirely. This was not an isolated incident — OCHA documented it as the fifth reported instance of Israeli forces firing on Palestinians waiting for aid. Similar attacks killed dozens more at the same location in the weeks that followed.</p>
+
+    <hr class="divider" style="margin: 1.2rem 0;">
+
+    <h3>The Safe Zone Trap — Concentrate, Then Bomb</h3>
+
+    <p>This is the pattern that most clearly demonstrates deliberate intent rather than incidental civilian harm, because it has a documented structure: <strong>issue evacuation orders directing civilians to a specific area, designate that area a "safe zone," then bomb it.</strong> Repeat. Shrink the zone. Repeat.</p>
+
+    <p>From the opening days of the war, the Israeli military issued evacuation orders instructing northern Gaza's population to move south. By January 2024, an estimated 1.9 million people — 85% of Gaza's population — had been displaced, most into an increasingly narrow strip of southern Gaza. The "humanitarian zone" of al-Mawasi, on the coast near Khan Younis, was the designated sanctuary — a sandy coastal strip with no infrastructure, no hospitals, no running water, and inadequate food. Over a million people were crowded into tents on a beach.</p>
+
+    <p>Then Israel bombed it. Repeatedly.</p>
+
+    <p>A BBC analysis found that between the Israeli invasion of Rafah in May 2024 and the January 2025 ceasefire, the al-Mawasi "safe zone" was attacked at least <strong>97 times</strong>. Forensic Architecture documented that of 1,028 Israeli airstrikes in the first three weeks of the war alone, 426 struck the southern areas the military had simultaneously designated as safe for civilians.</p>
+
+    <p><strong>The Tent Massacre — May 26, 2024.</strong> One week before the attack, Israel dropped leaflets designating Tel al-Sultan in Rafah as a safe zone and instructing Palestinians to move there. Two days before the attack, the International Court of Justice ordered Israel to halt its Rafah offensive. Israel continued. On the night of May 26, Israeli jets struck the displacement camp with US-made bombs, setting tents on fire. Between 45 and 50 Palestinians were killed and more than 200 injured. Witnesses described people burned alive. Videos verified by NBC News showed tents engulfed in flames, people screaming. A decapitated child's body was recovered from the rubble. The camp was 200 metres from the largest UNRWA humanitarian aid warehouse in Gaza.</p>
+
+    <p>Some Israeli journalists and social media users celebrated the attack, comparing the burning tents to Lag BaOmer bonfires — a Jewish holiday on which fires are lit. Channel 14 senior journalist Yinon Magal posted photos captioned: "The main lighting of the year in Rafah." Netanyahu told the US Congress that the attack killed "two dozen people" due to a single incident of shrapnel hitting a Hamas weapons depot.</p>
+
+    <p><strong>Al-Mawasi, July 13, 2024.</strong> Israel had declared al-Mawasi a humanitarian safe zone in December 2023. By July, over a million displaced people were sheltering there. Israeli warplanes dropped eight 2,000-pound bombs — at least one US-manufactured — on the zone, killing at least 90 Palestinians and injuring over 300. Survivors reported no warning. "We went to the location and saw children, women and men torn to pieces," Gaza Civil Defense stated. The EU called for an independent investigation, describing the attack as a possible war crime.</p>
+
+    <p><strong>Evacuation orders issued, then the route bombed.</strong> Forensic Architecture documented a case on the same day that Israel issued an evacuation order instructing northern civilians to use Salah al-Din Street as the designated safe route south — Israeli forces bombed a civilian convoy on that same road, killing approximately 70 people.</p>
+
+    <p><strong>Orders directing people to areas already under orders.</strong> Forensic Architecture documented multiple instances of Israel directing civilians to evacuate to areas that had themselves received evacuation orders less than 24 hours earlier — meaning people were being ordered to flee to places they had just been ordered to leave. OCHA's head of operations described the civilian population being moved "like pawns in a board game." By July 2024, the UN estimated nine out of ten people in Gaza had been displaced at least once. Some families had fled up to ten times.</p>
+
+    <div class="callout warn">
+      <strong>What this constitutes in law:</strong> HRW formally concluded that Israel's forced displacement of the civilian population in Gaza is a <strong>crime against humanity</strong>. The pattern of designating areas safe, concentrating displaced civilians there, then bombing them — documented across dozens of incidents by Forensic Architecture, B'Tselem, HRW, and the UN — goes beyond military error. It is a documented, repeated, structural pattern. Under the Genocide Convention, deliberately inflicting conditions calculated to bring about the physical destruction of a group in whole or in part constitutes genocide. The ICJ ordered Israel three times to provide humanitarian assistance. Israel continued restricting it. The safe zones continued to be bombed.
+    <hr class="divider" style="margin: 1.2rem 0;">
+
+    <h3>Systematic Sexual Violence and Torture in Detention</h3>
+
+    <p>This section contains descriptions of sexual violence. It is included because the evidence is extensive, confirmed by the UN, and because its suppression is itself part of the problem.</p>
+
+    <p>In August 2024, Israeli human rights organisation B'Tselem published a report calling the Israeli prison system a "network of torture camps." In March 2025, the UN Human Rights Commission concluded: sexual abuse of Palestinians is "committed either under explicit orders or with implicit encouragement by Israel's top civilian and military leadership" and "comprises part of the Israeli Security Forces' standard operating procedures."</p>
+
+    <p>Palestinian paramedic Walid Khalili, held 20 days without charge at Sde Teiman, described being chained to the ceiling, electrocuted through wires, beaten with batons — told "confess and we will stop." He had broken ribs, received no medical care, witnessed a detainee's leg amputated from shackling, and another die of apparent cardiac arrest. His interrogator recited his children's names and home address as a threat.</p>
+
+    <p>Al Jazeera's investigative documentary gathered multiple survivor accounts of rape using military dogs. In May 2026, New York Times columnist Nicholas Kristof published the testimony of a journalist detained in Gaza who described being raped by a dog while handcuffed and blindfolded, "with encouragement from a handler in Hebrew." The Israeli Ministry of Foreign Affairs called the article "Hamas propaganda." Israel's Channel 14 invited a masked soldier accused of assault onto live television, where he called the IDF "the healthiest army" and removed his mask. When asked in the Knesset whether it was ever legitimate to rape a prisoner, Likud member Hanoch Milwidsky shouted: "Yes."</p>
+
+    <p>When video leaked of a gang sexual assault at Sde Teiman, two sitting Knesset coalition members led a mob to storm the military base to free the detained soldiers. In March 2026, all charges were dropped. Netanyahu called it a "vindication." An Israeli journalist on a panel broadcast: "The only thing that is a problem for me here is that there is no regulated policy by the state for abusing the detainees, because, first of all, they deserve it, and it's great revenge."</p>
+
+    <p>At least 75 Palestinian detainees have died in Israeli custody since October 7, according to the UN. A 17-year-old boy, Walid Ahmad, held six months without charge, died in March 2025 — an Israeli doctor confirmed starvation was the likely primary cause.</p>
+
+    <hr class="divider" style="margin: 1.2rem 0;">
+
+    <h3>Desecration of the Dead</h3>
+
+    <p>On September 19, 2024, video footage verified by CNN, NBC News, AP — with an AP reporter present — and Al Jazeera shows Israeli soldiers in Qabatiya, West Bank, throwing apparently lifeless Palestinian bodies off a rooftop. One soldier is clearly seen kicking a body repeatedly until it falls over the edge. A military bulldozer then transported another body through the town in its bucket, on public display.</p>
+
+    <p>When the IDF investigated itself, it found the commanders had <em>cleared</em> the soldiers' actions — that they complied with a Shin Bet directive. B'Tselem noted the investigation revealed Israel "has no legal or moral reservations about abducting bodies or using a bulldozer bucket to move them in a degrading manner."</p>
+
+    <p>As of July 2025, Israel retained the bodies of 460 Palestinians — including those of 46 children — as negotiating leverage. In August 2024, Israel returned the remains of over 80 unidentified Palestinians to a Gaza crossing. They were sent back numbered, not named. Families identified their relatives from photographs of the dead.</p>
+
+    <hr class="divider" style="margin: 1.2rem 0;">
+
+    <h3>Scholasticide — Every School, Every University</h3>
+
+    <p>By May 2025, 95% of school buildings in Gaza had been damaged or destroyed. Every single university had been severely damaged or demolished. Over 10,490 students and 500 teachers killed. More than 625,000 children have missed at least a full academic year with no prospect of return.</p>
+
+    <p>Israa University was occupied by Israeli forces as a military base and detention facility for months, then demolished. Its vice president told NPR he lost 102 family members: "Gaza is not livable anymore. The streets are rubble. There were decomposed bodies on the street when I walked from north to south."</p>
+
+    <p>HRW documented that Israel set up a "special strike cell" to systematically identify schools as targets — using "double-tap" strikes designed to kill survivors and first responders after the initial blast. In a ten-day period in August 2024, Israeli forces struck five schools in Gaza City, killing more than 179 people. UN experts named this "scholasticide" in April 2024: the systematic destruction of a people's entire educational future.</p>
+
+    <hr class="divider" style="margin: 1.2rem 0;">
+
+    <h3>White Phosphorus — Burns to the Bone</h3>
+
+    <p>White phosphorus ignites on contact with oxygen and burns at up to 815°C — hot enough to melt metal. When it touches human skin it burns through to the bone and reignites if the wound is exposed to air. It cannot be extinguished with water. Survivors face lifelong disfigurement and respiratory damage.</p>
+
+    <p>Human Rights Watch verified on video that Israeli forces used airburst white phosphorus artillery over Gaza City's port on October 11, 2023 — four days into the war. Amnesty International confirmed use in northern Gaza on October 9. Both organisations confirmed use in southern Lebanon on October 10. HRW verified use in at least 17 Lebanese municipalities, landing on residential rooftops in five. Lebanon's Ministry of Public Health confirmed at least 173 injuries. Israel initially denied it — then, as in 2009, acknowledged it once the evidence was undeniable. Israel is not a signatory to the Convention on Certain Conventional Weapons, which prohibits its use in populated areas.</p>
+
+    <hr class="divider" style="margin: 1.2rem 0;">
+
+    <h3>Self-Documented — Soldiers Filming Their Own War Crimes</h3>
+
+    <p>Al Jazeera compiled a database of over 2,500 social media accounts of Israeli soldiers posting videos under their real names. The Washington Post independently verified more than 120 videos. International law expert Rodney Dixon called the material "a treasure trove prosecutors will be licking their lips at."</p>
+
+    <p>What the videos show: soldiers blowing up residential buildings and celebrating; one soldier narrating the demolition of a village — "We went joyously to annihilate the village of the Nazis. We worked hard for two weeks. We blew up the entire village." Soldiers filming snipers killing unarmed men. Women's lingerie from Palestinian homes tried on and mocked. A "farewell barrage" — soldiers' own term — firing tank shells for four minutes into a residential area as they withdrew, posted with fire emojis. The IDF chief of staff eventually ordered soldiers to stop filming — specifically because the footage was being used as ICJ genocide evidence.</p>
+
+    <hr class="divider" style="margin: 1.2rem 0;">
+
+    <h3>Journalists and Aid Workers — Targeted, Not Caught in Crossfire</h3>
+
+    <p>As of June 2026, at least 263 journalists and media workers have been killed — more than any government has killed since CPJ began tracking in 1992. More than the combined journalist deaths of WWI, WWII, Korea, Vietnam, the Balkans, and Afghanistan. CPJ characterises many as murders — deliberate killings for their work. Israel set up a "Legitimization Cell" specifically to link Palestinian journalists to Hamas to justify targeting them.</p>
+
+    <p>On April 1, 2024, Israeli drones struck a World Central Kitchen convoy in three separate strikes over five minutes. Seven aid workers killed — from Australia, Canada/US, Gaza, Poland, and the UK. Their vehicles were clearly marked. Their route was pre-approved by the IDF. WCK founder José Andrés: "This was not a 'bad luck situation where oops we dropped the bomb in the wrong place.'" Over 280 UNRWA staff have been killed by Israeli forces during the war.</p>
+
+    <hr class="divider" style="margin: 1.2rem 0;">
+
+    <h3>Systematic Looting — On Film, By Name</h3>
+
+    <p>Palestinian musician Hamada Nasrallah discovered a TikTok of an Israeli soldier playing the guitar his father had bought him 15 years earlier — his father had died in Israel's 2014 war on Gaza. "Isn't it enough," he wrote, "that they take away our loved ones, our homes, our families, and even our music and memories?"</p>
+
+    <p>Euro-Med Human Rights Monitor estimated documented looting at tens of millions of dollars. Soldiers showed off stolen watches, jewellery, soccer shirt collections. An Israeli veterans' organisation noted "looting has never been normalised in the way it has." Soldiers confirmed to +972 Magazine that commanders permitted it. One soldier described being ordered to burn houses on the way out: "A bit of gasoline on those mattresses, and they will burn out." Rabbis from the Religious Zionist movement fielded questions about what Jewish law permitted soldiers to take.</p>
+
+    <hr class="divider" style="margin: 1.2rem 0;">
+
+    <h3>Glyphosate Sprayed on Lebanese and Syrian Farmland</h3>
+
+    <p>In February 2026, Israeli military aircraft sprayed herbicide over southern Lebanese villages — laboratory testing confirmed glyphosate at concentrations up to 50 times higher than agricultural use, covering 8.5 square kilometres of olive groves, tobacco fields, and ancient oak forests. Glyphosate prevents regrowth for two to three years and contaminates groundwater. Lebanon's Agriculture Minister: "The goal is to eliminate all vegetation cover and turn the area into a completely exposed zone." UNIFIL confirmed advance notice from Israel — Israel described the substance as "non-toxic." Lab results contradicted this. The Euro-Mediterranean Human Rights Monitor characterised the operation as a potential war crime.</p>
+
+    <hr class="divider" style="margin: 1.2rem 0;">
+
+    <h3>The Accountability Record — 88% Impunity</h3>
+
+    <p>Of 52 IDF cases opened between October 2023 and June 2025 — linked to the deaths of over 1,300 Palestinians — 88% were closed without any finding of fault or left unresolved. One indictment was issued. The IDF investigated the Golani Brigade's killing of 15 civilian first responders in March 2025 and called it an "operational misunderstanding." NYT video evidence proved the account misrepresented the facts — and showed the brigade commander telling troops: "Everyone encountered is an enemy."</p>
+
+    <p>Some Israeli lawmakers have moved to legalise torture. A senior military leader described the investigation process as "an effort to shield them from international tribunals." The UN Commission of Inquiry concluded the systematic abuse was "directly and causally linked to statements by Israeli officials" who legitimised revenge and violence. This is not individual soldiers acting badly. It is a system that enables, encourages, and protects it.</p>
+
+    <div class="callout warn">
+      <strong>The full picture:</strong> 20,000 children killed — 28 per day at peak. 118 people shot reaching for flour, their killer praised as a hero. Systematic rape and torture in detention with zero convictions and charges dropped as a "vindication." Bodies thrown from rooftops, transported in bulldozer buckets, returned numbered not named. Every university demolished, 95% of schools damaged. White phosphorus burning to the bone. More journalists killed than in any conflict in recorded history. Aid workers killed on pre-approved routes. All of it filmed by the perpetrators under their real names. 88% of investigations closed with no finding of fault. In each case, the United States continued supplying the weapons and vetoing the resolutions.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-dive" onclick="go('dive_genocide')">◆ Deep Dive: The full genocide evidence</button>
+      <button class="btn btn-dive" onclick="go('dive_watchlist')">◆ Watch: Verified documentaries — in their own words and on film</button>
+      <button class="btn btn-primary" onclick="go('s7')">Continue to Station 7: The Question →</button>
+    </div>
+  </div>
+
+  <!-- ══ DEEP DIVE: WATCHLIST ══ -->
+  <div class="passage" id="passage-dive_watchlist">
+    <div class="dive-banner">Deep Dive — Watch: Verified Documentaries</div>
+    <h2>In Their Own Words — On Film</h2>
+
+    <p>These are not social media clips or unverified footage. They are full investigative documentaries from Al Jazeera's Investigative Unit and Democracy Now — professionally produced, legally reviewed, and built from verified primary sources including the soldiers' own social media posts, survivor testimony, leaked footage, and forensic analysis. All are freely available on YouTube.</p>
+
+    <p>A warning: the content in these films is graphic. The first uses footage soldiers posted themselves. The second contains survivor testimony of sexual violence and torture.</p>
+
+    <hr class="divider" style="margin: 1.2rem 0;">
+
+    <h3>Investigating War Crimes in Gaza</h3>
+    <p style="font-size:.88rem; color: var(--muted); margin-bottom: 1rem;">Al Jazeera Investigative Unit · Feature length</p>
+
+    <p>Built from a database of over 2,500 social media accounts maintained by Israeli soldiers under their real names. The film shows the demolition of entire neighbourhoods set to music, soldiers celebrating the destruction of villages as "revenge," snipers filming their kills, and Palestinian detainees stripped and mocked. International law expert Rodney Dixon called the material "a treasure trove prosecutors will be licking their lips at."</p>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/kPE6vbKix6A" title="Investigating War Crimes in Gaza — Al Jazeera" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <p style="font-size:.85rem; margin-top:.5rem;"><a href="https://www.youtube.com/watch?v=kPE6vbKix6A" target="_blank" rel="noopener" style="color: var(--accent);">▶ Watch on YouTube if the embed doesn't load →</a></p>
+
+    <hr class="divider" style="margin: 2rem 0;">
+
+    <h3>Bodies of Evidence: Israel's Darkest Weapon</h3>
+    <p style="font-size:.88rem; color: var(--muted); margin-bottom: 1rem;">Al Jazeera Originals · Content warning: sexual violence</p>
+
+    <p>An investigation into the systematic use of sexual violence, torture, and degradation against Palestinian detainees in Israeli military prisons. The film includes survivor testimony, leaked footage from Sde Teiman, and analysis by UN Special Rapporteur Francesca Albanese. An expert who has documented these violations since 1983 states that what the world knows today is "less than 5% of what has actually occurred."</p>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/e3pApprHfrY" title="Bodies of Evidence — Al Jazeera Originals" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <p style="font-size:.85rem; margin-top:.5rem;"><a href="https://www.youtube.com/watch?v=e3pApprHfrY" target="_blank" rel="noopener" style="color: var(--accent);">▶ Watch on YouTube if the embed doesn't load →</a></p>
+
+    <hr class="divider" style="margin: 2rem 0;">
+
+    <h3>Democracy Now: The First Livestreamed Genocide</h3>
+    <p style="font-size:.88rem; color: var(--muted); margin-bottom: 1rem;">Democracy Now · ~20 minutes</p>
+
+    <p>Director Richard Sanders and Gaza correspondent Youmna ElSayed discuss the Al Jazeera documentary and what the footage reveals about the culture within the IDF. Sanders: "Israelis themselves were telling us precisely what they were doing and why. They don't think it's nuanced. Their rhetoric is often overtly genocidal."</p>
+
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/ucfxj-faTWI" title="Democracy Now: The First Livestreamed Genocide" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <p style="font-size:.85rem; margin-top:.5rem;"><a href="https://www.youtube.com/watch?v=ucfxj-faTWI" target="_blank" rel="noopener" style="color: var(--accent);">▶ Watch on YouTube if the embed doesn't load →</a></p>
+
+    <div class="callout" style="margin-top: 2rem;">
+      <strong>Note on sourcing:</strong> All three videos are from established news organisations. The Al Jazeera films have been reviewed by international law experts and are part of the ICC evidence record. They are not curated from anonymous social media — they are professional investigations that happen to use soldiers' own footage as primary source material. If a video shows as unavailable, it may have been region-restricted or removed by YouTube; the "Watch on YouTube" link will still find any reuploads.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-back" onclick="go('s6')">Back to The Record</button>
+      <button class="btn btn-primary" onclick="go('s7')">Continue to Station 7: The Question →</button>
+    </div>
+  </div>
+
+  <!-- ══ STATION 7: THE QUESTION ══ -->
+  <div class="passage" id="passage-s7">
+    <p class="eyebrow">Station 7 of 7</p>
+    <h2>The Question — Where Does This Go?</h2>
+
+    <p>After 75 years of dispossession, 57 years of occupation, and a military campaign that has killed tens of thousands of people in eight months, the question of where this goes is not abstract. It is urgent.</p>
+
+    <p><strong>The two-state solution</strong> remains the official position of most governments and international institutions. It is also, as noted, increasingly difficult to implement physically because of settlements, and there is no Israeli political movement with parliamentary support that would dismantle the settlement project. The Palestinian Authority has been so thoroughly discredited — both by its corruption and by its role as a security subcontractor for the Israeli occupation — that it lacks the legitimacy to be a partner in any credible process. The two-state framework persists as a diplomatic language because abandoning it requires answering harder questions.</p>
+
+    <p><strong>The one-state question</strong> has become increasingly prominent — not as an ideological position but as a demographic and geographic observation. Given the settlement map, many analysts argue there is already effectively one state between the river and the sea, governed by one authority (Israel) that applies different laws to different populations based on ethnicity. The question is whether that state becomes one with equal rights for all, or remains what it currently is. A state with equal rights for all would mean Jewish people are no longer a demographic majority — which is why Israeli governments have resisted it. A state that maintains its current structure has been described by multiple human rights organisations as apartheid.</p>
+
+    <p><strong>Palestinian rights and international law</strong> provide a clearer framework than political negotiation. The right of return (UN Resolution 194), the illegality of the occupation (UN Resolution 242), the illegality of settlements (Fourth Geneva Convention), the right to self-determination — these exist as established legal positions. They have been ignored by Israel and protected from enforcement by US vetoes for 75 years. The question of whether international law can be made to function — whether the ICJ ruling, the ICC investigation, and the growing global movement of solidarity can create real consequences — is unresolved.</p>
+
+    <div class="callout">
+      <strong>The global South position:</strong> It is worth noting that the framing of this as a "complex conflict with two sides" is primarily a Western framing. The Global South — most of Africa, Latin America, and Asia — has been substantially clearer. South Africa brought the genocide case. Malaysia, Turkey, and dozens of other countries have recalled ambassadors or restricted trade. The countries that were themselves colonised, that experienced dispossession, that know what occupation looks like from the inside, have been less ambivalent than the countries that did the colonising.
+    </div>
+
+    <div class="final-quote">
+      <blockquote>"To be Palestinian is to be human. To deny Palestinian humanity is to participate in the logic that makes all atrocities possible."</blockquote>
+      <cite>— Edward Said, Palestinian-American literary theorist</cite>
+    </div>
+
+    <p>This guide has presented the history, the power structure, the legal framework, and the present moment. What it cannot do is resolve the question. What it can do is ensure that when you engage with it — in conversation, in politics, in conscience — you're engaging with the actual situation rather than with a version of it that has had its most important features removed.</p>
+
+    <hr class="divider">
+
+    <p style="font-size:.88rem; color: var(--muted);">This guide is part of a series. The companion guides cover the mechanics of capitalism and the global history of imperial extraction.</p>
+
+    <div class="btn-group">
+      <button class="btn btn-ext" onclick="window.open('imperialism-guide.html','_blank')">Part 2: The Global Picture — Where Did the Wealth Go? ↗</button>
+      <button class="btn btn-ext" onclick="window.open('communist-theory-interactive.html','_blank')">Part 1: How Capitalism Actually Works ↗</button>
+      <button class="btn btn-back" onclick="go('start')" style="justify-content:center;">↩ Start this guide over</button>
+    </div>
+
+    <div class="spacer"></div>
+  </div>
+
+</div><!-- /app -->
+
+<script>
+  const progressMap = {
+    start:0, s1:14, s2:29, s3:43, s4:57, s5:71, s6:86, s7:100,
+    dive_nakba:29, dive_settlements:43, dive_apartheid:43,
+    dive_lobby:57, dive_genocide:71, dive_watchlist:86
+  };
+  const diveParent = {
+    dive_nakba:'s2',
+    dive_settlements:'s3', dive_apartheid:'s3',
+    dive_lobby:'s4',
+    dive_genocide:'s5',
+    dive_watchlist:'s6'
+  };
+  const visited = new Set(['start']);
+  let current = 'start';
+
+  function go(id) {
+    document.querySelectorAll('.passage').forEach(p => p.classList.remove('active'));
+    const el = document.getElementById('passage-' + id);
+    if (!el) return;
+    el.classList.add('active');
+    current = id;
+    visited.add(id);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    updateNav();
+  }
+
+  function updateNav() {
+    document.getElementById('progress-fill').style.width = (progressMap[current] ?? 0) + '%';
+    document.querySelectorAll('.nav-stop[data-passage]').forEach(btn => {
+      const p = btn.dataset.passage;
+      btn.classList.remove('current', 'visited');
+      if (p === current) btn.classList.add('current');
+      else if (visited.has(p)) btn.classList.add('visited');
+    });
+    if (diveParent[current]) {
+      document.querySelectorAll('.nav-stop').forEach(b => b.classList.remove('current'));
+      const pb = document.querySelector(`.nav-stop[data-passage="${diveParent[current]}"]`);
+      if (pb) pb.classList.add('current');
+    }
+  }
+
+  updateNav();
+</script>
+</body>
+</html>
