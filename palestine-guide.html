@@ -131,6 +131,16 @@
   .track-stop.main { color: var(--text); border-color: #353820; }
   .track-conn { color: var(--border); font-size: .8rem; }
 
+  details.deep-expand { background: var(--track); border: 1px solid var(--border); border-left: 3px solid var(--olive-dim); border-radius: 6px; margin: 1.2rem 0 1.8rem; }
+  details.deep-expand summary { cursor: pointer; padding: .85rem 1.2rem; color: var(--olive); font-weight: 600; font-size: .88rem; letter-spacing: .04em; list-style: none; display: flex; align-items: center; gap: .5rem; transition: color .2s; }
+  details.deep-expand summary::-webkit-details-marker { display: none; }
+  details.deep-expand summary::before { content: '▸'; font-size: .9rem; transition: transform .2s; flex-shrink: 0; }
+  details.deep-expand[open] summary::before { transform: rotate(90deg); }
+  details.deep-expand summary:hover { color: var(--sand); }
+  details.deep-expand .expand-content { padding: 0 1.2rem 1.2rem; font-size: .93rem; color: #BCB8A8; }
+  details.deep-expand .expand-content p { margin-bottom: .9rem; }
+  details.deep-expand .expand-content p:last-child { margin-bottom: 0; }
+
   .divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
   .spacer { height: 4rem; }
 
@@ -273,36 +283,51 @@
       <div class="t-item">
         <p class="t-year">1897–1917</p>
         <p class="t-title">Zionist Settlement Begins</p>
-        <p class="t-desc">The First Zionist Congress, Basle, 1897. Herzl founds the movement with the explicit goal of a Jewish state. Early settlers purchase land from absentee Ottoman landlords, often displacing Palestinian tenant farmers who had worked the land for generations. By 1914, Jewish settlers constitute about 12% of the population. Tensions with Palestinian Arab residents begin immediately over land, labour exclusion policies, and political organisation.</p>
+        <p class="t-desc">The Zionist movement is founded with the goal of a Jewish state. Settlers begin purchasing land in Palestine, displacing Palestinian tenant farmers. By 1914, the Jewish population grows from around 5% to 12%.</p>
       </div>
 
       <div class="t-item">
         <p class="t-year">1917</p>
         <p class="t-title">The Balfour Declaration</p>
-        <p class="t-desc">British Foreign Secretary Arthur Balfour writes a letter to Lord Rothschild, a leader of the British Jewish community, declaring British support for "the establishment in Palestine of a national home for the Jewish people." The letter also states this should not prejudice "the civil and religious rights of existing non-Jewish communities in Palestine." <strong>The 500,000 Arab Palestinians are described as "existing non-Jewish communities."</strong> They are never consulted. Britain has no legal authority over Palestine at this point — it is still Ottoman territory. The promise is made by one colonial power about land it doesn't own, to a third party, about a population that is not asked.</p>
+        <p class="t-desc">Britain promises support for a "Jewish national home" in Palestine — land it doesn't control, about a population it doesn't consult. The 500,000 Arab Palestinians are described as "existing non-Jewish communities."</p>
       </div>
 
       <div class="t-item">
         <p class="t-year">1920–1947</p>
         <p class="t-title">The British Mandate</p>
-        <p class="t-desc">After WWI, Britain receives a League of Nations mandate over Palestine. Jewish immigration accelerates — from 60,000 in 1920 to 630,000 by 1947, partly driven by the Holocaust and European antisemitism. Palestinian Arab resistance grows: the 1936–39 Arab Revolt is a general strike and armed uprising against British rule and Zionist immigration, brutally suppressed by British forces with the assistance of Zionist paramilitary organisations. By 1947, Jewish settlers constitute 33% of the population but own about 7% of the land.</p>
+        <p class="t-desc">Jewish immigration rises from 60,000 to 630,000, partly driven by the Holocaust. Palestinian revolt is crushed. By 1947, settlers are 33% of the population but own about 7% of the land.</p>
       </div>
+
+      <details class="deep-expand">
+        <summary>Deep Dive: The Mandate Era &amp; Early Migration — how settlement worked before 1948</summary>
+        <div class="expand-content">
+          <p>The First Zionist Congress met in Basle in 1897. Herzl founded the movement with the explicit goal of a Jewish state. Early settlers purchased land from absentee Ottoman landlords, often displacing Palestinian tenant farmers who had worked the land for generations. Tensions with Palestinian Arab residents began immediately over land, labour exclusion policies, and political organisation.</p>
+          <p>British Foreign Secretary Arthur Balfour wrote to Lord Rothschild declaring British support for "the establishment in Palestine of a national home for the Jewish people." The letter also stated this should not prejudice "the civil and religious rights of existing non-Jewish communities in Palestine." Britain had no legal authority over Palestine at this point — it was still Ottoman territory. The promise was made by one colonial power about land it didn't own, to a third party, about a population that was not asked.</p>
+          <p>After WWI, Britain received a League of Nations mandate over Palestine. Jewish immigration accelerated — partly driven by the Holocaust and European antisemitism. The 1936–39 Arab Revolt was a general strike and armed uprising against British rule and Zionist immigration, brutally suppressed by British forces with the assistance of Zionist paramilitary organisations.</p>
+        </div>
+      </details>
 
       <div class="t-item">
         <p class="t-year">1947</p>
         <p class="t-title">The UN Partition Plan</p>
-        <p class="t-desc">Britain, unable to manage the situation, hands the problem to the newly formed United Nations. The UN proposes partitioning Palestine into a Jewish state (56% of the land) and an Arab state (44%), with Jerusalem under international control. The Jewish Agency accepts. Palestinian Arabs and neighbouring Arab states reject it — noting that the 33% of the population that is Jewish is being allocated 56% of the territory, including the most agriculturally productive land, without the consent of the Arab majority who own most of it.</p>
+        <p class="t-desc">The UN proposes splitting Palestine: 56% of the land to the Jewish minority (33% of the population), 44% to the Arab majority. The Jewish Agency accepts. Palestinians reject it — 33% of the population getting 56% of the territory, including the most productive land, without the consent of those who own most of it.</p>
       </div>
 
       <div class="t-item red">
         <p class="t-year">1947–1949</p>
         <p class="t-title">The Nakba — "The Catastrophe"</p>
-        <p class="t-desc">Before Israel's declaration of independence, Zionist military forces — primarily the Haganah and its elite unit the Palmach — begin military operations in areas allocated to the Jewish state and beyond. What follows is now documented by Israeli historians (Benny Morris, Ilan Pappé) using Israeli military archives: <strong>over 750,000 Palestinian Arabs — more than half the Arab population of Palestine — are expelled or flee their homes.</strong> Over 500 Palestinian villages are depopulated and destroyed. Massacres occur, the most documented being Deir Yassin (April 1948), where 107 villagers are killed by Irgun and Lehi forces. Israel declares independence in May 1948. Arab states invade. Israel wins the war and expands beyond the UN partition lines. The Palestinian refugees are never permitted to return. Their homes and villages are resettled by Jewish immigrants. This is the Nakba.</p>
+        <p class="t-desc"><strong>Over 750,000 Palestinians — more than half the Arab population — are expelled or flee.</strong> Over 500 villages are destroyed. Massacres are documented, most notably Deir Yassin (107 killed). Israel declares independence in May 1948, wins the war, expands beyond partition lines. The refugees are never permitted to return.</p>
       </div>
-    </div>
 
-    <div class="callout warn">
-      <strong>On the Nakba's documentation:</strong> For decades, Israel's official position characterised Palestinian displacement as voluntary — Palestinians left because Arab leaders told them to. The opening of Israeli military archives in the 1980s produced a generation of "New Historians" — Israeli scholars including Benny Morris — who documented from internal records that the displacement was organised and in many areas explicitly ordered. Morris, notably, accepts the documentation while defending the expulsions as militarily necessary. The historical facts of what happened are not seriously contested among scholars.
+      <details class="deep-expand">
+        <summary>Deep Dive: 1948 — the Nakba in documented detail</summary>
+        <div class="expand-content">
+          <p>Before Israel's declaration of independence, Zionist military forces — primarily the Haganah and its elite unit the Palmach — began military operations in areas allocated to the Jewish state and beyond. What followed is documented by Israeli historians (Benny Morris, Ilan Pappé) using Israeli military archives.</p>
+          <p>On April 9, 1948, forces from the Irgun and Lehi attacked the village of Deir Yassin near Jerusalem. Between 107 and 120 villagers were killed, including women and children. The attack was documented by the International Red Cross. The news spread across Palestine, contributing to the mass flight of Palestinians from surrounding areas.</p>
+          <p><strong>Plan Dalet.</strong> Declassified in the 1980s, this Haganah military plan specified operations to "cleanse" areas of Arab villages, with explicit provision for destroying villages and expelling populations. Historian Ilan Pappé uses it as evidence of planned ethnic cleansing. Benny Morris disputes the characterisation while acknowledging expulsion was the result.</p>
+          <p>For decades, Israel's official position characterised Palestinian displacement as voluntary — Palestinians left because Arab leaders told them to. The opening of Israeli military archives in the 1980s produced "New Historians" — Israeli scholars who documented from internal records that the displacement was organised and in many areas explicitly ordered. The historical facts are not seriously contested among scholars.</p>
+        </div>
+      </details>
     </div>
 
     <div class="btn-group">
@@ -353,45 +378,61 @@
     <p class="eyebrow">Station 3 of 7</p>
     <h2>The Occupation — 1967 to the Present</h2>
 
-    <p>In June 1967, Israel fought and won a six-day war against Egypt, Jordan, and Syria. In those six days it captured the West Bank (including East Jerusalem) from Jordan, the Gaza Strip and Sinai Peninsula from Egypt, and the Golan Heights from Syria. The Sinai was later returned to Egypt in a peace deal. Everything else remains under Israeli control.</p>
-
-    <p>The West Bank and Gaza have been under Israeli military occupation for over 57 years — the longest military occupation in the modern world. Everything that follows flows from that fact.</p>
+    <p>In June 1967, Israel fought and won a six-day war against Egypt, Jordan, and Syria. It captured the West Bank, Gaza, the Sinai, and the Golan Heights. The Sinai was later returned. Everything else remains under Israeli control — for over 57 years, the longest military occupation in the modern world.</p>
 
     <div class="timeline">
       <div class="t-item">
-        <p class="t-year">1967–1977</p>
+        <p class="t-year">1967</p>
         <p class="t-title">The Occupation Begins</p>
-        <p class="t-desc">Israel establishes military administration over the West Bank and Gaza. The first Israeli settlements — civilian communities built on occupied Palestinian land — begin in 1967, immediately after the war. International law, specifically the Fourth Geneva Convention, prohibits an occupying power from transferring its civilian population into occupied territory. Israel has consistently rejected the applicability of this provision.</p>
+        <p class="t-desc">Israel captures the West Bank and Gaza. First settlements — civilian communities on occupied land — are built immediately. International law prohibits this. Israel rejects that position.</p>
       </div>
 
+      <details class="deep-expand">
+        <summary>Deep Dive: 1967 — the Six-Day War &amp; the beginning of occupation</summary>
+        <div class="expand-content">
+          <p>In six days, Israel captured the West Bank (including East Jerusalem) from Jordan, the Gaza Strip and Sinai Peninsula from Egypt, and the Golan Heights from Syria. Israel established military administration over the West Bank and Gaza immediately.</p>
+          <p>The first Israeli settlements — civilian communities built on occupied Palestinian land — began in 1967, immediately after the war. The Fourth Geneva Convention prohibits an occupying power from transferring its civilian population into occupied territory. Israel has consistently rejected the applicability of this provision. The international legal consensus, including advisory opinions from the International Court of Justice, holds that the settlements are illegal.</p>
+          <p>Settlement construction accelerated under Likud governments. By 1993, over 100,000 Israeli settlers lived in the West Bank.</p>
+        </div>
+      </details>
+
       <div class="t-item">
-        <p class="t-year">1978–1993</p>
-        <p class="t-title">Settlement Expansion &amp; First Intifada</p>
-        <p class="t-desc">Settlement construction accelerates under Likud governments. By 1993, over 100,000 Israeli settlers live in the West Bank. In 1987, the First Intifada — a Palestinian uprising characterised by stone-throwing, strikes, and civil disobedience — begins in Gaza and spreads to the West Bank. Israel responds with military force. Defence Minister Yitzhak Rabin orders soldiers to "break the bones" of protesters. Over 1,000 Palestinians are killed; 160 Israelis are killed over the uprising's duration.</p>
+        <p class="t-year">1987–1993</p>
+        <p class="t-title">First Intifada</p>
+        <p class="t-desc">A Palestinian uprising — stone-throwing, strikes, civil disobedience — erupts in Gaza and spreads. Israel responds with military force. Over 1,000 Palestinians killed; 160 Israelis killed.</p>
       </div>
 
       <div class="t-item">
         <p class="t-year">1993</p>
         <p class="t-title">The Oslo Accords</p>
-        <p class="t-desc">Signed on the White House lawn, the Oslo Accords create the Palestinian Authority, establish the framework of a "two-state solution," and divide the West Bank into Areas A (Palestinian civil and security control), B (Palestinian civil, Israeli security), and C (full Israeli control — covering 60% of the West Bank). Oslo was supposed to be a five-year transition to a Palestinian state. Thirty years later, no Palestinian state exists. Settlement construction accelerated during and after Oslo. Critics argue Oslo functioned as Palestinian management, not liberation — requiring Palestinian leaders to police their own population on Israel's behalf while Israel continued colonising the land.</p>
+        <p class="t-desc">Oslo promises a Palestinian state within five years. Thirty years later, no state exists. Settlements more than doubled during and after the "peace process."</p>
       </div>
+
+      <details class="deep-expand">
+        <summary>Deep Dive: The Oslo Accords — the gridlocked peace process</summary>
+        <div class="expand-content">
+          <p>Signed on the White House lawn, the Oslo Accords created the Palestinian Authority, established the framework of a "two-state solution," and divided the West Bank into Areas A (Palestinian civil and security control), B (Palestinian civil, Israeli security), and C (full Israeli control — covering 60% of the West Bank).</p>
+          <p>Oslo was designed as a five-year transition to a Palestinian state. Settlement construction accelerated during and after Oslo — the settler population more than doubled. Critics argue Oslo functioned as Palestinian management, not liberation — requiring Palestinian leaders to police their own population on Israel's behalf while Israel continued colonising the land.</p>
+          <p>The Camp David negotiations in 2000 collapsed, and no subsequent framework has come closer to producing a Palestinian state. The Oslo framework remains the nominal basis of international diplomacy while the situation on the ground has moved steadily in the opposite direction.</p>
+        </div>
+      </details>
 
       <div class="t-item red">
         <p class="t-year">2000–2005</p>
         <p class="t-title">The Second Intifada</p>
-        <p class="t-desc">Following the collapse of Camp David negotiations in 2000, the Second Intifada erupts. It is far more violent than the first — Palestinian factions carry out suicide bombings targeting Israeli civilians in buses, restaurants, and markets. <strong>Over 1,000 Israeli civilians are killed.</strong> Israel responds with military operations, targeted assassinations, and the construction of a separation wall through the West Bank. <strong>Over 3,000 Palestinians are killed</strong> in the same period, the majority by Israeli military forces. The wall, ruled illegal by the International Court of Justice in 2004, annexes significant amounts of Palestinian land on its route.</p>
+        <p class="t-desc">Far more violent than the first. Palestinian factions carry out suicide bombings targeting Israeli civilians. <strong>Over 1,000 Israeli civilians killed.</strong> Israel responds with military operations and a separation wall. <strong>Over 3,000 Palestinians killed.</strong> The wall, ruled illegal by the ICJ, annexes Palestinian land.</p>
       </div>
 
       <div class="t-item red">
         <p class="t-year">2007–Present</p>
         <p class="t-title">The Gaza Blockade</p>
-        <p class="t-desc">After Hamas wins Palestinian legislative elections in 2006 and takes control of Gaza in 2007, Israel (with Egyptian cooperation) imposes a comprehensive blockade on the Gaza Strip — controlling all movement of people, goods, fuel, food, and medicine in and out. The blockade has been condemned by the UN as collective punishment, which is prohibited under international law. Gaza's 2.3 million people live in what has been described by the UN as an "open-air prison." Since 2008, Israel has conducted four major military operations in Gaza — 2008–09, 2012, 2014, and 2021 — killing thousands of Palestinian civilians each time.</p>
+        <p class="t-desc">Hamas takes control of Gaza. Israel imposes a total blockade — controlling all movement of people, goods, food, and medicine. The UN calls it collective punishment. Gaza's 2.3 million people live in what has been described as an "open-air prison." Four major military operations since 2008 kill thousands of civilians each time.</p>
       </div>
 
       <div class="t-item">
         <p class="t-year">2023</p>
         <p class="t-title">Settlements Today</p>
-        <p class="t-desc">Over 700,000 Israeli settlers now live in the West Bank and East Jerusalem — a number that has more than doubled since Oslo. The settlement project has rendered a contiguous Palestinian state geographically impossible without the removal of settlements. Most of the international community considers settlements illegal under international law. The United States has historically abstained from condemning them, though even the US position has nominally characterised settlements as "an obstacle to peace."</p>
+        <p class="t-desc">Over 700,000 Israeli settlers now live in the West Bank and East Jerusalem. The settlement project has made a contiguous Palestinian state geographically impossible without removing them. Most of the international community considers them illegal.</p>
       </div>
     </div>
 

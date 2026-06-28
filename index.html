@@ -42,32 +42,43 @@
   .card p { color: #9C9A88; font-size: .93rem; margin: 0; }
   .card .go { color: var(--sand); font-weight: 600; }
 
+  .badge-row { display: flex; gap: .5rem; margin-top: .7rem; flex-wrap: wrap; }
+  .badge { display: inline-flex; align-items: center; gap: .3rem; background: rgba(122,154,58,.1); border: 1px solid rgba(122,154,58,.22); border-radius: 3px; padding: .15rem .55rem; font-size: .68rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--olive); white-space: nowrap; }
+  .badge.format { background: rgba(200,184,130,.08); border-color: rgba(200,184,130,.2); color: var(--sand); }
+
+  .hook { color: var(--sand); font-size: 1.05rem; font-weight: 500; margin-bottom: 2rem; line-height: 1.65; }
+
   .footer { margin-top: 3rem; padding-top: 1.6rem; border-top: 1px solid var(--border); font-size: .82rem; color: var(--muted); }
 </style>
 </head>
 <body>
   <div class="wrap">
     <p class="eyebrow">Interactive Guides</p>
-    <h1>Things we're <em>not</em> taught to see clearly</h1>
+    <h1>Big global topics. <em>Broken down into plain English.</em></h1>
     <p class="lede">Three connected, self-paced guides on how the economic system works, how it reaches across the world, and what that looks like on the ground. Read them in order, or start wherever you like — each links to the others.</p>
+
+    <p class="hook">Skip the walls of text. Click a topic to explore bite-sized, interactive chapters.</p>
 
     <div class="cards">
       <a class="card" href="communist-theory-interactive.html">
         <div class="part">Part 1 · The Engine</div>
         <h2>How Capitalism Actually Works</h2>
         <p>A zero-to-hero walk through the mechanics — where profit comes from, why crises recur, and what the alternatives actually proposed. <span class="go">Start reading →</span></p>
+        <div class="badge-row"><span class="badge">~25 min read</span><span class="badge format">Interactive</span></div>
       </a>
 
       <a class="card" href="imperialism-guide.html">
         <div class="part">Part 2 · The Global Picture</div>
         <h2>Where Did the Wealth Actually Go?</h2>
         <p>The system extended outward — colonial extraction, debt, coups, and why there are no poor nations, only extracted ones. <span class="go">Start reading →</span></p>
+        <div class="badge-row"><span class="badge">~15 min read</span><span class="badge format">Interactive</span></div>
       </a>
 
       <a class="card" href="palestine-guide.html">
         <div class="part">Part 3 · The Case Study</div>
-        <h2>Palestine &amp; Israel — The Full History</h2>
-        <p>From Ottoman Palestine to Gaza today: the history, the occupation, the US role, and the record — the engine and the empire in one place. <span class="go">Start reading →</span></p>
+        <h2>Palestine &amp; Israel: Understanding the Context</h2>
+        <p>Cut through the noise and the 30-second video clips. A clear, chronological look at the history of the region from its origins to the modern day—built entirely on verified historical facts and sources. <span class="go">Start reading →</span></p>
+        <div class="badge-row"><span class="badge">~12 min read</span><span class="badge format">Interactive Timeline</span></div>
       </a>
     </div>
 
