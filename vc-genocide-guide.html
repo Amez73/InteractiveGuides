@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Money Behind It: Venture Capital and the Genocide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #0D0B08;
+    --surface:  #141210;
+    --border:   #28221A;
+    --gold:     #C8A060;
+    --gold-dim: #5A4828;
+    --blue:     #7FB3C8;
+    --red:      #C06040;
+    --text:     #E0DCD4;
+    --muted:    #706858;
+    --track:    #181410;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 17px; line-height: 1.75; min-height: 100vh; }
+  #app { max-width: 680px; margin: 0 auto; padding: 0 1.25rem; }
+
+  .passage { display: none; padding: 3rem 0 5rem; animation: fadeIn .35s ease; }
+  .passage.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; } }
+
+  #progress-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 3px; background: var(--border); }
+  #progress-fill { height: 100%; background: var(--gold); transition: width .4s ease; }
+
+  #station-nav {
+    position: fixed; top: 3px; left: 0; right: 0; z-index: 99;
+    background: rgba(13,11,8,.94); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    gap: .5rem; padding: .55rem 1rem;
+    font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+    font-weight: 500; color: var(--muted); flex-wrap: wrap;
+  }
+  .nav-stop { cursor: pointer; padding: .2rem .55rem; border-radius: 2rem; transition: color .2s, background .2s; white-space: nowrap; }
+  .nav-stop:hover { color: var(--text); }
+  .nav-stop.visited { color: var(--muted); }
+  .nav-stop.current { color: var(--gold); background: rgba(200,160,96,.12); }
+  .nav-sep { color: var(--border); }
+
+  .eyebrow { font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--gold); margin-bottom: .9rem; }
+  h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; margin-bottom: 1.5rem; }
+  h1 em { font-style: italic; color: var(--gold); }
+  h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.4rem, 4vw, 1.9rem); line-height: 1.2; margin-bottom: 1.2rem; }
+  h3 { font-family: 'DM Serif Display', serif; font-size: 1.15rem; margin-bottom: .7rem; color: var(--text); }
+  p { margin-bottom: 1.15rem; color: #BCB8A8; }
+  p:last-of-type { margin-bottom: 0; }
+  strong { color: var(--text); font-weight: 600; }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .page-hook { font-size: clamp(1.1rem, 2.6vw, 1.25rem); line-height: 1.55; color: var(--text); border-left: 3px solid var(--gold-dim); padding: .15rem 0 .15rem 1.25rem; margin: 0 0 1.6rem; font-weight: 400; }
+  .page-hook strong { color: var(--gold); font-weight: 600; }
+
+  .pull { border-left: 3px solid var(--gold-dim); padding: .6rem 1.2rem; margin: 1.8rem 0; font-family: 'DM Serif Display', serif; font-size: 1.12rem; font-style: italic; color: #A8A490; line-height: 1.55; }
+
+  .callout { background: rgba(200,160,96,.07); border: 1px solid rgba(200,160,96,.22); border-radius: 6px; padding: 1.1rem 1.4rem; margin: 1.6rem 0; font-size: .93rem; color: #C0B890; }
+  .callout strong { color: var(--gold); }
+
+  .subtitle { font-size: 1.05rem; color: var(--muted); margin-bottom: 2rem; font-weight: 300; line-height: 1.65; }
+
+  .companion-badge { display: inline-flex; align-items: center; gap: .5rem; background: rgba(200,160,96,.1); border: 1px solid rgba(200,160,96,.25); border-radius: 3px; padding: .3rem .8rem; font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+  .companion-badge::before { content: '◈'; }
+
+  .track-preview { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem 1.4rem; margin: 2rem 0; }
+  .tp-label { font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 600; color: var(--muted); margin-bottom: 1rem; }
+  .track-line { display: flex; align-items: center; flex-wrap: wrap; gap: .3rem; font-size: .82rem; }
+  .track-stop { background: var(--track); border: 1px solid var(--border); border-radius: 3px; padding: .25rem .65rem; color: var(--muted); white-space: nowrap; }
+  .track-stop.main { color: var(--text); border-color: #353020; }
+  .track-conn { color: var(--border); font-size: .8rem; }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); gap: .85rem; margin: 1.8rem 0; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1.2rem 1.3rem; }
+  .stat-number { font-family: 'DM Serif Display', serif; font-size: 2rem; line-height: 1; color: var(--gold); margin-bottom: .3rem; }
+  .stat-label { font-size: .82rem; color: var(--muted); line-height: 1.45; margin: 0; }
+  .stat-source { font-size: .68rem; color: #353020; margin-top: .4rem; margin-bottom: 0; }
+
+  .bar-chart { margin: 1.8rem 0; }
+  .bar-row { display: flex; align-items: center; gap: .8rem; margin-bottom: .7rem; }
+  .bar-year { font-size: .82rem; font-weight: 600; color: var(--muted); width: 55px; flex-shrink: 0; letter-spacing: .04em; }
+  .bar-outer { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 3px; height: 28px; overflow: hidden; }
+  .bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold-dim), var(--gold)); border-radius: 3px; display: flex; align-items: center; padding-left: 10px; font-size: .78rem; color: var(--bg); font-weight: 600; }
+  .bar-src { font-size: .72rem; color: var(--muted); margin-top: .6rem; }
+
+  .data-table { width: 100%; border-collapse: collapse; margin: 1.8rem 0; font-size: .88rem; }
+  .data-table th { text-align: left; color: var(--muted); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; border-bottom: 1px solid var(--border); padding: .6rem .8rem; font-weight: 600; }
+  .data-table td { padding: .7rem .8rem; border-bottom: 1px solid var(--border); vertical-align: top; color: #BCB8A8; }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table .co { color: var(--text); font-weight: 600; }
+
+  details.claim-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin: .85rem 0; transition: border-color .2s, background .2s; }
+  details.claim-card:hover { border-color: #353020; }
+  details.claim-card[open] { border-color: var(--gold-dim); background: rgba(200,160,96,.03); }
+  details.claim-card summary { cursor: pointer; padding: 1.1rem 3rem 1.1rem 1.35rem; list-style: none; display: flex; flex-direction: column; gap: .3rem; position: relative; }
+  details.claim-card summary::-webkit-details-marker { display: none; }
+  .claim-headline { font-family: 'DM Serif Display', serif; font-size: 1.12rem; line-height: 1.3; color: var(--text); }
+  details.claim-card[open] .claim-headline { color: var(--gold); }
+  .claim-blurb { font-size: .88rem; line-height: 1.5; color: var(--muted); }
+  details.claim-card summary::after { content: '+'; position: absolute; right: 1.25rem; top: 1rem; color: var(--gold); font-size: 1.4rem; line-height: 1; font-weight: 300; transition: transform .2s, color .2s; }
+  details.claim-card[open] summary::after { content: '\2013'; color: var(--gold); }
+  details.claim-card summary:hover::after { color: var(--gold); }
+  .claim-body { padding: 1.05rem 1.35rem 1.2rem; border-top: 1px solid var(--border); font-size: .93rem; color: #BCB8A8; }
+  .claim-body p { margin-bottom: .9rem; }
+  .claim-body p:last-child { margin-bottom: 0; }
+  .claim-body .src { font-size: .75rem; color: var(--muted); margin-top: .8rem; padding-top: .8rem; border-top: 1px solid var(--border); }
+  .claim-body .src a { color: var(--blue); }
+
+  details.deep-expand { background: var(--track); border: 1px solid var(--border); border-left: 3px solid var(--gold-dim); border-radius: 6px; margin: 1.2rem 0 1.8rem; }
+  details.deep-expand summary { cursor: pointer; padding: .85rem 1.2rem; color: var(--gold); font-weight: 600; font-size: .88rem; letter-spacing: .04em; list-style: none; display: flex; align-items: center; gap: .5rem; transition: color .2s; }
+  details.deep-expand summary::-webkit-details-marker { display: none; }
+  details.deep-expand summary::before { content: '▸'; font-size: .9rem; transition: transform .2s; flex-shrink: 0; }
+  details.deep-expand[open] summary::before { transform: rotate(90deg); }
+  details.deep-expand summary:hover { color: var(--text); }
+  details.deep-expand .expand-content { padding: 0 1.2rem 1.2rem; font-size: .93rem; color: #BCB8A8; }
+  details.deep-expand .expand-content p { margin-bottom: .9rem; }
+  details.deep-expand .expand-content p:last-child { margin-bottom: 0; }
+  details.deep-expand .expand-content .src { font-size: .75rem; color: var(--muted); margin-top: .8rem; padding-top: .8rem; border-top: 1px solid var(--border); }
+  details.deep-expand .expand-content .src a { color: var(--blue); }
+
+  .btn-group { display: flex; flex-direction: column; gap: .75rem; margin-top: 2.5rem; }
+  .btn { display: block; width: 100%; padding: .95rem 1.4rem; border-radius: 6px; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: .95rem; font-weight: 500; text-align: left; transition: background .18s, transform .1s; position: relative; }
+  .btn:active { transform: scale(.99); }
+  .btn-primary { background: var(--gold); color: var(--bg); }
+  .btn-primary:hover { background: #D8B070; }
+  .btn-primary::after { content: '\2192'; position: absolute; right: 1.2rem; top: 50%; transform: translateY(-50%); opacity: .6; }
+  .btn-back { background: transparent; color: var(--muted); border: 1px solid var(--border); font-size: .87rem; }
+  .btn-back:hover { color: var(--text); }
+  .btn-ext { background: rgba(200,160,96,.1); color: var(--gold); border: 1px solid rgba(200,160,96,.3); font-size: .9rem; }
+  .btn-ext:hover { background: rgba(200,160,96,.18); }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+  .spacer { height: 4rem; }
+
+  .final-quote { text-align: center; padding: 2.5rem 1rem; border: 1px solid var(--border); border-radius: 8px; margin: 2rem 0; background: var(--surface); }
+  .final-quote blockquote { font-family: 'DM Serif Display', serif; font-size: clamp(1.1rem, 3vw, 1.35rem); font-style: italic; color: var(--text); line-height: 1.6; margin-bottom: .8rem; border: none; padding: 0; }
+  .final-quote cite { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-style: normal; }
+
+  @media (max-width: 480px) {
+    .stat-grid { grid-template-columns: 1fr; }
+    .bar-year { width: 45px; font-size: .75rem; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"><div id="progress-fill" style="width:0%"></div></div>
+
+<nav id="station-nav">
+  <span class="nav-stop current" data-passage="start" onclick="go('start')">Intro</span>
+  <span class="nav-sep">&middot;</span>
+  <span class="nav-stop" data-passage="s1" onclick="go('s1')">The Statement</span>
+  <span class="nav-sep">&middot;</span>
+  <span class="nav-stop" data-passage="s2" onclick="go('s2')">The Money</span>
+  <span class="nav-sep">&middot;</span>
+  <span class="nav-stop" data-passage="s3" onclick="go('s3')">The Network</span>
+  <span class="nav-sep">&middot;</span>
+  <span class="nav-stop" data-passage="s4" onclick="go('s4')">The Weapons</span>
+  <span class="nav-sep">&middot;</span>
+  <span class="nav-stop" data-passage="s5" onclick="go('s5')">Surveillance</span>
+  <span class="nav-sep">&middot;</span>
+  <span class="nav-stop" data-passage="s6" onclick="go('s6')">Silencing</span>
+  <span class="nav-sep">&middot;</span>
+  <span class="nav-stop" data-passage="s7" onclick="go('s7')">The Plan</span>
+</nav>
+
+<div id="app">
+
+  <!-- ══ START ══ -->
+  <div class="passage active" id="passage-start">
+    <div style="padding-top:4rem;">
+      <div class="companion-badge">Companion Guide &middot; Part 5</div>
+      <h1>The Money Behind It:<br><em>Venture Capital and the Genocide</em></h1>
+      <p class="subtitle">Who is funding it. What they built. How they are watching you. And what they are planning to build next.</p>
+
+      <div class="track-preview">
+        <p class="tp-label">Your route</p>
+        <div class="track-line">
+          <span class="track-stop main">The Statement</span>
+          <span class="track-conn">&#9654;</span>
+          <span class="track-stop main">The Money</span>
+          <span class="track-conn">&#9654;</span>
+          <span class="track-stop main">The Network</span>
+          <span class="track-conn">&#9654;</span>
+          <span class="track-stop main">The Weapons</span>
+          <span class="track-conn">&#9654;</span>
+          <span class="track-stop main">Surveillance</span>
+          <span class="track-conn">&#9654;</span>
+          <span class="track-stop main">Silencing</span>
+          <span class="track-conn">&#9654;</span>
+          <span class="track-stop main">The Plan</span>
+        </div>
+        <p style="font-size:.8rem;color:var(--muted);margin-top:.9rem;margin-bottom:0;">Each station has expandable cards with sourced detail.</p>
+      </div>
+
+      <p><a href="palestine-guide.html">Part 3</a> documents what Israel has done. This guide documents who is funding it and the surveillance apparatus Israeli tech firms have deployed across Western democracies to monitor and silence anyone who objects.</p>
+
+      <p>The evidence is their own statements, their own filings, and their own courts.</p>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="go('s1')">Station 1: The Statement</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══ STATION 1: THE STATEMENT ══ -->
+  <div class="passage" id="passage-s1">
+    <p class="eyebrow">Station 1 of 7</p>
+    <h2>The Statement &mdash; 800 VCs Sign On Within Days</h2>
+
+    <p class="page-hook">October 2023. <strong>The bodies were not cold yet.</strong></p>
+
+    <p>Within days of October 7, over <strong>800 venture capitalists</strong> signed the "Venture Capital Community Statement of Support for Israel." It called on the "global venture community to support and engage with Israeli startups." It was not a humanitarian document. It was a capital deployment directive.</p>
+
+    <p>Signatories included <strong>Bain Capital Ventures, Bessemer, General Catalyst, Kleiner Perkins, Apollo Projects (Sam Altman's fund), 8VC (Joe Lonsdale), and Vintage Investment Partners</strong>. The same day, Palantir took out a full-page ad in the New York Times: <em>"Palantir Stands With Israel."</em></p>
+
+    <details class="claim-card">
+      <summary>
+        <span class="claim-headline">What they said about Palestinians</span>
+        <span class="claim-blurb">Named partners, named firms, on the record.</span>
+      </summary>
+      <div class="claim-body">
+        <p>The head of <strong>Lux Capital</strong>: <em>"Shame disgrace condemnation on these savage animals."</em> A <strong>Sequoia</strong> partner: <em>"barbarians at the gate."</em> A <strong>Founders Fund</strong> partner called for the US to declare war on Palestine.</p>
+        <p>PSG Equity called the genocide <em>"probably the biggest tailwind that we have for the new wave of innovation in Israel."</em></p>
+        <p>In December 2023, 70 US VCs and tech executives flew to Israel on delegation to "pledge support for the high-tech sector."</p>
+        <p class="src">Sources: <a href="https://archive.ph/iNpK3" target="_blank">VC Statement of Support for Israel (archived)</a> &middot; <a href="https://archive.ph/mQnir" target="_blank">Lux (archived)</a> &middot; <a href="https://archive.ph/32HCR" target="_blank">Sequoia (archived)</a> &middot; <a href="https://www.reuters.com/technology/us-investors-see-value-israeli-tech-firms-despite-war-2023-12-22/" target="_blank">Reuters</a></p>
+      </div>
+    </details>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="go('s2')">Station 2: The Money</button>
+      <button class="btn btn-back" onclick="go('start')">Back to intro</button>
+    </div>
+  </div>
+
+
+  <!-- ══ STATION 2: THE MONEY ══ -->
+  <div class="passage" id="passage-s2">
+    <p class="eyebrow">Station 2 of 7</p>
+    <h2>The Money &mdash; Investment Rose Every Year of the War</h2>
+
+    <p class="page-hook"><strong>Every year, as the death toll climbed, so did the capital.</strong></p>
+
+    <div class="bar-chart">
+      <div class="bar-row"><div class="bar-year">2023</div><div class="bar-outer"><div class="bar-fill" style="width:45%">$7B</div></div></div>
+      <div class="bar-row"><div class="bar-year">2024</div><div class="bar-outer"><div class="bar-fill" style="width:77%">$12B</div></div></div>
+      <div class="bar-row"><div class="bar-year">2025</div><div class="bar-outer"><div class="bar-fill" style="width:100%">$15.6B</div></div></div>
+      <div class="bar-row"><div class="bar-year">H1 '26</div><div class="bar-outer"><div class="bar-fill" style="width:55%">$8.6B (+45% YoY)</div></div></div>
+      <p class="bar-src">Sources: Reuters &middot; Startup Nation Central &middot; S&amp;P Global &middot; Israel Innovation Authority</p>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card"><p class="stat-number">$32B</p><p class="stat-label">Google acquires Israeli firm Wiz, March 2025</p><p class="stat-source">Google Blog</p></div>
+      <div class="stat-card"><p class="stat-number">$7.75B</p><p class="stat-label">ServiceNow acquires Israeli firm Armis Security, 2025</p><p class="stat-source">ServiceNow press release</p></div>
+      <div class="stat-card"><p class="stat-number">47</p><p class="stat-label">New Israeli VC funds launched in 2025 &mdash; double the 2024 figure</p><p class="stat-source">Israel Innovation Authority</p></div>
+      <div class="stat-card"><p class="stat-number">60%</p><p class="stat-label">Of Israeli tech investors are now global, led by US firms</p><p class="stat-source">Startup Nation Central 2025</p></div>
+    </div>
+
+    <p>Startup Nation Central described 2025 as the year Israel "solidified its position as a global scale-up powerhouse." Mega-rounds accounted for roughly 50% of total private funding &mdash; the same concentration dynamic described in <a href="communist-theory-interactive.html">Part 1</a>, accelerated by wartime conditions.</p>
+
+    <details class="deep-expand">
+      <summary>Deep Dive: Yozma &mdash; Israel's state-directed VC engine</summary>
+      <div class="expand-content">
+        <p>Israel's tech sector expands through state direction, not market forces alone. The Israel Innovation Authority administers the <strong>Yozma Fund</strong>, directing state money into VC firms and startups. In January 2026, Yozma announced investments in 11 Israeli VC funds targeting a <strong>$2 billion</strong> combined public-private deployment. By end of 2025, an estimated <strong>$8.7 billion</strong> in "dry powder" sat available for future investment.</p>
+        <p>A state-directed capital apparatus, backed by US allies and US investors, expanding in real time as tens of thousands of Palestinian children are killed.</p>
+        <p class="src">Sources: <a href="https://www.reuters.com/world/middle-east/israel-says-450-million-invested-local-vcs-support-tech-innovation-2026-01-13/" target="_blank">Reuters</a> &middot; <a href="https://www.yozmagroup.com/overview" target="_blank">Yozma Group</a> &middot; <a href="https://archive.ph/W0lbj" target="_blank">Israel Innovation Authority Report, March 2026 (archived)</a></p>
+      </div>
+    </details>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="go('s3')">Station 3: The Network</button>
+      <button class="btn btn-back" onclick="go('s1')">Back to Station 1</button>
+    </div>
+  </div>
+
+
+  <!-- ══ STATION 3: THE NETWORK ══ -->
+  <div class="passage" id="passage-s3">
+    <p class="eyebrow">Station 3 of 7</p>
+    <h2>The Network &mdash; Who Funds Whom</h2>
+
+    <p class="page-hook"><strong>Israel funds Silicon Valley. Silicon Valley funds Israel's weapons and surveillance startups.</strong> It is a loop, and it is deliberate.</p>
+
+    <p><strong>Vintage Investment Partners</strong>, an Israeli firm, funds some of the most powerful VCs in America: Andreessen Horowitz, Bessemer, General Catalyst, Kleiner Perkins, Lightspeed, Craft Ventures (David Sacks), Spark Capital, and Ribbit Capital. These firms fund AI, defence tech, surveillance, and the political project described later in this guide as the Network State. Israel's capital buys influence over the firms shaping American technology.</p>
+
+    <details class="claim-card">
+      <summary>
+        <span class="claim-headline">Andreessen Horowitz (a16z)</span>
+        <span class="claim-blurb">IDF recruitment, surveillance startups, "elite IDF alumni" wanted.</span>
+      </summary>
+      <div class="claim-body">
+        <p>a16z invested in <strong>seven new Israeli startups in 2024</strong>. In June 2025 it began recruiting <em>"elite IDF alumni"</em> for its startup accelerator.</p>
+        <p>a16z backed <strong>Argu</strong> (real-time CCTV surveillance AI, founded by an IDF tech veteran), <strong>Limy</strong> (founded by IDF special operations forces), and <strong>Toka</strong> (cyber defence startup led by former Israeli PM Ehud Barak and a former IDF Brigadier General). It also funded <strong>Skydio</strong> drones, which are actively in use by Israel in Gaza.</p>
+        <p class="src">Sources: <a href="https://en.globes.co.il/en/article-andreessen-horowitz-boosting-israel-vc-investments-1001503552" target="_blank">Globes: a16z boosting Israel investments</a> &middot; <a href="https://web.archive.org/web/20250312053348/https://www.politico.com/news/2023/11/25/israel-hamas-war-ai-weapons-00128550" target="_blank">Politico</a></p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>
+        <span class="claim-headline">Palantir Technologies</span>
+        <span class="claim-blurb">IDF contract signed January 2024. Stock up 150% in 2025.</span>
+      </summary>
+      <div class="claim-body">
+        <p>Palantir has had offices in Tel Aviv since 2015. In January 2024 &mdash; three months into the Gaza assault &mdash; Palantir signed a strategic partnership with the Israeli Defence Ministry for <em>"war-related missions."</em></p>
+        <div class="pull">"Both parties have mutually agreed to harness Palantir's advanced technology in support of war-related missions." &mdash; EVP Josh Harris, after a meeting between co-founders Peter Thiel, Alex Karp, and Israeli defence officials in Tel Aviv.</div>
+        <p>Palantir stock rose <strong>150% in 2025</strong>. Revenue doubled year over year in Q1 2026. CTO Shayam Sankar at Reindustrialize 2025: <em>"Couldn't be prouder to stand with Israel."</em></p>
+        <p class="src">Source: <a href="https://archive.ph/dYstR" target="_blank">Bloomberg: Palantir IDF partnership (archived)</a></p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>
+        <span class="claim-headline">General Catalyst</span>
+        <span class="claim-blurb">Weapons portfolio, Israeli partnerships, $7.75B exit.</span>
+      </summary>
+      <div class="claim-body">
+        <p>Also funded by Vintage Investment Partners. Portfolio includes <strong>Anduril, Helsing, Castelion, Saronic, Applied Intuition, and Vannevar</strong>. Partnered with Sheba Medical Center (Israel's largest hospital) in 2023.</p>
+        <div class="pull">"Israel is a really amazing country... adversity only makes the entrepreneurs more resilient... We want to do more." &mdash; General Catalyst CEO Hemant Taneja, 2025.</div>
+        <p>Israeli cybersecurity firm <strong>Armis Security</strong> &mdash; a General Catalyst portfolio company &mdash; was acquired by ServiceNow for <strong>$7.75 billion</strong> in 2025.</p>
+        <p class="src">Sources: <a href="https://www.generalcatalyst.com/perspectives/investing-in-defense" target="_blank">General Catalyst: Investing in Defense</a> &middot; <a href="https://archive.ph/yxMSR" target="_blank">Taneja interview (archived)</a></p>
+      </div>
+    </details>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="go('s4')">Station 4: The Weapons</button>
+      <button class="btn btn-back" onclick="go('s2')">Back to Station 2</button>
+    </div>
+  </div>
+
+
+  <!-- ══ STATION 4: THE WEAPONS ══ -->
+  <div class="passage" id="passage-s4">
+    <p class="eyebrow">Station 4 of 7</p>
+    <h2>The Weapons &mdash; Gaza as R&amp;D Lab</h2>
+
+    <p class="page-hook"><strong>Venture-backed weapons companies tested their products on Palestinians.</strong> Foreign buyers are purchasing the results.</p>
+
+    <p>The Washington Post: <em>"start-up executives say foreigners are eager to buy systems developed and tested on the battlefield."</em> Gaza is not a side effect. It is the proof of concept.</p>
+
+    <table class="data-table">
+      <thead><tr><th>Company</th><th>Backed by</th><th>Gaza connection</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="co">Anduril</td>
+          <td>a16z, Founders Fund, CIA (In-Q-Tel)</td>
+          <td>CEO Palmer Luckey: "Israel has my unqualified support." Visited Israel Feb 2026, met Netanyahu, toured IDF startups. (<a href="https://archive.ph/dhHR6" target="_blank">source</a>)</td>
+        </tr>
+        <tr>
+          <td class="co">Palantir</td>
+          <td>Peter Thiel, CIA (In-Q-Tel)</td>
+          <td>Signed IDF contract Jan 2024 for "war-related missions." AI targeting mirrors the Lavender system.</td>
+        </tr>
+        <tr>
+          <td class="co">Skydio</td>
+          <td>a16z, Nvidia, Accel, Axon</td>
+          <td>Drones in active use by Israel following direct IDF requests. (<a href="https://web.archive.org/web/20250312053348/https://www.politico.com/news/2023/11/25/israel-hamas-war-ai-weapons-00128550" target="_blank">Politico</a>)</td>
+        </tr>
+        <tr>
+          <td class="co">Shield AI</td>
+          <td>a16z, Blackstone</td>
+          <td>Technology in use by Israel. Developing X-BAT drone &mdash; AI selects targets without human control, carrying 500lb bombs. (<a href="https://truthout.org/articles/venture-capitalists-are-using-profits-from-genocide-to-fund-ai-powered-weapons/" target="_blank">Truthout</a>)</td>
+        </tr>
+        <tr>
+          <td class="co">Kela Technologies</td>
+          <td>Lux, Sequoia, CIA (In-Q-Tel), Eric Schmidt, Bill Ackman</td>
+          <td>Tel Aviv, 2024. Founder: <em>"Our mission is not just about business, our mission is about Zionism."</em> Seeking $1B valuation. (<a href="https://www.calcalistech.com/ctechnews/article/ryd00piu3ke" target="_blank">Calcalist</a>)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <details class="deep-expand">
+      <summary>Deep Dive: Lavender &mdash; the AI that marked 37,000 Palestinians for death</summary>
+      <div class="expand-content">
+        <p>Israel deployed an AI system called <strong>Lavender</strong> that marked approximately <strong>37,000 Palestinians</strong> as targets. Officers described approving strikes after seconds of review per target. A companion system named <strong>"Where's Daddy?"</strong> tracked men to their family homes so the houses could be bombed with the family inside. Pre-authorised "collateral damage": 15 to 20 civilians per low-ranking target.</p>
+        <div class="pull">"You killed a family for no reason." &mdash; Israeli intelligence source, to +972, on strikes where the target was not present.</div>
+        <p>This is the downstream reality of the venture-backed weapons ecosystem. Palantir does military data analysis. Shield AI does autonomous targeting. The logic is identical to Lavender's.</p>
+        <p class="src">Source: <a href="https://www.972mag.com/lavender-ai-israeli-army-gaza/" target="_blank">+972 Magazine: Lavender AI &mdash; six Israeli intelligence officers on record</a></p>
+      </div>
+    </details>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="go('s5')">Station 5: The Surveillance</button>
+      <button class="btn btn-back" onclick="go('s3')">Back to Station 3</button>
+    </div>
+  </div>
+
+
+  <!-- ══ STATION 5: THE SURVEILLANCE ══ -->
+  <div class="passage" id="passage-s5">
+    <p class="eyebrow">Station 5 of 7</p>
+    <h2>The Surveillance &mdash; Israeli Spyware Is Already On Western Phones</h2>
+
+    <p class="page-hook"><strong>Technology built to monitor Palestinians is now deployed against journalists, activists, and politicians across Western democracies.</strong></p>
+
+    <p>Israel sits at the centre of the global commercial spyware industry. Its firms &mdash; almost all founded by veterans of <strong>Unit 8200</strong>, Israel's elite military intelligence unit &mdash; sell surveillance tools to governments worldwide. Those governments are using them on their own populations.</p>
+
+    <div class="stat-grid">
+      <div class="stat-card"><p class="stat-number">50,000+</p><p class="stat-label">Phone numbers targeted by NSO's Pegasus, per 2021 data leak</p><p class="stat-source">Pegasus Project / Amnesty International</p></div>
+      <div class="stat-card"><p class="stat-number">90</p><p class="stat-label">Journalists targeted by Paragon's Graphite in a single 2025 campaign across 24 countries</p><p class="stat-source">WhatsApp / Citizen Lab</p></div>
+      <div class="stat-card"><p class="stat-number">14</p><p class="stat-label">EU member states where citizens were spied on via Paragon in early 2025</p><p class="stat-source">European Parliament, Feb 2025</p></div>
+      <div class="stat-card"><p class="stat-number">$18M+</p><p class="stat-label">Cellebrite US federal contracts in 2024 alone &mdash; ICE, DEA, FBI, Navy, Coast Guard</p><p class="stat-source">The Grayzone, 2025</p></div>
+    </div>
+
+    <!-- NSO / Pegasus -->
+    <details class="claim-card">
+      <summary>
+        <span class="claim-headline">NSO Group &mdash; Pegasus</span>
+        <span class="claim-blurb">Zero-click spyware. Used on Jamal Khashoggi's associates before his murder. Found on 14 heads of state including Macron and Sanchez. Court ordered NSO to pay $168M to WhatsApp in May 2025.</span>
+      </summary>
+      <div class="claim-body">
+        <p>Founded by ex-Unit 8200 officers. Pegasus infects a phone with <strong>no click required</strong>. Once installed: reads all messages including Signal and WhatsApp, activates microphone and camera, tracks location, extracts passwords. Every export must be approved by Israel's Defence Ministry &mdash; making NSO a de facto arm of Israeli foreign policy.</p>
+        <div class="pull">The New York Times: "Israel's government has long seen Pegasus as a critical tool for its foreign policy" and "treated NSO as a de facto arm of the state." Israel licensed Pegasus to UAE and Bahrain as part of the Abraham Accords &mdash; surveillance technology as diplomatic currency.</div>
+        <p>Pegasus was used to spy on Saudi journalist <strong>Jamal Khashoggi's</strong> inner circle before he was murdered and dismembered in the Saudi consulate in Istanbul. It was found on phones of <strong>14 heads of state</strong> including French President Macron and Spain's Prime Minister Sanchez. Spain's High Court closed its investigation into the hack in 2026 after Israel refused five cooperation requests.</p>
+        <p>In May 2025, a US court ordered NSO to pay <strong>$168 million</strong> to WhatsApp for exploiting their systems. In June 2026, Meta accused NSO of already violating the court's injunction &mdash; continuing to target WhatsApp users in Jordan and Lebanon.</p>
+        <p class="src">Sources: <a href="https://en.wikipedia.org/wiki/NSO_Group" target="_blank">Wikipedia: NSO Group</a> &middot; <a href="https://therecord.media/spanish-judge-closes-nso-group-spyware-probe-israel" target="_blank">The Record: Spain closes NSO probe</a> &middot; <a href="https://bdsmovement.net/israeli-spyware-facilitates-human-rights-violations" target="_blank">BDS Movement spyware tracker</a></p>
+      </div>
+    </details>
+
+    <!-- Paragon / Graphite -->
+    <details class="claim-card">
+      <summary>
+        <span class="claim-headline">Paragon Solutions &mdash; Graphite</span>
+        <span class="claim-blurb">Marketed as "ethical." Found on Italian journalists' phones. ICE is using it now. Citizens in 14 EU member states identified as targets.</span>
+      </summary>
+      <div class="claim-body">
+        <p>Founded in 2019 by a former commander of Unit 8200 and co-founded by <strong>Ehud Barak</strong> (former Israeli PM). Marketed as "responsible" spyware &mdash; only sold to democratic allies, never against journalists. That lasted until the evidence arrived.</p>
+        <p>In early 2025, <strong>WhatsApp disrupted a Paragon campaign targeting 90 journalists and civil society figures across 24 countries</strong>. Citizen Lab confirmed two journalists were targeted using a zero-click iOS vulnerability. Among targets: Francesco Cancellato, editor of Fanpage.it, which had been covering far-right links in Giorgia Meloni's government.</p>
+        <div class="pull">Italy was using Paragon to spy on journalists covering the government. The Italian parliamentary committee confirmed it. Paragon cancelled the Italy contract.</div>
+        <p>In 2025, the Trump administration reversed Biden's ban and handed <strong>ICE a $2 million contract for Graphite</strong>. ICE acting director Todd Lyons stated ICE would use its new surveillance tools to "track the ringleaders" of anti-ICE protests. Rachel Maddow warned the spyware "can be covertly inserted into anyone's phone from a drone hovering over a protest."</p>
+        <p>Citizens across Austria, Belgium, Cyprus, Czech Republic, Denmark, Germany, Greece, Italy, Latvia, Lithuania, the Netherlands, Portugal, Spain, and Sweden have been identified as Paragon targets, per a February 2025 European Parliament inquiry.</p>
+        <p class="src">Sources: <a href="https://citizenlab.ca/research/first-forensic-confirmation-of-paragons-ios-mercenary-spyware-finds-journalists-targeted/" target="_blank">Citizen Lab: Graphite forensic confirmation, June 2025</a> &middot; <a href="https://www.europarl.europa.eu/doceo/document/P-10-2025-000589_EN.html" target="_blank">European Parliament inquiry</a> &middot; <a href="https://ccrjustice.org/home/press-center/press-releases/legal-groups-sue-trump-administration-uncover-use-israeli-spyware" target="_blank">CCR: lawsuit over ICE spyware use</a></p>
+      </div>
+    </details>
+
+    <!-- Cellebrite -->
+    <details class="claim-card">
+      <summary>
+        <span class="claim-headline">Cellebrite</span>
+        <span class="claim-blurb">In US police stations, ICE, FBI, DEA. Also used against Serbian journalists and Russian activists.</span>
+      </summary>
+      <div class="claim-body">
+        <p>Cellebrite makes physical phone-cracking hardware &mdash; plug in a confiscated device, extract everything. Contracts with <strong>ICE, Customs and Border Protection, FBI, DEA, Navy, Coast Guard</strong>, dozens of US police forces, UK police forces, and Australian agencies. Over <strong>$18M</strong> in US federal contracts in 2024 alone.</p>
+        <p>In December 2024, Amnesty International documented Serbian police using Cellebrite tools to unlock an independent journalist's phone during police interviews &mdash; then covertly installing spyware. Citizen Lab confirmed Cellebrite was used to help prosecute Russian anti-war activist Andrey Pivovarov. Jordanian authorities used it against political activists who protested in support of Palestinians.</p>
+        <div class="pull">Cellebrite's products are classified as "dual-use civilian services" by Israel &mdash; a distinction that allows them to operate without serious Israeli government oversight, while being sold to law enforcement worldwide.</div>
+        <p>In October 2025, legal groups including the Center for Constitutional Rights <strong>sued the Trump administration</strong> to force disclosure of how ICE is using Cellebrite and Paragon to surveil immigrants, their families, and protesters.</p>
+        <p class="src">Sources: <a href="https://en.wikipedia.org/wiki/Cellebrite" target="_blank">Wikipedia: Cellebrite</a> &middot; <a href="https://thegrayzone.com/2025/07/31/israeli-spyware-surveillance-state/" target="_blank">The Grayzone: Israeli spyware firms, July 2025</a> &middot; <a href="https://ccrjustice.org/home/press-center/press-releases/legal-groups-sue-trump-administration-uncover-use-israeli-spyware" target="_blank">CCR lawsuit</a></p>
+      </div>
+    </details>
+
+    <!-- Cobwebs, Cognyte, Candiru -->
+    <details class="claim-card">
+      <summary>
+        <span class="claim-headline">Cobwebs, Cognyte, Candiru</span>
+        <span class="claim-blurb">Geofencing, facial recognition, $60M in Western law enforcement contracts.</span>
+      </summary>
+      <div class="claim-body">
+        <p>Founded by Unit 8200 officers, <strong>Cobwebs Technologies</strong> (now part of PenLink) offers AI-powered facial recognition across social media and the deep web, and <strong>WebLoc</strong> &mdash; a geofencing tool that tracks mobile phone movements in any area selected by the user, using data harvested from in-app advertising. Contracts: <strong>$5.3M with Texas DPS, $3.2M with DHS, $2.7M with ICE, and LAPD</strong>.</p>
+        <p><strong>Cognyte</strong> (spun out of Israeli firm Verint) has signed nearly <strong>$60M in deals</strong> with Western law enforcement in the past 18 months, including a $20M contract with a European national security agency. <strong>Candiru</strong> continues to deploy spyware: as of August 2025, Insikt Group found active Candiru infrastructure linked to Hungary and Saudi Arabia.</p>
+        <div class="pull">"Israel and its apartheid economy sits at the centre of the drive towards a fully surveilled, zero-dissent world." &mdash; The Grayzone, July 2025</div>
+        <p class="src">Source: <a href="https://thegrayzone.com/2025/07/31/israeli-spyware-surveillance-state/" target="_blank">The Grayzone: Israeli spyware firms, July 2025</a></p>
+      </div>
+    </details>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="go('s6')">Station 6: Silencing Dissent</button>
+      <button class="btn btn-back" onclick="go('s4')">Back to Station 4</button>
+    </div>
+  </div>
+
+
+  <!-- ══ STATION 6: SILENCING DISSENT ══ -->
+  <div class="passage" id="passage-s6">
+    <p class="eyebrow">Station 6 of 7</p>
+    <h2>Silencing Dissent &mdash; The Legal and Propaganda Machine</h2>
+
+    <p class="page-hook"><strong>The surveillance is the hardware. The laws and the propaganda are the software.</strong> Together they make speaking out dangerous.</p>
+
+    <p>Station 5 documented the tools. This station documents what happens after they identify you: anti-boycott laws that strip your livelihood, a redefinition of antisemitism that criminalises the facts, a $730M propaganda operation that poisons the information you see, and a crackdown on campuses that deports the people who speak.</p>
+
+    <!-- Anti-BDS -->
+    <details class="claim-card">
+      <summary>
+        <span class="claim-headline">Anti-BDS Laws &mdash; 38 US states and counting</span>
+        <span class="claim-blurb">Sign a pledge not to boycott Israel, or lose your contract. A teacher lost her job. Hurricane relief required the pledge.</span>
+      </summary>
+      <div class="claim-body">
+        <p>As of 2024, <strong>38 US states</strong> have enacted anti-BDS legislation requiring government contractors to certify they will not boycott Israel &mdash; or lose their contract. A Texas elementary school teacher lost her job for refusing to sign. A Hurricane Harvey relief contractor was required to certify the pledge to receive disaster aid.</p>
+        <p>In September 2025, the House passed a defence budget amendment (spearheaded by Rep. Lauren Boebert) that would <strong>ban companies engaged in "politically motivated" boycotts of Israel from all Pentagon contracts</strong> &mdash; cutting them off from more than half of all US government spending.</p>
+        <p>In 2017, dozens of New York BDS activists received legal threat letters from a <strong>private security company led by ex-Mossad agents</strong>, warning of proceedings under anti-BDS legislation. The legislation had not yet passed.</p>
+        <div class="pull">"This amendment is really designed to shield Israel from any accountability by penalizing those who protest its violations of Palestinian human rights through boycotts, which should be protected by the First Amendment." &mdash; Hassan El-Tayyab, Friends Committee on National Legislation</div>
+        <p class="src">Sources: <a href="https://legislation.palestinelegal.org/" target="_blank">Palestine Legal: Anti-BDS legislation tracker</a> &middot; <a href="https://theintercept.com/2025/09/11/israel-boycott-bds-boebert/" target="_blank">The Intercept: Boebert BDS amendment</a></p>
+      </div>
+    </details>
+
+    <!-- Antisemitism Redefinition -->
+    <details class="claim-card">
+      <summary>
+        <span class="claim-headline">The Antisemitism Redefinition &mdash; criticism of Israel = hate crime</span>
+        <span class="claim-blurb">Codified into US federal law. Opposed by hundreds of Jewish scholars. Its own author opposed its use.</span>
+      </summary>
+      <div class="claim-body">
+        <p>The <strong>Antisemitism Awareness Act</strong>, passed by Congress in 2024, codifies the IHRA definition of antisemitism for use in federal enforcement on college campuses. Under this definition, calling Israel an apartheid state, calling its founding a settler colonial project, or applying the same standards to Israel that you would apply to any other country &mdash; can constitute antisemitism.</p>
+        <p>The definition was opposed by <strong>hundreds of Jewish scholars, multiple Jewish organisations, and Holocaust historians</strong>. The author of the original working definition publicly opposed its use in this way. The ACLU has challenged multiple related anti-boycott laws as unconstitutional. Several courts have struck them down. Others remain in force.</p>
+        <div class="pull">Under this framework, much of what is documented in this guide &mdash; calling Israel's actions apartheid, genocide, or settler colonialism &mdash; is legally a hate crime in certain jurisdictions. That is not coincidence. It is the point.</div>
+        <p class="src">Source: <a href="https://www.aclu.org/news/free-speech/congress-laws-suppressing-boycotts-israel-are-unconstitutional-sincerely-three" target="_blank">ACLU: Anti-boycott laws are unconstitutional</a></p>
+      </div>
+    </details>
+
+    <!-- $730M Propaganda -->
+    <details class="claim-card">
+      <summary>
+        <span class="claim-headline">$730M in propaganda &mdash; and poisoning AI models</span>
+        <span class="claim-blurb">From $7M before the war to $730M by 2026. Now targeting the AI systems you use to find information.</span>
+      </summary>
+      <div class="claim-body">
+        <p>Before October 2023, Israel spent roughly $7 to 8M per year on public diplomacy. By 2026: <strong>$730 million annually</strong>.</p>
+        <p>Former intelligence captain Ella Keinan's operation <strong>BrightMind</strong> ran 100,000 volunteers in digital cells via Telegram, coined "Hamas is ISIS" within 24 hours of October 7, reached <strong>3 billion views</strong>, mass-reported Palestinian content off platforms, and corrected 1,000+ Wikipedia entries. She described it openly at a Unit 8200 alumni conference sponsored by <strong>Microsoft</strong>.</p>
+        <p>Israel hired Brad Parscale's firm on a <strong>$9M contract</strong> to build websites specifically designed to warp how <strong>ChatGPT, Grok, and Gemini</strong> frame information about Israel &mdash; injecting content into AI training data. Parscale funnelled <strong>$13M from Israel to Republican digital strategy firms</strong> and registered as a foreign agent.</p>
+        <p>The Israeli Ministry of Diaspora Affairs paid $2M to firm STOIC to run fake social media accounts &mdash; posing as <strong>Black Americans and Jewish students</strong> &mdash; to pressure Democratic Congress members on military aid. Meta and OpenAI both banned the operation.</p>
+        <p class="src">Sources: <a href="https://www.middleeastmonitor.com/20260506-israel-to-spend-730m-on-propaganda-as-global-image-collapses-over-gaza-genocide/" target="_blank">Middle East Monitor</a> &middot; <a href="https://en.globes.co.il/en/article-a-fighter-of-fake-news-about-israel-1001506636" target="_blank">Globes: BrightMind</a> &middot; <a href="https://theintercept.com/2026/05/28/israeli-government-money-brad-parsc/" target="_blank">The Intercept: Parscale</a> &middot; <a href="https://www.npr.org/2024/07/09/nx-s1-4994027/israel-us-online-influence-campaign-gaza" target="_blank">NPR: STOIC</a></p>
+      </div>
+    </details>
+
+    <!-- Campus Crackdowns -->
+    <details class="claim-card">
+      <summary>
+        <span class="claim-headline">Campus crackdowns &mdash; arrests, firings, deportations</span>
+        <span class="claim-blurb">Night raids. Mass arrests. Three university presidents resigned. Pro-Palestine students deported.</span>
+      </summary>
+      <div class="claim-body">
+        <p>In spring 2024, peaceful pro-Palestinian encampments at Columbia, UCLA, Harvard, and dozens of other universities were met with mass arrests, police in tactical gear, suspensions, and firings. At UCLA, a pro-Israel mob attacked the encampment with fireworks and metal pipes while police watched &mdash; then police arrested the students who had been attacked. Three university presidents resigned under Congressional and donor pressure.</p>
+        <p>Under the Trump administration in 2025, the crackdown escalated to <strong>deportation</strong>. Pro-Palestine student activists on visas have been targeted for removal. ICE &mdash; now equipped with Paragon's Graphite spyware &mdash; has stated its intention to track "ringleaders" of protest movements.</p>
+        <div class="pull">The surveillance infrastructure in Station 5 and the legal infrastructure in this station are two parts of the same machine: watch who speaks, then punish them for speaking.</div>
+        <p class="src">Source: <a href="https://www.aljazeera.com/news/liveblog/2024/5/2/us-university-protests-live-police-ucla-pro-palestine-encampment" target="_blank">Al Jazeera: Campus crackdowns</a></p>
+      </div>
+    </details>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="go('s7')">Station 7: The Plan</button>
+      <button class="btn btn-back" onclick="go('s5')">Back to Station 5</button>
+    </div>
+  </div>
+
+
+  <!-- ══ STATION 7: THE PLAN ══ -->
+  <div class="passage" id="passage-s7">
+    <p class="eyebrow">Station 7 of 7</p>
+    <h2>The Plan &mdash; What They Are Building Next</h2>
+
+    <p class="page-hook"><strong>The Network State.</strong> Gaza as the flagship site.</p>
+
+    <p>The <strong>Network State</strong> is Silicon Valley's most powerful political project: sovereign tech-governed territories outside existing nation-states. Its chief theorist, former a16z partner <strong>Balaji Srinivasan</strong>, explicitly frames it as "tech Zionism." Israel's founding is the proof of concept &mdash; a community formed, gathered, and took land.</p>
+
+    <div class="pull">"What I'm really calling for is something like tech Zionism &mdash; when a community forms online and then gathers in physical space to form a 'reverse diaspora.'" &mdash; Balaji Srinivasan</div>
+
+    <p>Documents from the Israeli PM's office describe Gaza as a future site for <strong>free trade zones, new cities, and manufacturing hubs</strong>. The Tony Blair Institute proposed a <em>"Trump Riviera"</em> and an <em>"Elon Musk Smart Manufacturing Zone"</em> &mdash; along with paying 500,000 Palestinians to leave. Trump's "Board of Peace" is exploring a <strong>stablecoin for Gaza</strong> to fund the "reconstruction."</p>
+
+    <p>Gaza is not a side effect of the Network State project. It is the flagship site &mdash; cleared, controlled, and ready for development by the same people who funded the clearing.</p>
+
+    <details class="deep-expand">
+      <summary>Deep Dive: Prospera, Honduras &mdash; the Network State already running</summary>
+      <div class="expand-content">
+        <p>The CEO of Prospera &mdash; a Silicon Valley-backed "special economic zone" in Honduras &mdash; published a 2018 blog post titled <em>"Lessons Learned from Israel, The Start-Up Nation."</em> It describes Israel's hostile neighbours as a <em>"blessing in disguise"</em> that forced resilience and innovation. The hostile neighbours were, in reality, the people whose land was taken.</p>
+        <div class="pull">"A few lessons can be gleaned from Israel's economic miracle: fiscal austerity, the lightest regulatory burden possible, state-backed venture funds for new jurisdictions..." &mdash; Prospera CEO Erick Briman, 2018</div>
+        <p>Prospera demonstrates how the Network State model is materially built on Israel's founding violence &mdash; and is already scaling globally. Gaza is the next iteration.</p>
+        <p class="src">Source: <a href="https://archive.ph/xAsSy" target="_blank">Briman blog post (archived)</a></p>
+      </div>
+    </details>
+
+    <details class="deep-expand">
+      <summary>Resources: What people are tracking</summary>
+      <div class="expand-content">
+        <p><strong><a href="https://techforpalestine.org/" target="_blank">Tech for Palestine</a></strong> &mdash; tracks VCs complicit in the genocide, maintained on <a href="https://github.com/TechForPalestine/antipalestinian-vc-funds/blob/main/README.md" target="_blank">GitHub</a>.</p>
+        <p><strong><a href="https://archive.ph/gtxuK" target="_blank">Genocide.VC</a></strong> &mdash; documents VC complicity, archived.</p>
+        <p><strong><a href="https://startupnationcentral.org/" target="_blank">Startup Nation Central</a></strong> &mdash; Israel's own tech tracker. Annual reports are primary sources for all investment figures in this guide.</p>
+        <p><strong><a href="https://citizenlab.ca/" target="_blank">Citizen Lab, University of Toronto</a></strong> &mdash; primary forensic research organisation documenting Israeli spyware deployments globally.</p>
+        <p><strong><a href="https://legislation.palestinelegal.org/" target="_blank">Palestine Legal: Legislation tracker</a></strong> &mdash; tracks anti-BDS laws and speech suppression legislation in the US.</p>
+      </div>
+    </details>
+
+    <div class="final-quote">
+      <blockquote>"Who is funding it. What they built. How they are watching you. What they are planning to build next. Now you know."</blockquote>
+    </div>
+
+    <div class="callout">
+      <strong>What this guide is.</strong> A compilation of venture capital investments, corporate statements, government contracts, and court findings &mdash; sourced from the investors' own filings, the firms' own press releases, forensic researchers, and the courts that ruled against them. The evidence is theirs. The conclusions are yours.
+    </div>
+
+    <hr class="divider">
+
+    <p style="font-size:.88rem; color: var(--muted);">This is Part 5. The companion guides examine the economic system, the global extraction, the full history of Palestine, and the deception that holds it together.</p>
+
+    <div class="btn-group">
+      <button class="btn btn-ext" onclick="window.open('palestine-guide.html','_blank')">Part 3: Palestine &mdash; the full history</button>
+      <button class="btn btn-ext" onclick="window.open('deception-guide.html','_blank')">Part 4: The Deception &mdash; what governments hid</button>
+      <button class="btn btn-ext" onclick="window.open('imperialism-guide.html','_blank')">Part 2: Where Did the Wealth Go?</button>
+      <button class="btn btn-ext" onclick="window.open('communist-theory-interactive.html','_blank')">Part 1: How Capitalism Works &mdash; the engine</button>
+      <button class="btn btn-back" onclick="go('start')" style="text-align:center;">Start this guide over</button>
+    </div>
+
+    <div class="spacer"></div>
+  </div>
+
+</div>
+
+<script>
+  const progressMap = {
+    start:0, s1:14, s2:28, s3:42, s4:57, s5:71, s6:85, s7:100
+  };
+  const visited = new Set(['start']);
+  let current = 'start';
+
+  function go(id) {
+    document.querySelectorAll('.passage').forEach(p => p.classList.remove('active'));
+    const el = document.getElementById('passage-' + id);
+    if (!el) return;
+    el.classList.add('active');
+    current = id;
+    visited.add(id);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    updateNav();
+  }
+
+  function updateNav() {
+    const pct = progressMap[current] ?? 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.querySelectorAll('.nav-stop[data-passage]').forEach(btn => {
+      const p = btn.dataset.passage;
+      btn.classList.remove('current', 'visited');
+      if (p === current) btn.classList.add('current');
+      else if (visited.has(p)) btn.classList.add('visited');
+    });
+  }
+
+  updateNav();
+</script>
+</body>
+</html>
