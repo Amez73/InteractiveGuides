@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Deception — What Western Governments Hid From Their Own People</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #0B0D10;
+    --surface:  #111418;
+    --border:   #1E2430;
+    --steel:    #5A8AAA;
+    --steel-dim:#2E4858;
+    --warn:     #C07040;
+    --text:     #D8DDE4;
+    --muted:    #606878;
+    --track:    #141820;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  #app { max-width: 680px; margin: 0 auto; padding: 0 1.25rem; }
+
+  .passage { display: none; padding: 3rem 0 5rem; animation: fadeIn .35s ease; }
+  .passage.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; } }
+
+  /* ── Progress ── */
+  #progress-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 3px; background: var(--border); }
+  #progress-fill { height: 100%; background: var(--steel); transition: width .4s ease; }
+
+  /* ── Nav ── */
+  #station-nav {
+    position: fixed; top: 3px; left: 0; right: 0; z-index: 99;
+    background: rgba(11,13,16,.94); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    gap: .5rem; padding: .55rem 1rem;
+    font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+    font-weight: 500; color: var(--muted); flex-wrap: wrap;
+  }
+  .nav-stop { cursor: pointer; padding: .2rem .55rem; border-radius: 2rem; transition: color .2s, background .2s; white-space: nowrap; }
+  .nav-stop:hover { color: var(--text); }
+  .nav-stop.visited { color: var(--muted); }
+  .nav-stop.current { color: var(--steel); background: rgba(90,138,170,.12); }
+  .nav-sep { color: var(--border); }
+
+  /* ── Typography ── */
+  .eyebrow { font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--steel); margin-bottom: .9rem; }
+  h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; margin-bottom: 1.5rem; color: var(--text); }
+  h1 em { font-style: italic; color: var(--steel); }
+  h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.5rem, 4vw, 2rem); line-height: 1.2; margin-bottom: 1.2rem; }
+  p { margin-bottom: 1.15rem; color: #B0B8C4; }
+  p:last-of-type { margin-bottom: 0; }
+  strong { color: var(--text); font-weight: 600; }
+
+  /* ── Page hook ── */
+  .page-hook {
+    border-left: 3px solid var(--steel);
+    padding: .6rem 1.2rem; margin: 0 0 1.8rem;
+    font-size: 1.05rem; line-height: 1.6;
+    color: #C0C8D0;
+  }
+
+  /* ── Pull quote ── */
+  .pull {
+    border-left: 3px solid var(--steel-dim);
+    padding: .6rem 1.2rem; margin: 1.8rem 0;
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.15rem; font-style: italic;
+    color: #8A9AAA; line-height: 1.5;
+  }
+
+  /* ── Callout ── */
+  .callout {
+    background: rgba(90,138,170,.07); border: 1px solid rgba(90,138,170,.22);
+    border-radius: 6px; padding: 1.1rem 1.4rem; margin: 1.6rem 0;
+    font-size: .93rem; color: #90A0B0;
+  }
+  .callout strong { color: var(--steel); }
+
+  .callout.dark {
+    background: rgba(192,112,64,.07); border-color: rgba(192,112,64,.25);
+    color: #B0A090;
+  }
+  .callout.dark strong { color: var(--warn); }
+
+  .callout.warn {
+    background: rgba(192,112,64,.07); border-color: rgba(192,112,64,.25);
+    color: #B0A090;
+  }
+  .callout.warn strong { color: var(--warn); }
+
+  .callout.frame {
+    background: rgba(90,138,170,.05); border-color: rgba(90,138,170,.18);
+    color: #8A98A8;
+  }
+  .callout.frame strong { color: var(--steel); }
+
+  /* ── Math / data block ── */
+  .math-block {
+    background: var(--track); border: 1px solid var(--border);
+    border-left: 3px solid var(--steel); border-radius: 6px;
+    padding: 1.4rem 1.6rem; margin: 1.8rem 0; font-size: .93rem;
+  }
+  .math-block .label { font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--steel); margin-bottom: .9rem; }
+  .math-row { display: flex; justify-content: space-between; align-items: baseline; padding: .35rem 0; border-bottom: 1px solid var(--border); gap: 1rem; }
+  .math-row:last-child { border-bottom: none; }
+  .math-row .desc { color: #7A8490; font-size: .88rem; }
+  .math-row .val { font-weight: 600; white-space: nowrap; }
+  .math-row .val.pos { color: #6BCB77; }
+  .math-row .val.neg { color: #D07070; }
+  .math-row .val.gap { color: var(--steel); }
+
+  /* ── Stat grid ── */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: .85rem; margin: 1.8rem 0; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1.2rem 1.3rem; }
+  .stat-number { font-family: 'DM Serif Display', serif; font-size: 2rem; line-height: 1; color: var(--steel); margin-bottom: .3rem; }
+  .stat-label { font-size: .82rem; color: var(--muted); line-height: 1.45; margin: 0; }
+  .stat-source { font-size: .68rem; color: #2A3440; margin-top: .4rem; margin-bottom: 0; }
+
+  /* ── Timeline ── */
+  .timeline { margin-top: 1.8rem; position: relative; padding-left: 1.6rem; }
+  .timeline::before { content: ''; position: absolute; left: 0; top: .5rem; bottom: .5rem; width: 2px; background: var(--border); }
+  .t-item { position: relative; margin-bottom: 2rem; }
+  .t-item::before { content: ''; position: absolute; left: -1.75rem; top: .45rem; width: 10px; height: 10px; border-radius: 50%; background: var(--steel); border: 2px solid var(--bg); box-shadow: 0 0 0 2px var(--steel); }
+  .t-item.red::before { background: var(--warn); box-shadow: 0 0 0 2px var(--warn); }
+  .t-year { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--steel); margin-bottom: .25rem; }
+  .t-title { font-weight: 700; margin-bottom: .3rem; color: var(--text); }
+  .t-desc { font-size: .93rem; color: var(--muted); line-height: 1.6; }
+  .t-desc strong { color: #A0AAB4; }
+
+  /* ── Claim cards (collapsible) ── */
+  .claim-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; margin: 1rem 0; overflow: hidden; }
+  .claim-card summary { padding: 1rem 1.3rem; cursor: pointer; list-style: none; display: flex; align-items: baseline; gap: .6rem; font-weight: 600; color: var(--text); font-size: .95rem; }
+  .claim-card summary::-webkit-details-marker { display: none; }
+  .claim-card summary::before { content: '▸'; color: var(--steel); font-size: .85rem; transition: transform .2s; flex-shrink: 0; }
+  .claim-card[open] summary::before { transform: rotate(90deg); }
+  .claim-card .claim-body { padding: 0 1.3rem 1.2rem; font-size: .91rem; color: #8A94A0; line-height: 1.7; }
+  .claim-card .claim-body p { margin-bottom: .8rem; }
+  .claim-blurb { font-size: .82rem; color: var(--muted); font-weight: 400; margin-left: .3rem; }
+
+  /* ── Dive banner ── */
+  .dive-banner { display: flex; align-items: center; gap: .8rem; background: rgba(90,138,170,.08); border: 1px solid rgba(90,138,170,.2); border-radius: 6px; padding: .7rem 1.1rem; margin-bottom: 2rem; font-size: .82rem; color: var(--steel); font-weight: 500; letter-spacing: .04em; }
+  .dive-banner::before { content: '◆'; font-size: .65rem; }
+
+  /* ── Buttons ── */
+  .btn-group { display: flex; flex-direction: column; gap: .75rem; margin-top: 2.5rem; }
+  .btn { display: block; width: 100%; padding: .95rem 1.4rem; border-radius: 6px; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: .95rem; font-weight: 500; text-align: left; transition: background .18s, transform .1s; position: relative; }
+  .btn:active { transform: scale(.99); }
+  .btn-primary { background: var(--steel); color: #0B0D10; }
+  .btn-primary:hover { background: #6A9ABA; }
+  .btn-primary::after { content: '→'; position: absolute; right: 1.2rem; top: 50%; transform: translateY(-50%); opacity: .6; }
+  .btn-dive { background: var(--track); color: var(--text); border: 1px solid var(--border); }
+  .btn-dive:hover { background: #1E2430; border-color: #2A3440; }
+  .btn-dive::before { content: '↳ '; color: var(--steel); }
+  .btn-back { background: transparent; color: var(--muted); border: 1px solid var(--border); font-size: .87rem; }
+  .btn-back:hover { color: var(--text); border-color: #444; }
+  .btn-back::before { content: '← '; }
+  .btn-ext { background: rgba(90,138,170,.1); color: var(--steel); border: 1px solid rgba(90,138,170,.3); font-size: .9rem; }
+  .btn-ext:hover { background: rgba(90,138,170,.18); }
+  .btn-ext::after { content: ' ↗'; position: absolute; right: 1.2rem; top: 50%; transform: translateY(-50%); opacity: .7; }
+
+  /* ── Track preview ── */
+  .track-preview { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem 1.4rem; margin: 2rem 0; }
+  .tp-label { font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 600; color: var(--muted); margin-bottom: 1rem; }
+  .track-line { display: flex; align-items: center; flex-wrap: wrap; gap: .3rem; font-size: .82rem; }
+  .track-stop { background: var(--track); border: 1px solid var(--border); border-radius: 3px; padding: .25rem .65rem; color: var(--muted); white-space: nowrap; }
+  .track-stop.main { color: var(--text); border-color: #2A3440; }
+  .track-conn { color: var(--border); font-size: .8rem; }
+
+  /* ── Divider ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+  .spacer { height: 4rem; }
+  .subtitle { font-size: 1.1rem; color: var(--muted); margin-bottom: 2.5rem; font-weight: 300; line-height: 1.6; }
+
+  /* ── Final quote ── */
+  .final-quote { text-align: center; padding: 2.5rem 1rem; border: 1px solid var(--border); border-radius: 8px; margin: 2rem 0; background: var(--surface); }
+  .final-quote blockquote { font-family: 'DM Serif Display', serif; font-size: clamp(1.1rem, 3vw, 1.4rem); font-style: italic; color: var(--text); line-height: 1.6; margin-bottom: .8rem; }
+  .final-quote cite { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-style: normal; }
+
+  /* ── Companion badge ── */
+  .companion-badge {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: rgba(90,138,170,.1); border: 1px solid rgba(90,138,170,.25);
+    border-radius: 3px; padding: .3rem .8rem;
+    font-size: .72rem; font-weight: 600; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--steel); margin-bottom: 1.5rem;
+  }
+  .companion-badge::before { content: '◈'; }
+
+  /* ── Verdict / lesson box ── */
+  .sc-lesson { background: rgba(90,138,170,.07); border: 1px solid rgba(90,138,170,.2); border-radius: 5px; padding: .9rem 1rem; margin-top: 1rem; font-size: .87rem; color: #90A0B0; }
+  .sc-lesson strong { color: var(--steel); }
+
+  .sc-lesson.warn { background: rgba(192,112,64,.07); border-color: rgba(192,112,64,.2); color: #B0A090; }
+  .sc-lesson.warn strong { color: var(--warn); }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"><div id="progress-fill" style="width:0%"></div></div>
+
+<nav id="station-nav">
+  <span class="nav-stop current" data-passage="start" onclick="go('start')">Intro</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s1" onclick="go('s1')">The Pattern</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s2" onclick="go('s2')">The Wars</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s3" onclick="go('s3')">The Programs</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s4" onclick="go('s4')">The Crackdown</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s5" onclick="go('s5')">The Surveillance</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s6" onclick="go('s6')">The Cover-Ups</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s7" onclick="go('s7')">The Present</span>
+</nav>
+
+<div id="app">
+
+  <!-- ══ START ══ -->
+  <div class="passage active" id="passage-start">
+    <div style="padding-top:4rem;">
+      <div class="companion-badge">Companion Guide · Part 4</div>
+      <h1>The Deception — What Western Governments <em>Hid</em> From Their Own People</h1>
+      <p class="subtitle">A documented record of lies, secret programs, and cover-ups — sourced from declassified files, congressional investigations, and the governments' own admissions.</p>
+
+      <div class="track-preview">
+        <p class="tp-label">Your route</p>
+        <div class="track-line">
+          <span class="track-stop main">The Pattern</span>
+          <span class="track-conn">──▶</span>
+          <span class="track-stop main">The Wars</span>
+          <span class="track-conn">──▶</span>
+          <span class="track-stop main">The Programs</span>
+          <span class="track-conn">──▶</span>
+          <span class="track-stop main">The Crackdown</span>
+          <span class="track-conn">──▶</span>
+          <span class="track-stop main">The Surveillance</span>
+          <span class="track-conn">──▶</span>
+          <span class="track-stop main">The Cover-Ups</span>
+          <span class="track-conn">──▶</span>
+          <span class="track-stop main">The Present</span>
+        </div>
+        <p style="font-size:.8rem;color:var(--muted);margin-top:.9rem;margin-bottom:0;">Each station has optional <span style="color:var(--steel)">◆ Deep Dives</span> into specific cases.</p>
+      </div>
+
+      <p>Every generation discovers that the previous generation was lied to by its government. Every generation is shocked. And every generation assumes it isn't happening to them.</p>
+
+      <p>This guide is not conspiracy theory. <strong>Everything in the main track is sourced from declassified government documents, official investigations, congressional testimony, or formal government admissions.</strong> These are things Western governments actually did, actually lied about, and — usually decades later — actually confirmed.</p>
+
+      <p>The question this guide asks is simple: if the pattern has repeated every single decade since the 1940s, with the same institutions, the same secrecy infrastructure, and the same incentive structures — <strong>what reason is there to believe it stopped?</strong></p>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="go('s1')">Station 1: The Pattern — the 30-year cycle of deny, classify, confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ STATION 1: THE PATTERN ══ -->
+  <div class="passage" id="passage-s1">
+    <p class="eyebrow">Station 1 of 7</p>
+    <h2>The Pattern — Deny, Classify, Confirm</h2>
+
+    <p class="page-hook"><strong>Western governments lie to their own citizens, get caught decades later, and face no consequences.</strong> This has happened so many times that it isn't a series of exceptions — it's the system working as designed.</p>
+
+    <p>Here is the pattern. It has repeated with remarkable consistency since at least the 1940s:</p>
+
+    <p><strong>Step 1:</strong> A government agency runs a secret program — an illegal experiment, a covert operation, a mass surveillance system, a fabricated justification for war.</p>
+
+    <p><strong>Step 2:</strong> Anyone who suggests this is happening is dismissed as a conspiracy theorist, a paranoid, or a threat to national security.</p>
+
+    <p><strong>Step 3:</strong> Decades later, the documents are declassified, a congressional investigation reveals the truth, or a whistleblower provides proof. The government admits it happened.</p>
+
+    <p><strong>Step 4:</strong> There are no meaningful consequences. The officials responsible have retired or died. The public expresses brief shock. The institutions that ran the program continue to operate with the same powers, the same secrecy, and the same lack of oversight.</p>
+
+    <p><strong>Step 5:</strong> The cycle begins again.</p>
+
+    <div class="math-block">
+      <p class="label">The declassification lag — how long the lies held</p>
+      <div class="math-row"><span class="desc">MKUltra (CIA mind control experiments)</span><span class="val gap">Ran 1953–73 · Exposed 1975 · <strong>22 years</strong></span></div>
+      <div class="math-row"><span class="desc">Gulf of Tonkin (fabricated attack)</span><span class="val gap">Fabricated 1964 · Confirmed 2005 · <strong>41 years</strong></span></div>
+      <div class="math-row"><span class="desc">COINTELPRO (FBI vs. civil rights)</span><span class="val gap">Ran 1956–71 · Exposed 1971 · <strong>15 years</strong></span></div>
+      <div class="math-row"><span class="desc">Tuskegee (denied treatment to Black men)</span><span class="val gap">Ran 1932–72 · Exposed 1972 · <strong>40 years</strong></span></div>
+      <div class="math-row"><span class="desc">NSA mass surveillance</span><span class="val gap">Expanded 2001 · Exposed 2013 · <strong>12 years</strong></span></div>
+      <div class="math-row"><span class="desc">Iraq WMDs (fabricated intelligence)</span><span class="val gap">Presented 2003 · Confirmed false 2004 · <strong>1 year</strong></span></div>
+      <div class="math-row"><span class="desc">Guatemala syphilis experiments</span><span class="val gap">Ran 1946–48 · Discovered 2010 · <strong>62 years</strong></span></div>
+    </div>
+
+    <p>The average lag is roughly 20–40 years. The median is about 25. That means if a comparable program started in the year 2000, you'd expect to learn about it sometime between 2020 and 2040. If it started after 9/11, the window is 2025–2055.</p>
+
+    <p>This isn't speculation. It's just arithmetic applied to the documented historical pattern.</p>
+
+    <div class="callout frame">
+      <strong>What this guide is and isn't.</strong> This is a compilation of confirmed, documented cases — sourced from the governments' own records. It is not a claim that every conspiracy theory is true, that governments are uniquely evil compared to other institutions, or that individual government employees are bad people. The argument is structural: institutions with the power to act in secret, the incentive to deceive, and no meaningful accountability for deception will deceive. They always have. The record is the evidence.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="go('s2')">Station 2: The Wars — lies told to send people to die</button>
+    </div>
+  </div>
+
+  <!-- ══ STATION 2: THE WARS THEY SOLD ══ -->
+  <div class="passage" id="passage-s2">
+    <p class="eyebrow">Station 2 of 7</p>
+    <h2>The Wars They Sold</h2>
+
+    <p class="page-hook"><strong>Western governments fabricated evidence, staged incidents, and manipulated media to manufacture public consent for wars that killed millions.</strong> This is not interpretation — it is what their own investigations concluded.</p>
+
+    <p>War requires public support in democracies. When the public wouldn't support a war on its actual merits, governments manufactured the case. In every example below, the fabrication has been confirmed by official investigations, declassified documents, or the governments' own subsequent admissions.</p>
+
+    <div class="timeline">
+      <div class="t-item red">
+        <p class="t-year">1964 — Gulf of Tonkin</p>
+        <p class="t-title">The Incident That Didn't Happen</p>
+        <p class="t-desc">On August 4, 1964, the Johnson administration told Congress that North Vietnamese torpedo boats had launched a second unprovoked attack on the USS Maddox in the Gulf of Tonkin. Congress passed the Gulf of Tonkin Resolution, authorizing military force in Vietnam. <strong>The second attack did not happen.</strong> The NSA's own internal history, declassified in 2005, confirmed that signals intelligence was deliberately misrepresented. NSA historian Robert Hanyok found that NSA officers had "icherry-picked" and falsified intercepts to support the administration's account. The resolution led to a war that killed 58,000 Americans and an estimated 2–3 million Vietnamese. <strong>Source:</strong> Robert Hanyok, NSA declassified report (2005); Senate Foreign Relations Committee hearings.</p>
+      </div>
+      <div class="t-item red">
+        <p class="t-year">1990 — The Nayirah Testimony</p>
+        <p class="t-title">The Girl Who Wasn't a Witness</p>
+        <p class="t-desc">On October 10, 1990, a 15-year-old girl identified only as "Nayirah" testified before the Congressional Human Rights Caucus that she had witnessed Iraqi soldiers removing babies from incubators in a Kuwaiti hospital and leaving them to die on the floor. Her testimony was cited by six US senators as their reason for voting to authorize the Gulf War. President George H.W. Bush repeated the incubator story at least ten times in the following weeks. <strong>It was a fabrication.</strong> "Nayirah" was Nayirah al-Ṣabaḥ, daughter of the Kuwaiti ambassador to the United States. Her testimony was coached and organized by Hill &amp; Knowlton, a US public relations firm hired by the Kuwaiti government-in-exile for $10.8 million. Amnesty International initially corroborated the claims, then retracted. <strong>Source:</strong> John MacArthur, <em>Second Front: Censorship and Propaganda in the 1991 Gulf War</em> (2004); CBC <em>Fifth Estate</em> investigation.</p>
+      </div>
+      <div class="t-item red">
+        <p class="t-year">2002–2003 — Iraq WMDs</p>
+        <p class="t-title">The Weapons That Didn't Exist</p>
+        <p class="t-desc">The US and UK governments claimed Iraq possessed weapons of mass destruction and posed an imminent threat. On February 5, 2003, Secretary of State Colin Powell presented evidence to the UN Security Council — satellite photos, intercepted communications, diagrams of mobile weapons labs. <strong>The evidence was fabricated or based on sources the intelligence community had already flagged as unreliable.</strong> The key human source, an Iraqi defector codenamed "Curveball," had been assessed as a fabricator by Germany's BND intelligence service, which warned the CIA. No WMDs were found. The Iraq War killed an estimated 200,000–600,000+ Iraqi civilians and 4,600 US soldiers. Colin Powell later called his UN presentation "a blot" on his record. <strong>Source:</strong> Senate Intelligence Committee Report on Pre-War Intelligence (2004); Chilcot Report (UK, 2016); Duelfer/ISG Final Report (2004).</p>
+      </div>
+      <div class="t-item red">
+        <p class="t-year">2011 — Libya</p>
+        <p class="t-title">The Humanitarian War That Wasn't</p>
+        <p class="t-desc">The NATO intervention in Libya was sold as preventing an imminent massacre in Benghazi. Gaddafi's forces were accused of mass rape and distributing Viagra to soldiers as a weapon of war. Hillary Clinton cited the Viagra claim publicly. <strong>Investigations by Amnesty International, Human Rights Watch, and a UN commission found no evidence of mass rape or Viagra distribution.</strong> The UK Parliament's Foreign Affairs Committee concluded in 2016 that the threat to Benghazi civilians was "overstated," that the intervention was "not informed by accurate intelligence," and that the true driver was regime change, not civilian protection. The resulting collapse of Libya produced a migrant crisis, a civil war that continues to this day, and open-air slave markets documented by CNN in 2017. <strong>Source:</strong> UK House of Commons Foreign Affairs Committee, Third Report (2016); Amnesty International investigation (2011).</p>
+      </div>
+    </div>
+
+    <p><strong>The propaganda infrastructure.</strong> These lies didn't spread by accident. Two confirmed programs show how governments systematically shaped what their citizens believed:</p>
+
+    <details class="claim-card">
+      <summary>Operation Mockingbird — the CIA inside the newsroom <span class="claim-blurb">Confirmed by Church Committee, 1975</span></summary>
+      <div class="claim-body">
+        <p>Beginning in the early 1950s, the CIA cultivated relationships with major American news organizations and individual journalists to plant stories, shape coverage, and suppress reporting that conflicted with US foreign policy objectives. At its peak, the CIA had working relationships with over 400 journalists and 25 major news organizations, including CBS, Time, the New York Times, and the Washington Post.</p>
+        <p>The program was exposed by the Church Committee in 1975. CIA Director William Colby testified that the agency had "ichosen" journalists and provided them with information the CIA wanted published. Some journalists were paid; others cooperated voluntarily out of patriotic conviction or personal relationships with CIA officers.</p>
+        <p>The CIA officially ended Mockingbird in 1976 — though what replaced it, if anything, remains classified. The Church Committee's recommendation for a complete ban on CIA use of journalists was never implemented. The CIA's current policy allows the Director to waive the prohibition when deemed necessary.</p>
+        <p><strong>Source:</strong> Senate Church Committee, Final Report, Book I (1976); Carl Bernstein, "The CIA and the Media," <em>Rolling Stone</em> (1977).</p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>UK Information Research Department — Britain's propaganda arm <span class="claim-blurb">Declassified, National Archives</span></summary>
+      <div class="claim-body">
+        <p>The UK's Information Research Department (IRD) operated from 1948 to 1977 as a covert propaganda unit within the Foreign Office. The IRD planted stories with journalists, funded front organizations, and produced anti-communist and pro-British material for distribution through seemingly independent channels worldwide.</p>
+        <p>The IRD didn't just target foreign audiences. It planted stories in British domestic media, worked with BBC correspondents, and provided briefing materials to sympathetic journalists who published them as independent reporting. It also targeted the British left, trade unions, and anti-colonial movements.</p>
+        <p>Declassified files at the UK National Archives reveal the scope: the IRD maintained relationships with journalists at virtually every major British newspaper and worked to discredit political figures the government considered threats — including democratically elected leaders in countries seeking independence from British colonial control.</p>
+        <p><strong>Source:</strong> Paul Lashmar &amp; James Oliver, <em>Britain's Secret Propaganda War</em> (1998); UK National Archives, FCO files.</p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>NATO expansion promises — the assurances that were broken <span class="claim-blurb">Declassified 2017, National Security Archive</span></summary>
+      <div class="claim-body">
+        <p>In 1990, as negotiations over German reunification proceeded, Western leaders gave Soviet leader Mikhail Gorbachev explicit assurances that NATO would not expand eastward. US Secretary of State James Baker told Gorbachev on February 9, 1990, that NATO's jurisdiction would move "not one inch eastward." Similar assurances were given by West German Chancellor Helmut Kohl, British Foreign Secretary Douglas Hurd, and French President François Mitterrand.</p>
+        <p>These assurances were given verbally, not in the final treaty — which Western governments later used to claim no binding promise was made. But declassified documents from the National Security Archive at George Washington University, published in 2017, confirm the assurances were made clearly and repeatedly, across multiple meetings, by multiple Western leaders.</p>
+        <p>NATO subsequently expanded to include 14 former Warsaw Pact and Soviet states. This is not a justification for any subsequent military action by Russia — it is a documentation of the fact that Western leaders made assurances they did not keep, and then denied having made them.</p>
+        <p><strong>Source:</strong> National Security Archive, George Washington University, "NATO Expansion: What Gorbachev Heard" (2017); Mary Elise Sarotte, <em>Not One Inch</em> (2021).</p>
+      </div>
+    </details>
+
+    <div class="callout dark">
+      <strong>The cost of these lies is not abstract.</strong> The wars justified by fabricated evidence killed, conservatively, several million people. The soldiers sent to fight them were told they were defending their country against real threats. The populations who supported them were shown evidence they had no way to independently verify. The governments that fabricated the evidence faced no criminal consequences in any case.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-dive" onclick="go('dive_iraq')">◆ Deep Dive: The Iraq WMD fabrication — the full story</button>
+      <button class="btn btn-primary" onclick="go('s3')">Station 3: The Programs — what they did to their own citizens</button>
+    </div>
+  </div>
+
+  <!-- ══ DEEP DIVE: IRAQ WMDs ══ -->
+  <div class="passage" id="passage-dive_iraq">
+    <div class="dive-banner">Deep Dive — The Iraq WMD Fabrication</div>
+    <h2>The Most Consequential Lie of the 21st Century</h2>
+
+    <p>The case for invading Iraq in 2003 was built on three claims: that Iraq possessed weapons of mass destruction, that Iraq had connections to al-Qaeda, and that Iraq posed an imminent threat to the United States and its allies. All three were false. The intelligence community knew or should have known they were false. And the political leadership presented them as certainties.</p>
+
+    <p><strong>The "Curveball" source.</strong> The key evidence for Iraq's alleged biological weapons program came from a single human source — an Iraqi chemical engineer codenamed "Curveball" (Rafid Ahmed Alwan al-Janabi), who had defected to Germany in 1999. Curveball told Germany's BND intelligence service that Iraq had mobile biological weapons laboratories. The BND assessed him as unreliable and warned the CIA. The CIA's own Berlin station chief warned that Curveball had never been vetted. The Defense Intelligence Agency's own assessment flagged him as a fabricator. Despite these warnings, his claims became the centrepiece of Colin Powell's UN presentation.</p>
+
+    <p><strong>The aluminium tubes.</strong> The administration claimed Iraq was purchasing aluminium tubes for uranium enrichment centrifuges. The Department of Energy's nuclear experts — the people who actually build centrifuges — assessed that the tubes were unsuitable for centrifuges and were consistent with conventional rocket production. Their dissent was buried. The centrifuge claim was presented to the public as consensus.</p>
+
+    <p><strong>The Niger uranium.</strong> The claim that Iraq had sought to purchase uranium from Niger was based on forged documents — crudely forged, with wrong names and wrong dates. The International Atomic Energy Agency identified the forgeries within hours of receiving them. Former Ambassador Joseph Wilson, who had been sent to Niger to investigate, reported back that the claim was baseless. The administration used the claim anyway. When Wilson went public, administration officials leaked the identity of his wife, Valerie Plame, as a CIA officer — an act for which Vice Presidential Chief of Staff Scooter Libby was convicted of perjury and obstruction of justice.</p>
+
+    <p><strong>The al-Qaeda connection.</strong> The administration claimed operational links between Saddam Hussein and al-Qaeda. The CIA's own assessment was that no credible evidence supported this claim. The 9/11 Commission later confirmed there was no collaborative relationship. The claim was produced primarily by the Pentagon's Office of Special Plans, a unit created specifically to find intelligence supporting the case for war — bypassing the normal intelligence community vetting process.</p>
+
+    <div class="math-block">
+      <p class="label">What the investigations found</p>
+      <div class="math-row"><span class="desc">Senate Intelligence Committee (2004)</span><span class="val neg">Pre-war intelligence assessments were "not supported by the underlying intelligence"</span></div>
+      <div class="math-row"><span class="desc">Duelfer/ISG Report (2004)</span><span class="val neg">Iraq had no WMD stockpiles and no active programs</span></div>
+      <div class="math-row"><span class="desc">Chilcot Report, UK (2016)</span><span class="val neg">Intelligence was presented with "a certainty that was not justified"</span></div>
+      <div class="math-row"><span class="desc">Curveball admission (2011)</span><span class="val neg">Admitted to The Guardian he fabricated everything</span></div>
+    </div>
+
+    <p>In a 2011 interview with The Guardian, Curveball admitted he had fabricated his entire account. He said he was surprised anyone had taken him seriously enough to start a war.</p>
+
+    <p>The Iraq War killed an estimated 200,000–600,000+ Iraqi civilians (depending on methodology — the Lancet study estimated over 600,000 excess deaths by 2006; Iraq Body Count's confirmed documented deaths exceed 200,000). It killed 4,600 American soldiers. It cost over $2 trillion. It destabilized the entire region. And it was built on intelligence that the people presenting it knew, or had every reason to know, was false.</p>
+
+    <p>No one was prosecuted. No official was held accountable. The institutions that produced the fabrication continue to operate.</p>
+
+    <div class="btn-group">
+      <button class="btn btn-back" onclick="go('s2')">Back to Station 2</button>
+      <button class="btn btn-primary" onclick="go('s3')">Continue to Station 3 →</button>
+    </div>
+  </div>
+
+  <!-- ══ STATION 3: THE PROGRAMS ══ -->
+  <div class="passage" id="passage-s3">
+    <p class="eyebrow">Station 3 of 7</p>
+    <h2>The Programs — What They Did to Their Own Citizens</h2>
+
+    <p class="page-hook"><strong>Western governments used their own citizens as unwitting test subjects — drugging them, infecting them, irradiating them, and spraying them with biological agents.</strong> Every program listed here is confirmed by official government investigations or presidential apologies.</p>
+
+    <p>These aren't allegations. They're the documented record.</p>
+
+    <div class="timeline">
+      <div class="t-item red">
+        <p class="t-year">1932–1972 — Tuskegee, Alabama</p>
+        <p class="t-title">The US Public Health Service Syphilis Study</p>
+        <p class="t-desc">The US Public Health Service enrolled 399 Black men in Macon County, Alabama, telling them they were receiving free treatment for "bad blood." They were actually being studied to observe the untreated progression of syphilis. <strong>Treatment was deliberately withheld — even after penicillin became the standard cure in 1947.</strong> The study continued for 25 more years after effective treatment existed. Men died. Their wives contracted syphilis. Their children were born with congenital syphilis. The study was exposed by whistleblower Peter Buxtun and reporter Jean Heller of the Associated Press in 1972. President Clinton formally apologized in 1997. <strong>Source:</strong> CDC official acknowledgment; Presidential apology, May 16, 1997.</p>
+      </div>
+      <div class="t-item red">
+        <p class="t-year">1946–1948 — Guatemala</p>
+        <p class="t-title">US Government Syphilis Experiments</p>
+        <p class="t-desc">US government researchers, led by John Charles Cutler (who also worked on the Tuskegee study), <strong>deliberately infected</strong> at least 1,300 Guatemalan prisoners, soldiers, sex workers, and psychiatric patients with syphilis and gonorrhea — without their knowledge or consent. The program was designed to test whether penicillin could prevent sexually transmitted infections. It was discovered by historian Susan Reverby in 2010 while researching the Tuskegee records. President Obama personally called Guatemalan President Álvaro Colom to apologize. <strong>Source:</strong> Presidential Commission for the Study of Bioethical Issues, "Ethically Impossible" (2011).</p>
+      </div>
+      <div class="t-item red">
+        <p class="t-year">1953–1973 — United States and Canada</p>
+        <p class="t-title">Project MKUltra</p>
+        <p class="t-desc">The CIA conducted mind control experiments on unwitting American and Canadian citizens, including administering LSD, electroshock therapy, sensory deprivation, and psychological torture. Subjects included prisoners, mental patients, drug addicts, and members of the public recruited through front organizations. <strong>At least one death — CIA employee Frank Olson — is directly attributed to the program.</strong> CIA Director Richard Helms ordered all MKUltra files destroyed in 1973. Twenty thousand pages survived due to a misfiling in the financial records. <strong>Source:</strong> Senate Church Committee (1975); CIA Inspector General Report (1963, declassified 2001).</p>
+      </div>
+      <div class="t-item red">
+        <p class="t-year">1950 — San Francisco</p>
+        <p class="t-title">Operation Sea-Spray</p>
+        <p class="t-desc">The US Navy sprayed <em>Serratia marcescens</em> bacteria over San Francisco from a ship offshore to test the city's vulnerability to a biological weapon attack. The entire city of 800,000 people was exposed without knowledge or consent. Hospital records show a spike in pneumonia and urinary tract infections in the weeks following. At least one person — Edward Nevin — died from a <em>Serratia</em> infection consistent with the test. <strong>The military conducted similar open-air biological tests over New York City (subway system, 1966), Minneapolis, St. Louis, and other cities.</strong> <strong>Source:</strong> Senate Subcommittee on Health and Scientific Research (1977); Leonard Cole, <em>Clouds of Secrecy</em> (1988).</p>
+      </div>
+      <div class="t-item red">
+        <p class="t-year">1944–1974 — United States</p>
+        <p class="t-title">Radiation Experiments on US Citizens</p>
+        <p class="t-desc">The US government conducted radiation experiments on approximately 16,000 Americans. Researchers injected hospital patients with plutonium without their knowledge. They fed radioactive oatmeal to intellectually disabled children at the Fernald School in Massachusetts. They exposed prisoners to testicular radiation. They released radioactive particles over US cities, including St. Louis and Minneapolis, in Project SHAD and Operation LAC. Many subjects were selected because they were poor, institutionalized, or members of racial minorities — people with no power to refuse. The Advisory Committee on Human Radiation Experiments documented the full scope in 1994. President Clinton publicly apologized. <strong>Source:</strong> Advisory Committee on Human Radiation Experiments, Final Report (1995); Presidential apology, October 3, 1995.</p>
+      </div>
+    </div>
+
+    <div class="sc-lesson">
+      <strong>The common thread:</strong> In every case, the subjects were chosen because they had no power — prisoners, psychiatric patients, racial minorities, people in poverty, or entire populations who had no idea they were being tested on. The experiments were conducted by mainstream government agencies (the Public Health Service, the CIA, the military), approved through official channels, and hidden through standard classification procedures. These were not rogue operations. They were institutional programs.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-dive" onclick="go('dive_mkultra')">◆ Deep Dive: MKUltra — the CIA's mind control program</button>
+      <button class="btn btn-dive" onclick="go('dive_northwoods')">◆ Deep Dive: Operation Northwoods — the false flag the president rejected</button>
+      <button class="btn btn-primary" onclick="go('s4')">Station 4: The Crackdown — how the FBI targeted its own citizens</button>
+    </div>
+  </div>
+
+  <!-- ══ DEEP DIVE: MKULTRA ══ -->
+  <div class="passage" id="passage-dive_mkultra">
+    <div class="dive-banner">Deep Dive — Project MKUltra</div>
+    <h2>The CIA's Mind Control Program</h2>
+
+    <p>MKUltra is often cited as the most extreme example of a government program that was dismissed as conspiracy theory for years — until it was confirmed in every detail by the government's own documents.</p>
+
+    <p><strong>Origins.</strong> MKUltra was approved by CIA Director Allen Dulles on April 13, 1953. The stated goal was to develop techniques for mind control, interrogation, and behaviour modification that could be used against Cold War adversaries. The program was run by the CIA's Technical Services Staff, under the direction of Sidney Gottlieb.</p>
+
+    <p><strong>What they did.</strong> Over 150 individually funded research projects were conducted at universities, hospitals, prisons, and pharmaceutical companies across the US and Canada. Experiments included:</p>
+
+    <p>Administering LSD to unwitting subjects — including CIA employees, military personnel, prisoners, and members of the public — to observe the effects. Subjects were not told they had been drugged. Some experienced psychotic breaks.</p>
+
+    <p>Operation Midnight Climax: The CIA operated brothels in San Francisco and New York where sex workers, paid by the agency, lured clients. The clients were then dosed with LSD and observed through one-way mirrors by CIA agents. The program ran from 1954 to 1966.</p>
+
+    <p>Dr. Donald Ewen Cameron's experiments at McGill University in Montreal, funded by the CIA through a front organization, subjected psychiatric patients to "psychic driving" — weeks of drug-induced sleep combined with continuous audio loops and massive electroshock treatments — in an attempt to erase and reprogram their personalities. Patients suffered permanent psychological damage. The Canadian government settled with victims in 1992. A second settlement was reached in 2017.</p>
+
+    <p><strong>The cover-up.</strong> In 1973, incoming CIA Director James Schlesinger ordered an internal review of questionable CIA activities. Outgoing Technical Services chief Sidney Gottlieb and CIA Director Richard Helms ordered the destruction of all MKUltra files. The vast majority were destroyed. However, 20,000 pages survived because they had been misfiled in the CIA's financial records. These were discovered in 1977 through a Freedom of Information Act request by investigative journalist John Marks.</p>
+
+    <p><strong>The Frank Olson case.</strong> On November 28, 1953, CIA employee Frank Olson fell to his death from a 13th-floor hotel room window in New York. The CIA initially ruled it a suicide. In 1975, the Church Committee revealed that Olson had been dosed with LSD by his CIA colleagues nine days before his death, without his knowledge. The Olson family received a presidential apology from Gerald Ford and a financial settlement from the CIA. In 1994, a second autopsy revealed a previously undetected cranial injury consistent with a blow to the head before the fall. The case remains officially unresolved. The Olson family has alleged murder.</p>
+
+    <div class="callout dark">
+      <strong>What makes MKUltra significant beyond its horrors:</strong> For decades, anyone who claimed the CIA was drugging American citizens and conducting mind control experiments was dismissed as delusional. The program's existence was treated as absurd conspiracy theory. It was all true — and we only know about it because of a filing error that saved 20,000 pages from the shredder. The question of what was in the destroyed files has never been answered.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-back" onclick="go('s3')">Back to Station 3</button>
+      <button class="btn btn-dive" onclick="go('dive_northwoods')">◆ Next: Operation Northwoods</button>
+      <button class="btn btn-primary" onclick="go('s4')">Continue to Station 4 →</button>
+    </div>
+  </div>
+
+  <!-- ══ DEEP DIVE: NORTHWOODS ══ -->
+  <div class="passage" id="passage-dive_northwoods">
+    <div class="dive-banner">Deep Dive — Operation Northwoods</div>
+    <h2>The False Flag the President Rejected</h2>
+
+    <p>Operation Northwoods is significant not because it was carried out — it wasn't — but because it was officially proposed by the highest levels of the US military, written up in formal planning documents, and only stopped by the President of the United States personally rejecting it.</p>
+
+    <p><strong>The proposal.</strong> In March 1962, the Joint Chiefs of Staff — the most senior military leadership in the United States — submitted a formal proposal to Secretary of Defense Robert McNamara outlining a campaign of false-flag attacks designed to create a justification for a US military invasion of Cuba.</p>
+
+    <p>The proposed operations included:</p>
+
+    <p>Staging bombings against US military bases at Guantánamo Bay and blaming them on Cuban forces. Sinking a US Navy ship in Guantánamo Bay and blaming Cuba. Hijacking or shooting down civilian aircraft and attributing it to the Cuban government. Orchestrating a campaign of terror in Miami and other US cities — including bombings, shootings, and the sinking of refugee boats — to be blamed on Cuban agents. Creating fake "communist Cuban" groups to claim responsibility.</p>
+
+    <p>The proposal explicitly discussed the possibility of real US casualties as part of the operations, noting that "casualty lists in US newspapers would cause a helpful wave of national indignation."</p>
+
+    <p><strong>The rejection.</strong> President John F. Kennedy rejected the proposal. He removed General Lyman Lemnitzer as Chairman of the Joint Chiefs of Staff shortly afterward (though Lemnitzer was reassigned to become Supreme Allied Commander of NATO, not disciplined).</p>
+
+    <p><strong>The confirmation.</strong> The Northwoods documents were declassified in 2001 through a Freedom of Information Act request by James Bamford, who published them in his book <em>Body of Secrets</em>. The original documents are held at the National Archives. Their authenticity has never been disputed.</p>
+
+    <div class="sc-lesson warn">
+      <strong>Why Northwoods matters:</strong> It is documented proof that the most senior military officials in the United States formally proposed murdering American citizens in false-flag operations to manufacture a pretext for war. It was rejected — by one person. The institutional willingness to propose it, to write it up in official memoranda, to staff it through the chain of command — that willingness existed. The question of whether comparable proposals have been made since, and whether they were always rejected, cannot be answered from the public record.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-back" onclick="go('s3')">Back to Station 3</button>
+      <button class="btn btn-dive" onclick="go('dive_mkultra')">◆ Next: MKUltra</button>
+      <button class="btn btn-primary" onclick="go('s4')">Continue to Station 4 →</button>
+    </div>
+  </div>
+
+  <!-- ══ STATION 4: THE CRACKDOWN ══ -->
+  <div class="passage" id="passage-s4">
+    <p class="eyebrow">Station 4 of 7</p>
+    <h2>The Crackdown — When the Government Targeted Its Own Citizens</h2>
+
+    <p class="page-hook"><strong>The FBI ran a systematic, multi-decade campaign to surveil, infiltrate, discredit, and destroy domestic political movements — including the civil rights movement, the anti-war movement, and Black political organizations.</strong> This is confirmed by the FBI's own files, released through congressional investigation.</p>
+
+    <p><strong>COINTELPRO</strong> — the Counter Intelligence Program — operated from 1956 to 1971. Its targets were not foreign spies. They were American citizens exercising constitutionally protected rights to organize, protest, and advocate for political change.</p>
+
+    <p>The FBI targeted:</p>
+
+    <p>The Southern Christian Leadership Conference (Martin Luther King Jr.'s organization). The Black Panther Party. The American Indian Movement. The Communist Party USA. The Socialist Workers Party. The anti-Vietnam War movement. Student organizations. Feminist groups. The "New Left" broadly.</p>
+
+    <p><strong>The methods.</strong> These are documented in the FBI's own files, released through the Church Committee and subsequent FOIA requests:</p>
+
+    <details class="claim-card">
+      <summary>Infiltration and provocation <span class="claim-blurb">FBI's own internal memos confirm</span></summary>
+      <div class="claim-body">
+        <p>The FBI placed informants and agents provocateurs inside targeted organizations. These agents didn't just observe — they actively provoked conflict, encouraged illegal actions (which the FBI then used to justify arrests), fomented internal divisions, and in some cases acted as the primary instigators of violence that was then attributed to the organizations themselves.</p>
+        <p>The FBI's file on the Black Panther Party alone runs to over 200,000 pages. Internal memos show that the FBI deliberately worked to create conflict between the Panthers and other Black organizations, between Panther chapters, and between individual leaders — with the explicit goal of preventing the rise of what J. Edgar Hoover called a "Black messiah" who could "unify and electrify the militant Black nationalist movement."</p>
+        <p><strong>Source:</strong> Senate Church Committee, Book III: Supplementary Detailed Staff Reports on Intelligence Activities and the Rights of Americans (1976).</p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>The FBI's anonymous letter to Martin Luther King Jr. <span class="claim-blurb">Original held at National Archives</span></summary>
+      <div class="claim-body">
+        <p>In November 1964, the FBI sent Martin Luther King Jr. an anonymous letter — now known as the "suicide letter" — accompanied by recordings from wiretaps that J. Edgar Hoover had personally authorized on King's hotel rooms.</p>
+        <p>The letter called King "a colossal fraud and an evil, vicious one at that" and an "abnormal moral imbecile." It continued: "King, there is only one thing left for you to do. You know what it is… You are done. There is but one way out for you. You better take it before your filthy, abnormal fraudulent self is bared to the nation."</p>
+        <p>The letter was designed to drive King to suicide. It was sent 34 days before King was to receive the Nobel Peace Prize. The original letter is held at the National Archives. It was sent by the domestic intelligence division of the FBI — the chief law enforcement agency of the United States government.</p>
+        <p><strong>Source:</strong> Senate Church Committee Report, Book III (1976); Beverly Gage, "What an Uncensored Letter to M.L.K. Reveals," <em>New York Times Magazine</em> (2014); National Archives.</p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>The assassination of Fred Hampton <span class="claim-blurb">FBI involvement confirmed by federal investigation</span></summary>
+      <div class="claim-body">
+        <p>Fred Hampton was the 21-year-old chairman of the Illinois chapter of the Black Panther Party. He was an extraordinarily effective organizer who had built coalitions across racial lines — including with white working-class groups and Latino organizations — in what he called the Rainbow Coalition.</p>
+        <p>On December 4, 1969, at 4:45 AM, fourteen Chicago police officers conducted a raid on Hampton's apartment. Hampton was shot and killed in his bed. Fellow Panther Mark Clark was also killed. The police claimed they had come under fire. Physical evidence — 82–99 shots fired by police, one shot from a Panther weapon — contradicted their account.</p>
+        <p>FBI informant William O'Neal had provided the floor plan of Hampton's apartment to the FBI, which passed it to the Cook County State's Attorney's office. O'Neal had also drugged Hampton with secobarbital before the raid. Hampton was likely unconscious when he was killed.</p>
+        <p>A federal grand jury investigation, a civil rights lawsuit, and subsequent investigations confirmed the FBI's role in planning and enabling the raid. The city of Chicago, Cook County, and the federal government paid $1.85 million in a wrongful death settlement in 1982.</p>
+        <p><strong>Source:</strong> Jeffrey Haas, <em>The Assassination of Fred Hampton</em> (2009); federal civil rights investigation; Ibid. v. Hanrahan settlement (1982).</p>
+      </div>
+    </details>
+
+    <p><strong>The broader record.</strong> The Church Committee documented that COINTELPRO operations included sending anonymous letters to spouses of targets to destroy their marriages, planting false media stories to discredit organizations, getting targets fired from their jobs, having people wrongfully arrested, and — in the case of the Black Panther Party — creating conditions that led directly to violence and death.</p>
+
+    <div class="callout dark">
+      <strong>The timing matters.</strong> COINTELPRO was running at the same time the United States was publicly presenting itself as the defender of freedom against Soviet authoritarianism. The FBI was telling Americans that the threat to democracy came from communists abroad — while simultaneously conducting Soviet-style operations against American citizens at home. The irony was not lost on the Church Committee, which noted that "the Bureau conducted a sophisticated vigilante operation aimed squarely at preventing the exercise of First Amendment rights of speech and association."
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-dive" onclick="go('dive_cointelpro')">◆ Deep Dive: COINTELPRO and the Church Committee — the full scope</button>
+      <button class="btn btn-primary" onclick="go('s5')">Station 5: The Surveillance — the watching that never stopped</button>
+    </div>
+  </div>
+
+  <!-- ══ DEEP DIVE: COINTELPRO & CHURCH COMMITTEE ══ -->
+  <div class="passage" id="passage-dive_cointelpro">
+    <div class="dive-banner">Deep Dive — COINTELPRO &amp; the Church Committee</div>
+    <h2>What Congress Found When It Finally Looked</h2>
+
+    <p>COINTELPRO was exposed not through the normal oversight process — which had failed completely — but through a burglary. On March 8, 1971, a group calling itself the Citizens' Commission to Investigate the FBI broke into the FBI's office in Media, Pennsylvania, and stole over 1,000 classified documents. They mailed the documents to journalists. The documents revealed, for the first time, the existence and scope of COINTELPRO.</p>
+
+    <p>The burglars were never caught. Their identities were revealed voluntarily in 2014, when several participants went public in Betty Medsger's book <em>The Burglary</em>. They were ordinary citizens — a professor, a social worker, a cab driver — who had concluded that the only way to expose what the FBI was doing was to steal the evidence.</p>
+
+    <p><strong>The Church Committee.</strong> The stolen documents, combined with the Watergate scandal and investigative journalism by Seymour Hersh, led to the formation of the Senate Select Committee to Study Governmental Operations with Respect to Intelligence Activities — known as the Church Committee after its chairman, Senator Frank Church. The committee operated from 1975 to 1976.</p>
+
+    <p>What the Church Committee found went far beyond COINTELPRO. It documented:</p>
+
+    <div class="math-block">
+      <p class="label">Church Committee findings — confirmed by testimony and documents</p>
+      <div class="math-row"><span class="desc">CIA assassination plots against foreign leaders</span><span class="val neg">Castro, Lumumba, Trujillo, Diem, Schneider</span></div>
+      <div class="math-row"><span class="desc">FBI domestic surveillance files on Americans</span><span class="val neg">Over 500,000 intelligence files</span></div>
+      <div class="math-row"><span class="desc">Americans whose mail was illegally opened by CIA</span><span class="val neg">Over 215,000 letters intercepted</span></div>
+      <div class="math-row"><span class="desc">CIA domestic surveillance operations (illegal)</span><span class="val neg">Operation CHAOS — indexed 300,000 people</span></div>
+      <div class="math-row"><span class="desc">NSA warrantless surveillance program</span><span class="val neg">Operation SHAMROCK — all cable traffic</span></div>
+      <div class="math-row"><span class="desc">IRS used for political targeting</span><span class="val neg">Over 11,000 individuals and groups</span></div>
+    </div>
+
+    <p>The committee's final report concluded: <em>"Too many people have been spied upon by too many government agencies and too much information has been collected. The Government has often undertaken the secret surveillance of citizens on the basis of their political beliefs, even when those beliefs posed no threat of violence or illegal acts on behalf of a hostile foreign power."</em></p>
+
+    <p><strong>The reforms — and their erosion.</strong> The Church Committee led to the creation of the Foreign Intelligence Surveillance Act (FISA), the FISA Court, congressional intelligence oversight committees, and executive orders restricting domestic surveillance. These reforms were supposed to prevent a recurrence.</p>
+
+    <p>After September 11, 2001, most of these protections were circumvented or dismantled — through the PATRIOT Act, through secret FISA Court rulings that reinterpreted the law beyond recognition, and through programs that were simply conducted without legal authority and retroactively legalized when discovered. The surveillance state that the Church Committee tried to dismantle was rebuilt, larger and more capable than ever, within a generation.</p>
+
+    <div class="btn-group">
+      <button class="btn btn-back" onclick="go('s4')">Back to Station 4</button>
+      <button class="btn btn-primary" onclick="go('s5')">Continue to Station 5 →</button>
+    </div>
+  </div>
+
+  <!-- ══ STATION 5: THE SURVEILLANCE STATE ══ -->
+  <div class="passage" id="passage-s5">
+    <p class="eyebrow">Station 5 of 7</p>
+    <h2>The Surveillance — They Were Watching the Whole Time</h2>
+
+    <p class="page-hook"><strong>For over a decade, US and UK officials categorically denied the existence of mass domestic surveillance — including under oath to Congress. In 2013, Edward Snowden proved they were lying.</strong></p>
+
+    <p><strong>The denial.</strong> On March 12, 2013, Senator Ron Wyden asked Director of National Intelligence James Clapper a direct question during a public Senate Intelligence Committee hearing: "Does the NSA collect any type of data at all on millions or hundreds of millions of Americans?"</p>
+
+    <p>Clapper responded: "No, sir… not wittingly."</p>
+
+    <p>This was a lie. Clapper knew it was a lie. He later admitted it was a lie, calling it the "least untruthful" answer he could give in a public setting. He was never prosecuted for perjury.</p>
+
+    <p>Three months later, Edward Snowden — a 29-year-old NSA contractor — began releasing classified documents to journalists Glenn Greenwald, Laura Poitras, and Ewen MacAskill. The documents revealed the largest surveillance apparatus in human history.</p>
+
+    <p><strong>What Snowden revealed:</strong></p>
+
+    <details class="claim-card">
+      <summary>PRISM — direct access to tech company servers <span class="claim-blurb">Confirmed by declassified FISA Court orders</span></summary>
+      <div class="claim-body">
+        <p>The NSA had arrangements with Google, Facebook, Apple, Microsoft, Yahoo, and other major tech companies to access user data — emails, chats, stored files, photos, video calls, and social media activity. The companies initially denied participation; subsequent reporting and declassified FISA Court orders confirmed the program's existence and scope.</p>
+        <p><strong>Source:</strong> The Guardian, June 6, 2013; Washington Post, June 6, 2013; declassified FISA Court opinions.</p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>Bulk phone metadata collection — every call in America <span class="claim-blurb">Confirmed by declassified FISA Court order</span></summary>
+      <div class="claim-body">
+        <p>The NSA collected records of every phone call made in the United States — who called whom, when, for how long, and from where. Not the content of calls, but the metadata. A declassified FISA Court order showed Verizon was required to hand over all call records on an "ongoing, daily basis." Similar orders covered all major carriers. The program operated under a secret interpretation of Section 215 of the PATRIOT Act that the law's own author, Representative Jim Sensenbrenner, said was never intended.</p>
+        <p><strong>Source:</strong> The Guardian, June 5, 2013; declassified FISA Court order, April 25, 2013.</p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>XKeyscore — search anyone's internet activity <span class="claim-blurb">NSA training slides published</span></summary>
+      <div class="claim-body">
+        <p>XKeyscore was an NSA system that allowed analysts to search, with no prior authorization, the content of virtually any person's emails, browsing history, social media activity, and online chats. NSA training slides, published by The Guardian, showed the system's interface and capabilities. An analyst could enter a person's email address and read their communications in real time.</p>
+        <p><strong>Source:</strong> The Guardian, July 31, 2013; NSA training materials.</p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>Upstream collection and GCHQ Tempora — tapping the cables <span class="claim-blurb">Confirmed by published documents</span></summary>
+      <div class="claim-body">
+        <p>The NSA tapped directly into the fiber-optic cables carrying internet traffic — both domestically (at major switching points) and at undersea cable landing stations. Britain's GCHQ operated the Tempora program, which tapped over 200 fiber-optic cables and could store data for 30 days for retrospective analysis. GCHQ shared this data with the NSA, allowing each country to access the other's citizens' communications — circumventing domestic legal restrictions.</p>
+        <p><strong>Source:</strong> The Guardian, June 21, 2013; Edward Snowden archive.</p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>Five Eyes — the surveillance alliance <span class="claim-blurb">Confirmed by published agreements</span></summary>
+      <div class="claim-body">
+        <p>The Five Eyes alliance — the US, UK, Canada, Australia, and New Zealand — operates an intelligence-sharing arrangement dating to World War II. Under this arrangement, each country can conduct surveillance on the others' citizens and share the results, effectively circumventing domestic legal prohibitions on surveilling their own populations. A Canadian citizen's communications intercepted by the NSA can be shared with Canadian intelligence without triggering Canadian legal protections.</p>
+        <p><strong>Source:</strong> GCHQ documents published by The Guardian (2013); UKUSA Agreement (declassified 2010).</p>
+      </div>
+    </details>
+
+    <p><strong>The whistleblowers who came before.</strong> Snowden was not the first to try. NSA mathematicians William Binney and J. Kirk Wiebe, and senior NSA executive Thomas Drake, tried to report the surveillance through official channels — the NSA Inspector General, the Department of Defense Inspector General, and congressional intelligence committees. All three were investigated. Drake was charged under the Espionage Act. The charges were eventually dropped, but his career was destroyed. The message was clear: use the official channels, and you will be punished. Go public, and you become a fugitive.</p>
+
+    <p>Snowden, having watched what happened to his predecessors, went directly to journalists. He has lived in exile in Russia since 2013. He was charged under the Espionage Act, which does not allow a public interest defense — meaning he could not argue in court that the disclosures served the public good.</p>
+
+    <div class="callout dark">
+      <strong>The scale.</strong> The documents Snowden revealed described a surveillance system that collected, in the NSA's own words, "nearly everything a user does on the internet." The system operated for over a decade. It was denied under oath by the most senior intelligence official in the country. It was authorized by secret court rulings that reinterpreted public law in ways the law's own authors said were never intended. When it was exposed, no official was prosecuted for the illegal surveillance. The person who exposed it was charged with espionage.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-dive" onclick="go('dive_snowden')">◆ Deep Dive: The Snowden revelations — what was in the documents</button>
+      <button class="btn btn-primary" onclick="go('s6')">Station 6: The Cover-Ups — when governments protect corporate lies</button>
+    </div>
+  </div>
+
+  <!-- ══ DEEP DIVE: SNOWDEN ══ -->
+  <div class="passage" id="passage-dive_snowden">
+    <div class="dive-banner">Deep Dive — The Snowden Revelations</div>
+    <h2>What the Documents Actually Said</h2>
+
+    <p>The Snowden archive contained approximately 1.5 million classified documents. Only a fraction have been published. What follows are the programs whose existence has been confirmed by the published documents and, in many cases, subsequently acknowledged by the governments involved.</p>
+
+    <p><strong>Domestic collection beyond PRISM.</strong> Beyond the headline programs, the documents revealed that the NSA:</p>
+
+    <p>Collected the contact lists and address books of millions of email and instant messaging accounts worldwide — including American accounts. In a single day in 2012, the NSA collected 444,743 email address books from Yahoo, 105,068 from Hotmail, 82,857 from Facebook, 33,697 from Gmail, and 22,881 from other providers.</p>
+
+    <p>Intercepted and stored the content of virtually all text messages sent worldwide through a program called Dishfire. A related program called Prefer extracted location data, contact information, and financial transactions from the stored messages.</p>
+
+    <p>Worked to undermine encryption standards. The NSA's Bullrun program — and GCHQ's parallel Edgehill program — spent $250 million annually to insert vulnerabilities into commercial encryption products, covertly influence international encryption standards, and develop the capability to break widely used encryption protocols. This didn't just enable surveillance — it actively weakened the security infrastructure that protects banking, healthcare, and critical systems for everyone.</p>
+
+    <p><strong>Targeting allies.</strong> The documents revealed that the NSA surveilled the personal communications of allied heads of state, including German Chancellor Angela Merkel (whose personal mobile phone was tapped), Brazilian President Dilma Rousseff, and at least 35 other world leaders. When confronted, the US initially denied the surveillance, then acknowledged it, then promised to stop. Whether it stopped is unknown.</p>
+
+    <p><strong>Corporate complicity and resistance.</strong> The documents showed that some technology companies cooperated willingly with the NSA, while others were compelled through FISA Court orders that included gag provisions — companies were legally prohibited from revealing even the existence of the orders. Yahoo fought a FISA Court order in 2008 and lost; the court threatened the company with $250,000-per-day fines for non-compliance. After the revelations, several tech companies began implementing stronger encryption — a direct result of the Snowden disclosures.</p>
+
+    <div class="sc-lesson">
+      <strong>The structural question:</strong> The Snowden revelations confirmed that the post-Church Committee reforms — FISA, the FISA Court, congressional oversight committees — had failed to prevent exactly the kind of mass surveillance they were designed to prevent. The FISA Court approved virtually every government request (99.97% approval rate over its history). Congressional oversight committees were either not informed or chose not to act. The system of checks did not check.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-back" onclick="go('s5')">Back to Station 5</button>
+      <button class="btn btn-primary" onclick="go('s6')">Continue to Station 6 →</button>
+    </div>
+  </div>
+
+  <!-- ══ STATION 6: THE COVER-UPS ══ -->
+  <div class="passage" id="passage-s6">
+    <p class="eyebrow">Station 6 of 7</p>
+    <h2>The Cover-Ups — When Governments Protect Corporate Lies</h2>
+
+    <p class="page-hook"><strong>Some of the deadliest deceptions weren't run by intelligence agencies — they were run by corporations, with government agencies providing cover, looking the other way, or actively suppressing the evidence.</strong></p>
+
+    <p>In each case below, internal documents — released through litigation, whistleblowers, or investigative journalism — proved that the corporations knew. The question is why the regulatory agencies whose job was to protect the public failed to act for decades.</p>
+
+    <details class="claim-card">
+      <summary>Tobacco — they knew it caused cancer in the 1950s <span class="claim-blurb">Exposed by internal documents, 1990s litigation</span></summary>
+      <div class="claim-body">
+        <p>Internal tobacco industry documents, released through litigation in the 1990s, proved that cigarette manufacturers knew tobacco caused cancer as early as 1953. Their own research confirmed the link. Rather than disclosing this, the industry launched a decades-long campaign of manufactured doubt — funding fake research institutes, producing misleading studies, and publicly insisting the science was "unsettled."</p>
+        <p>In 1994, the CEOs of the seven largest tobacco companies testified under oath before Congress that they did not believe nicotine was addictive. Their own internal research had confirmed nicotine's addictiveness decades earlier.</p>
+        <p>The US Surgeon General didn't issue a definitive warning until 1964. Meaningful regulation didn't arrive until the 1990s. In the intervening decades, the government's failure to act — influenced by tobacco industry lobbying and campaign contributions — contributed to millions of preventable deaths. Smoking kills approximately 480,000 Americans annually.</p>
+        <p><strong>Source:</strong> Legacy Tobacco Documents Library (UCSF); Naomi Oreskes &amp; Erik M. Conway, <em>Merchants of Doubt</em> (2010); US v. Philip Morris (2006).</p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>Leaded gasoline — they poisoned a generation knowingly <span class="claim-blurb">Internal documents confirm knowledge from the 1920s</span></summary>
+      <div class="claim-body">
+        <p>When General Motors and Standard Oil began adding tetraethyl lead to gasoline in the 1920s, they already knew it was a neurotoxin. Workers at the manufacturing plant in Bayway, New Jersey, died or suffered severe neurological damage — the plant was nicknamed "the Looney Gas Building." The companies knew lead was dangerous. They added it to gasoline anyway because it was more profitable than alternative anti-knock compounds.</p>
+        <p>The lead industry created the Lead Industries Association and the Ethyl Corporation to lobby against regulation and manufacture doubt about lead's health effects. They funded researchers who produced misleading studies. When scientist Clair Patterson published evidence in the 1960s that environmental lead levels had risen dramatically since leaded gasoline's introduction, the industry attempted to destroy his career and cut his funding.</p>
+        <p>The US government allowed leaded gasoline for over 50 years despite mounting evidence of harm. An entire generation of children — particularly in low-income urban areas — suffered reduced IQ, developmental damage, and increased rates of behavioral problems and violence. Lead was not fully removed from US gasoline until 1996.</p>
+        <p><strong>Source:</strong> Gerald Markowitz &amp; David Rosner, <em>Deceit and Denial: The Deadly Politics of Industrial Pollution</em> (2002); Jamie Lincoln Kitman, "The Secret History of Lead," <em>The Nation</em> (2000).</p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>Exxon and climate change — they knew in 1977 <span class="claim-blurb">Exposed by InsideClimate News, 2015</span></summary>
+      <div class="claim-body">
+        <p>Exxon's own scientists documented the reality of human-caused climate change beginning in 1977. Internal documents show their climate projections were remarkably accurate — their models from the late 1970s and early 1980s closely match the actual warming trajectory observed decades later.</p>
+        <p>Rather than disclosing their findings or adjusting their business model, Exxon spent the next four decades funding climate denial. They provided money to think tanks (the Competitive Enterprise Institute, the Heartland Institute, the George C. Marshall Institute), lobbying organizations, and politicians who questioned the science their own company had confirmed. Exxon's public statements directly contradicted their internal research.</p>
+        <p>A 2017 peer-reviewed study by Geoffrey Supran and Naomi Oreskes in <em>Science</em> systematically compared Exxon's internal documents with their public communications and found a "ichlear discrepancy" — internally acknowledging climate change while publicly manufacturing doubt.</p>
+        <p><strong>Source:</strong> InsideClimate News, "Exxon: The Road Not Taken" (2015); Supran &amp; Oreskes, <em>Science</em> (2017); Los Angeles Times investigation (2015).</p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>PFAS "forever chemicals" — they knew for decades <span class="claim-blurb">Exposed through litigation, 2000s–present</span></summary>
+      <div class="claim-body">
+        <p>DuPont and 3M knew their PFAS chemicals (per- and polyfluoroalkyl substances — used in Teflon, Scotchgard, firefighting foam, and thousands of other products) were toxic and accumulating in human blood as early as the 1960s. Internal studies documented health risks including kidney and testicular cancer, thyroid disease, liver damage, and immune system suppression.</p>
+        <p>They concealed these findings from regulators and the public for decades. DuPont's own medical staff recommended removing female workers from PFAS production lines due to birth defect risks — but the company kept the findings internal. When DuPont dumped PFAS waste near its Parkersburg, West Virginia, plant, contaminating the drinking water of 70,000 people, it took a lawsuit by environmental attorney Robert Bilott and years of litigation to force disclosure of the internal studies.</p>
+        <p>PFAS are now found in the blood of approximately 98% of Americans and have been detected in drinking water supplies across the country. The EPA didn't begin serious regulation until the 2020s — more than 50 years after the companies knew their products were toxic and persistent.</p>
+        <p><strong>Source:</strong> Robert Bilott, <em>Exposure: Poisoned Water, Corporate Greed, and One Lawyer's Twenty-Year Battle Against DuPont</em> (2019); EPA PFAS Strategic Roadmap; C8 Science Panel findings.</p>
+      </div>
+    </details>
+
+    <div class="sc-lesson">
+      <strong>The structural pattern:</strong> In every case — tobacco, lead, climate, PFAS — the cycle is the same. The corporation knows. The corporation manufactures doubt. The regulatory agency either fails to investigate or is captured by industry influence through revolving-door hiring, lobbying, and campaign contributions. The public is told the product is safe. Decades later, internal documents prove otherwise. By then, the damage — cancer, neurological harm, environmental contamination, a destabilized climate — is done. The institutional incentives that produced this outcome have not changed.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="go('s7')">Station 7: The Present — what's likely happening now</button>
+    </div>
+  </div>
+
+  <!-- ══ STATION 7: THE PRESENT ══ -->
+  <div class="passage" id="passage-s7">
+    <p class="eyebrow">Station 7 of 7</p>
+    <h2>The Present — What the Pattern Predicts</h2>
+
+    <p class="page-hook"><strong>If the same institutions, with the same secrecy, the same incentive structures, and the same lack of accountability, are still operating — what reason is there to believe they stopped?</strong></p>
+
+    <p>This station is structured differently from the others. It separates three categories: <strong>documented and confirmed</strong> (things we know are happening now), <strong>evidence-based extrapolation</strong> (strong evidence but not yet confirmed at the level of declassified proof), and <strong>structural prediction</strong> (what the historical pattern suggests but cannot yet demonstrate). These categories are clearly labeled.</p>
+
+    <h2 style="font-size:1.3rem; margin-top:2.5rem; color:var(--steel);">Documented and Confirmed</h2>
+
+    <p>These are happening now and are supported by official investigations, confirmed reporting, or the government's own public records:</p>
+
+    <details class="claim-card">
+      <summary>Military social media manipulation <span class="claim-blurb">Confirmed by Pentagon contracts and investigations</span></summary>
+      <div class="claim-body">
+        <p>In 2011, The Guardian reported that the US military had contracted HBGary Federal to develop "sock puppet" software — tools for creating and managing fake online personas to spread pro-US messaging on social media platforms. The contract was part of Operation Earnest Voice, a US Central Command program for online influence operations.</p>
+        <p>In 2022, a Stanford Internet Observatory and Graphika investigation identified a network of fake social media accounts across Facebook, Twitter, and Instagram running pro-US influence operations in the Middle East and Central Asia. Meta and Twitter removed the accounts. The campaign used fake personas to promote pro-Western narratives and criticize US adversaries — the same playbook Western governments had accused Russia and China of using.</p>
+        <p><strong>Source:</strong> The Guardian, "Revealed: US Spy Operation That Manipulates Social Media" (2011); Stanford Internet Observatory, "Unheard Voice" (2022); Meta Adversarial Threat Report (2022).</p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>Drone strike civilian casualty undercounting <span class="claim-blurb">Confirmed by NYT investigation, 2021</span></summary>
+      <div class="claim-body">
+        <p>In December 2021, The New York Times published "The Civilian Casualty Files" — an investigation based on over 1,300 confidential Pentagon documents covering US airstrikes in Iraq, Syria, and Afghanistan. The investigation found that the US military systematically undercounted civilian deaths from drone strikes and airstrikes, used faulty intelligence to select targets, and almost never held anyone accountable for erroneous strikes that killed civilians.</p>
+        <p>The Pentagon's own assessments acknowledged only a fraction of the civilian deaths documented by independent organizations. In many cases, initial reports of "enemies killed in action" were later found to have been civilians — but the records were never corrected and no disciplinary action was taken.</p>
+        <p><strong>Source:</strong> The New York Times, "The Civilian Casualty Files" (2021); Airwars (independent monitoring organization).</p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>Surveillance of protest movements <span class="claim-blurb">Confirmed by DHS/FBI documents, FOIA releases</span></summary>
+      <div class="claim-body">
+        <p>Documents obtained through FOIA requests and investigative reporting have confirmed that the FBI and Department of Homeland Security monitored Black Lives Matter protests and organizers. The FBI created a domestic threat category called "Black Identity Extremism" in 2017 (later renamed "Racially Motivated Violent Extremism") that civil liberties organizations argued was used to justify surveillance of Black political activism — echoing the COINTELPRO-era category of "Black Nationalist Hate Groups."</p>
+        <p>Fusion centers — intelligence-sharing hubs connecting federal, state, and local law enforcement — have been documented monitoring protest activity, environmental activism, and political organizing. A 2012 Senate investigation found that fusion centers produced "intelligence" reports on lawful political activity, including monitoring anti-war protesters and tracking the movements of Ron Paul supporters.</p>
+        <p><strong>Source:</strong> The Intercept, "The FBI's New U.S. Terrorist Threat" (2017); Senate Permanent Subcommittee on Investigations, "Federal Support for and Involvement in State and Local Fusion Centers" (2012); ACLU, "Fusion Center Update" (multiple years).</p>
+      </div>
+    </details>
+
+    <h2 style="font-size:1.3rem; margin-top:2.5rem; color:var(--warn);">Evidence-Based Extrapolation</h2>
+
+    <p>These are supported by substantial evidence but have not been confirmed at the level of declassified documents or official admissions. They represent informed analysis, not proven fact:</p>
+
+    <details class="claim-card">
+      <summary>Modern COINTELPRO equivalents <span class="claim-blurb">Pattern-matched from documented capabilities and precedent</span></summary>
+      <div class="claim-body">
+        <p>The FBI's domestic surveillance capabilities are orders of magnitude greater today than they were during COINTELPRO. Digital communications, social media, financial transactions, location tracking, and facial recognition provide surveillance tools that J. Edgar Hoover could not have imagined. The legal framework — particularly the post-9/11 expansion of national security authorities — provides broader justification for domestic intelligence operations than existed during the COINTELPRO era.</p>
+        <p>The FBI's documented monitoring of BLM, environmental groups ("eco-terrorism" designations), Muslim communities (including the widespread use of informants in mosques), and anti-pipeline protesters (Standing Rock) follows patterns consistent with COINTELPRO's approach to social movements. Whether these operations include the kind of active disruption — provocation, blackmail, career destruction — that characterized COINTELPRO is not confirmed from the public record. But the capability exists, the precedent exists, and the institutional culture that produced COINTELPRO was never replaced — it was reformed and then the reforms were weakened.</p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>AI-powered influence operations <span class="claim-blurb">Capability confirmed; deployment scope unknown</span></summary>
+      <div class="claim-body">
+        <p>Generative AI has made it possible to produce convincing text, images, audio, and video at scale and near-zero marginal cost. The capability to run influence operations using AI-generated content — fake social media personas, synthetic news articles, deepfake videos — exists and is publicly available. Multiple governments, including the US, have acknowledged developing AI tools for information operations.</p>
+        <p>The scope of current deployment by Western intelligence agencies is unknown. But given the documented history of Operation Mockingbird, the UK IRD, and Operation Earnest Voice — and given that the technology now makes such operations cheaper and harder to detect than at any point in history — it would be structurally surprising if these capabilities were not being used.</p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>Black budget programs <span class="claim-blurb">Budget confirmed ($50B+); contents classified</span></summary>
+      <div class="claim-body">
+        <p>The US intelligence community's classified budget — known as the "black budget" — exceeded $50 billion annually as of the most recent Snowden-era disclosures (2013). The actual current figure is likely higher. These programs operate with no public oversight. Congress's intelligence committees receive classified briefings, but individual members have described their access as limited, and the committees' own track record of meaningful oversight — as the Snowden revelations demonstrated — is poor.</p>
+        <p>The question is not whether secret programs exist — they demonstrably do, funded at enormous scale. The question is what they are, and whether any of them would, if disclosed, produce the same public shock as MKUltra, COINTELPRO, or mass warrantless surveillance did when they were revealed.</p>
+      </div>
+    </details>
+
+    <h2 style="font-size:1.3rem; margin-top:2.5rem; color:var(--muted);">Structural Prediction</h2>
+
+    <p>This is not evidence. It is logic applied to the historical record:</p>
+
+    <p>Every decade since the 1940s has produced major revelations of government deception — programs that were actively denied, classified, and only confirmed decades later. The institutions that ran those programs still exist. Their secrecy powers have expanded. Their oversight mechanisms have weakened. Their budgets have grown. Their technological capabilities have increased by orders of magnitude.</p>
+
+    <p>The 30-year declassification cycle suggests that the major deceptions of the post-9/11 era — programs launched between 2001 and 2025 — will begin surfacing between approximately 2030 and 2055. If past is prologue, the revelations will produce shock, brief outrage, no meaningful accountability, and the assurance that it couldn't happen again.</p>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <p class="stat-number">2030–2055</p>
+        <p class="stat-label">Predicted window for declassification of post-9/11 era programs, based on historical lag patterns</p>
+        <p class="stat-source">Extrapolated from documented declassification timelines</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-number">$50B+</p>
+        <p class="stat-label">Annual classified intelligence budget with no public oversight of specific programs</p>
+        <p class="stat-source">Snowden documents / Washington Post, 2013</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-number">0</p>
+        <p class="stat-label">Senior officials criminally prosecuted for any deception documented in this guide</p>
+        <p class="stat-source">Public record</p>
+      </div>
+    </div>
+
+    <div class="callout frame">
+      <strong>What this isn't saying.</strong> This guide is not claiming that every conspiracy theory is true, that government employees are evil, or that democratic institutions are useless. It is documenting a structural pattern: institutions with the power to act in secret and no meaningful consequences for deception will deceive. They have — without exception — in every decade of the modern era. The remedy is not paranoia but structural reform: real oversight, real accountability, real consequences for officials who lie to the public, and real protection for the people who expose the lies.
+    </div>
+
+    <div class="pull">
+      "The issue is not whether governments lie. That's established. The issue is whether citizens build institutions strong enough to catch them in time for the truth to matter."
+    </div>
+
+    <div class="final-quote">
+      <blockquote>"Every generation discovers that its government lied. The question isn't whether yours is lying too — it's what you do before the documents are declassified."</blockquote>
+    </div>
+
+    <p>That's the guide. What you have is a framework built from the governments' own records. Where you take it is yours to decide.</p>
+
+    <hr class="divider">
+
+    <p style="font-size:.88rem; color: var(--muted);">This guide documents how Western governments deceive their own populations. The companion guides examine the economic system that drives it and the global consequences.</p>
+
+    <div class="btn-group">
+      <button class="btn btn-ext" onclick="window.open('imperialism-guide.html','_blank')">Part 2: Where Did the Wealth Actually Go? — the global extraction ↗</button>
+      <button class="btn btn-ext" onclick="window.open('communist-theory-interactive.html','_blank')">Part 1: How Capitalism Actually Works — the engine ↗</button>
+      <button class="btn btn-ext" onclick="window.open('palestine-guide.html','_blank')">Part 3: Palestine — the case study ↗</button>
+      <button class="btn btn-back" onclick="go('start')" style="justify-content:center;">↩ Start this guide over</button>
+    </div>
+
+    <div class="spacer"></div>
+  </div>
+
+</div><!-- /app -->
+
+<script>
+  const progressMap = {
+    start:0, s1:14, s2:28, s3:42, s4:57, s5:71, s6:85, s7:100,
+    dive_iraq:28, dive_mkultra:42, dive_northwoods:42,
+    dive_cointelpro:57, dive_snowden:71
+  };
+  const diveParent = {
+    dive_iraq:'s2', dive_mkultra:'s3', dive_northwoods:'s3',
+    dive_cointelpro:'s4', dive_snowden:'s5'
+  };
+  const visited = new Set(['start']);
+  let current = 'start';
+
+  function go(id) {
+    document.querySelectorAll('.passage').forEach(p => p.classList.remove('active'));
+    const el = document.getElementById('passage-' + id);
+    if (!el) return;
+    el.classList.add('active');
+    current = id;
+    visited.add(id);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    updateNav();
+  }
+
+  function updateNav() {
+    const pct = progressMap[current] ?? 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+
+    document.querySelectorAll('.nav-stop[data-passage]').forEach(btn => {
+      const p = btn.dataset.passage;
+      btn.classList.remove('current', 'visited');
+      if (p === current) btn.classList.add('current');
+      else if (visited.has(p)) btn.classList.add('visited');
+    });
+
+    if (diveParent[current]) {
+      document.querySelectorAll('.nav-stop').forEach(btn => btn.classList.remove('current'));
+      const parentBtn = document.querySelector(`.nav-stop[data-passage="${diveParent[current]}"]`);
+      if (parentBtn) parentBtn.classList.add('current');
+    }
+  }
+
+  updateNav();
+</script>
+</body>
+</html>
