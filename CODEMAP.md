@@ -19,7 +19,7 @@ This document is the map: **what is where**, **how the pieces are built**, and t
 | [imperialism-guide.html](imperialism-guide.html) | **Part 2 · The Global Picture** — where the wealth went. 5 stations + deep dives. | ~635 lines |
 | [palestine-guide.html](palestine-guide.html) | **Part 3 · The Case Study** — Palestine & Israel. 9 stations + deep dives + claim cards + video embeds. | ~1560 lines |
 | [deception-guide.html](deception-guide.html) | **Part 4 · The Deception** — what Western governments hid from their own people. 7 stations + deep dives + claim cards. | ~965 lines |
-| [vc-genocide-guide.html](vc-genocide-guide.html) | **Part 5 · The Money** — venture capital, surveillance, and the genocide. 7 stations, claim cards + inline expandables only (no full deep-dive passages). | ~650 lines |
+| [vc-genocide-guide.html](vc-genocide-guide.html) | **Part 5 · The Money** — venture capital, surveillance, and the genocide. 5 stations, claim cards + inline expandables only (no full deep-dive passages). | ~640 lines |
 
 The five guides are a series and cross-link to each other in their final stations.
 Read order is Part 1 → 2 → 3 → 4 → 5, but each works standalone ("No prior reading required").
@@ -67,7 +67,7 @@ const diveParent  = { dive_cia:'s2', dive_debt:'s2', dive_media:'s4' };
   a reader inside a deep dive still sees where they are on the main track.
 
 ### Naming convention gotcha
-- imperialism (`s1`…`s5`), palestine (`s1`…`s9`), deception & vc-genocide (`s1`…`s7`) use `sN`.
+- imperialism (`s1`…`s5`), vc-genocide (`s1`…`s5`), deception (`s1`…`s7`), palestine (`s1`…`s9`) use `sN`.
 - communist-theory names them `station1`…`station8`.
 - Deep-dive passages are always `dive_<slug>` (`dive_cia`, `dive_congo`, `dive_ussr`…).
 - The intro passage is always `start`.
@@ -158,7 +158,7 @@ This is the editorial template the guides converge on (most explicit in the rece
    - Imperialism: Thesis → How It Works → The Record → The Propaganda → Now What?
    - Palestine: The Frame → The History → The Occupation → US Role → Gaza Now → The Record → The Silence → The Lies → The Myths
    - Deception: The Pattern → The Wars → The Programs → The Crackdown → The Surveillance → The Cover-Ups → The Present
-   - Money: The Statement → The Money → The Network → The Weapons → Surveillance → Silencing → The Plan
+   - Money: The Money → The Weapons → Surveillance → Silencing → The Plan
    A recurring late beat is **"The Propaganda / The Silence"** (why you weren't told this)
    and a closing **"Now What?"** that lays out *options*, not a single prescription.
 5. **Optional deep dives** hang off stations for country/case detail; **the main track
