@@ -157,6 +157,17 @@
   .dive-banner { display: flex; align-items: center; gap: .8rem; background: rgba(90,138,170,.08); border: 1px solid rgba(90,138,170,.2); border-radius: 6px; padding: .7rem 1.1rem; margin-bottom: 2rem; font-size: .82rem; color: var(--steel); font-weight: 500; letter-spacing: .04em; }
   .dive-banner::before { content: '◆'; font-size: .65rem; }
 
+  /* ── Inline deep dive ── */
+  details.deep-expand { background: var(--track); border: 1px solid var(--border); border-left: 3px solid var(--steel); border-radius: 6px; margin: 1.2rem 0 1.8rem; }
+  details.deep-expand summary { cursor: pointer; padding: .85rem 1.2rem; color: var(--steel); font-weight: 600; font-size: .88rem; letter-spacing: .04em; list-style: none; display: flex; align-items: center; gap: .5rem; transition: color .2s; }
+  details.deep-expand summary::-webkit-details-marker { display: none; }
+  details.deep-expand summary::before { content: '▸'; font-size: .9rem; transition: transform .2s; flex-shrink: 0; }
+  details.deep-expand[open] summary::before { transform: rotate(90deg); }
+  details.deep-expand summary:hover { color: var(--text); }
+  details.deep-expand .expand-content { padding: 0 1.2rem 1.2rem; font-size: .93rem; color: #A8B0B8; }
+  details.deep-expand .expand-content p { margin-bottom: .9rem; }
+  details.deep-expand .expand-content p:last-child { margin-bottom: 0; }
+
   /* ── Buttons ── */
   .btn-group { display: flex; flex-direction: column; gap: .75rem; margin-top: 2.5rem; }
   .btn { display: block; width: 100%; padding: .95rem 1.4rem; border-radius: 6px; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: .95rem; font-weight: 500; text-align: left; transition: background .18s, transform .1s; position: relative; }
@@ -280,17 +291,7 @@
 
     <p class="page-hook"><strong>Western governments lie to their own citizens, get caught decades later, and face no consequences.</strong> This has happened so many times that it isn't a series of exceptions — it's the system working as designed.</p>
 
-    <p>Here is the pattern. It has repeated with remarkable consistency since at least the 1940s:</p>
-
-    <p><strong>Step 1:</strong> A government agency runs a secret program — an illegal experiment, a covert operation, a mass surveillance system, a fabricated justification for war.</p>
-
-    <p><strong>Step 2:</strong> Anyone who suggests this is happening is dismissed as a conspiracy theorist, a paranoid, or a threat to national security.</p>
-
-    <p><strong>Step 3:</strong> Decades later, the documents are declassified, a congressional investigation reveals the truth, or a whistleblower provides proof. The government admits it happened.</p>
-
-    <p><strong>Step 4:</strong> There are no meaningful consequences. The officials responsible have retired or died. The public expresses brief shock. The institutions that ran the program continue to operate with the same powers, the same secrecy, and the same lack of oversight.</p>
-
-    <p><strong>Step 5:</strong> The cycle begins again.</p>
+    <p>The cycle, repeating since at least the 1940s: <strong>run a secret program → dismiss anyone who suspects it as a conspiracy theorist → admit it decades later when the documents surface → face no consequences → begin again.</strong></p>
 
     <div class="math-block">
       <p class="label">The declassification lag — how long the lies held</p>
@@ -303,17 +304,16 @@
       <div class="math-row"><span class="desc">Guatemala syphilis experiments</span><span class="val gap">Ran 1946–48 · Discovered 2010 · <strong>62 years</strong></span></div>
     </div>
 
-    <p>The average lag is roughly 20–40 years. The median is about 25. That means if a comparable program started in the year 2000, you'd expect to learn about it sometime between 2020 and 2040. If it started after 9/11, the window is 2025–2055.</p>
+    <p>The average lag is 20–40 years. A comparable program started after 9/11 would surface between 2025 and 2055. That isn't speculation — it's arithmetic applied to the documented record.</p>
 
-    <p>This isn't speculation. It's just arithmetic applied to the documented historical pattern.</p>
-
-    <div class="callout warn">
-      <strong>A critical caveat: the architecture of secrecy has changed.</strong> The 20-to-40-year lag is calculated from operations that <em>failed to stay secret</em>. It counts the ones that leaked, not the ones that held. This is survivor bias: you're looking at the average timeline for exposed secrets and treating it as a law of nature. It isn't.
-
-      The operations above were exposed because mid-20th-century state architecture still allowed for congressional crackdowns (like the Church Committee), paper filing systems that could be subpoenaed, and whistleblowers who worked inside government agencies subject to FOIA. Post-9/11, three shifts broke that model. <strong>Privatization:</strong> intelligence operations, surveillance, and data harvesting are now outsourced to private defense and technology contractors (Palantir, Booz Allen Hamilton, and dozens of others). Private corporations are legally immune to Freedom of Information Act requests. You cannot FOIA Palantir. <strong>Parallel construction:</strong> intelligence agencies routinely launder illegally obtained surveillance through domestic law enforcement channels, building a clean-looking evidence trail so the original source never enters a courtroom or a record log. The illegal origin is erased by design. <strong>Digital ephemerality:</strong> modern operations run through encrypted channels, cloud infrastructure, and automated systems that leave no equivalent of the paper trail that eventually exposed MKUltra or COINTELPRO. The filing error that saved 20,000 MKUltra pages from the shredder has no equivalent when records are digital and deletion is automated.
-
-      The classic "declassification smoking gun," the moment decades later when the file opens and the truth spills out, may no longer arrive the same way. The 20-to-40-year window is an artifact of a specific era. Treating it as a guarantee risks false comfort: the belief that the truth always comes out eventually. It doesn't. It comes out when the system that hides it is weak enough to fail.
-    </div>
+    <details class="deep-expand">
+      <summary>Deep Dive: Why the next MKUltra may never leak</summary>
+      <div class="expand-content">
+        <p>The 20-to-40-year lag is calculated from operations that <em>failed to stay secret</em>. It counts the ones that leaked, not the ones that held — survivor bias treated as a law of nature.</p>
+        <p>The old exposures depended on mid-century architecture: congressional crackdowns like the Church Committee, paper files that could be subpoenaed, whistleblowers inside agencies subject to FOIA. Post-9/11, three shifts broke that model. <strong>Privatization:</strong> intelligence work is outsourced to contractors like Palantir and Booz Allen Hamilton — and you cannot FOIA Palantir. <strong>Parallel construction:</strong> illegally obtained surveillance is laundered through law enforcement channels so the original source never enters a record. <strong>Digital ephemerality:</strong> encrypted channels and automated deletion leave no equivalent of the filing error that saved 20,000 MKUltra pages from the shredder.</p>
+        <p>The truth doesn't always come out eventually. It comes out when the system that hides it is weak enough to fail — and that system was specifically redesigned not to.</p>
+      </div>
+    </details>
 
     <div class="callout frame">
       <strong>What this guide is and isn't.</strong> This is a compilation of confirmed, documented cases — sourced from the governments' own records. It is not a claim that every conspiracy theory is true, that governments are uniquely evil compared to other institutions, or that individual government employees are bad people. The argument is structural: institutions with the power to act in secret, the incentive to deceive, and no meaningful accountability for deception will deceive. They always have. The record is the evidence.
@@ -331,28 +331,28 @@
 
     <p class="page-hook"><strong>Western governments fabricated evidence, staged incidents, and manipulated media to manufacture public consent for wars that killed millions.</strong> This is not interpretation — it is what their own investigations concluded.</p>
 
-    <p>War requires public support in democracies. When the public wouldn't support a war on its actual merits, governments manufactured the case. In every example below, the fabrication has been confirmed by official investigations, declassified documents, or the governments' own subsequent admissions.</p>
+    <p>When the public wouldn't support a war on its merits, governments manufactured the case. Every fabrication below is confirmed by official investigations or the governments' own admissions.</p>
 
     <div class="timeline">
       <div class="t-item red">
         <p class="t-year">1964 — Gulf of Tonkin</p>
         <p class="t-title">The Incident That Didn't Happen</p>
-        <p class="t-desc">On August 4, 1964, the Johnson administration told Congress that North Vietnamese torpedo boats had launched a second unprovoked attack on the USS Maddox in the Gulf of Tonkin. Congress passed the Gulf of Tonkin Resolution, authorizing military force in Vietnam. <strong>The second attack did not happen.</strong> The NSA's own internal history, declassified in 2005, confirmed that signals intelligence was deliberately misrepresented. NSA historian Robert Hanyok found that NSA officers had cherry-picked and altered intercepts to support the administration's account. The resolution led to a war that killed 58,000 Americans and an estimated 2–3 million Vietnamese. <strong>Source:</strong> Robert Hanyok, NSA declassified report (2005); Senate Foreign Relations Committee hearings.</p>
+        <p class="t-desc">The Johnson administration told Congress North Vietnamese boats had attacked the USS Maddox a second time. <strong>The attack did not happen.</strong> The NSA's own declassified history (2005) confirmed intercepts were cherry-picked and altered to support the story. The resolution it produced led to a war that killed 58,000 Americans and 2–3 million Vietnamese. <strong>Source:</strong> Robert Hanyok, NSA declassified report (2005).</p>
       </div>
       <div class="t-item red">
         <p class="t-year">1990 — The Nayirah Testimony</p>
         <p class="t-title">The Girl Who Wasn't a Witness</p>
-        <p class="t-desc">On October 10, 1990, a 15-year-old girl identified only as "Nayirah" testified before the Congressional Human Rights Caucus that she had witnessed Iraqi soldiers removing babies from incubators in a Kuwaiti hospital and leaving them to die on the floor. Her testimony was cited by six US senators as their reason for voting to authorize the Gulf War. President George H.W. Bush repeated the incubator story at least ten times in the following weeks. <strong>It was a fabrication.</strong> "Nayirah" was Nayirah al-Ṣabaḥ, daughter of the Kuwaiti ambassador to the United States. Her testimony was coached and organized by Hill &amp; Knowlton, a US public relations firm hired by the Kuwaiti government-in-exile for $10.8 million. Amnesty International initially corroborated the claims, then retracted. <strong>Source:</strong> John MacArthur, <em>Second Front: Censorship and Propaganda in the 1991 Gulf War</em> (2004); CBC <em>Fifth Estate</em> investigation.</p>
+        <p class="t-desc">A 15-year-old "witness" told Congress she saw Iraqi soldiers pull Kuwaiti babies from incubators and leave them to die. Six senators cited her testimony in voting for the Gulf War; Bush repeated it at least ten times. <strong>It was a fabrication.</strong> "Nayirah" was the Kuwaiti ambassador's daughter, coached by PR firm Hill &amp; Knowlton on a $10.8M contract. <strong>Source:</strong> John MacArthur, <em>Second Front</em> (2004); CBC <em>Fifth Estate</em>.</p>
       </div>
       <div class="t-item red">
         <p class="t-year">2002–2003 — Iraq WMDs</p>
         <p class="t-title">The Weapons That Didn't Exist</p>
-        <p class="t-desc">The US and UK governments claimed Iraq possessed weapons of mass destruction and posed an imminent threat. On February 5, 2003, Secretary of State Colin Powell presented evidence to the UN Security Council — satellite photos, intercepted communications, diagrams of mobile weapons labs. <strong>The evidence was fabricated or based on sources the intelligence community had already flagged as unreliable.</strong> The key human source, an Iraqi defector codenamed "Curveball," had been assessed as a fabricator by Germany's BND intelligence service, which warned the CIA. No WMDs were found. The Iraq War killed an estimated 200,000–600,000+ Iraqi civilians and 4,600 US soldiers. Colin Powell later called his UN presentation "a blot" on his record. <strong>Source:</strong> Senate Intelligence Committee Report on Pre-War Intelligence (2004); Chilcot Report (UK, 2016); Duelfer/ISG Final Report (2004).</p>
+        <p class="t-desc">The US and UK claimed Iraq had weapons of mass destruction. <strong>The evidence was fabricated or came from sources already flagged as unreliable</strong> — the key source, "Curveball," had been assessed a fabricator by German intelligence, which warned the CIA. No WMDs were found. The war killed an estimated 200,000–600,000+ Iraqi civilians and 4,600 US soldiers. <strong>Source:</strong> Senate Intelligence Committee (2004); Chilcot Report (2016).</p>
       </div>
       <div class="t-item red">
         <p class="t-year">2011 — Libya</p>
         <p class="t-title">The Humanitarian War That Wasn't</p>
-        <p class="t-desc">The NATO intervention in Libya was sold as preventing an imminent massacre in Benghazi. Gaddafi's forces were accused of mass rape and distributing Viagra to soldiers as a weapon of war. Hillary Clinton cited the Viagra claim publicly. <strong>Investigations by Amnesty International, Human Rights Watch, and a UN commission found no evidence of mass rape or Viagra distribution.</strong> The UK Parliament's Foreign Affairs Committee concluded in 2016 that the threat to Benghazi civilians was "overstated," that the intervention was "not informed by accurate intelligence," and that the true driver was regime change, not civilian protection. The resulting collapse of Libya produced a migrant crisis, a civil war that continues to this day, and open-air slave markets documented by CNN in 2017. <strong>Source:</strong> UK House of Commons Foreign Affairs Committee, Third Report (2016); Amnesty International investigation (2011).</p>
+        <p class="t-desc">Sold as preventing an imminent massacre in Benghazi, complete with claims of mass rape and Viagra as a weapon of war. <strong>Amnesty, HRW, and a UN commission found no evidence for either claim.</strong> The UK Parliament concluded in 2016 the threat was "overstated" and the true driver was regime change. Libya's collapse produced an ongoing civil war and open-air slave markets, documented by CNN in 2017. <strong>Source:</strong> UK House of Commons Foreign Affairs Committee (2016).</p>
       </div>
     </div>
 
@@ -446,27 +446,27 @@
       <div class="t-item red">
         <p class="t-year">1932–1972 — Tuskegee, Alabama</p>
         <p class="t-title">The US Public Health Service Syphilis Study</p>
-        <p class="t-desc">The US Public Health Service enrolled 399 Black men in Macon County, Alabama, telling them they were receiving free treatment for "bad blood." They were actually being studied to observe the untreated progression of syphilis. <strong>Treatment was deliberately withheld — even after penicillin became the standard cure in 1947.</strong> The study continued for 25 more years after effective treatment existed. Men died. Their wives contracted syphilis. Their children were born with congenital syphilis. The study was exposed by whistleblower Peter Buxtun and reporter Jean Heller of the Associated Press in 1972. President Clinton formally apologized in 1997. <strong>Source:</strong> CDC official acknowledgment; Presidential apology, May 16, 1997.</p>
+        <p class="t-desc">The US Public Health Service told 399 Black men they were being treated for "bad blood" while studying their untreated syphilis. <strong>The cure was deliberately withheld for 25 years after penicillin became standard.</strong> Men died; wives were infected; children were born with congenital syphilis. President Clinton formally apologized in 1997. <strong>Source:</strong> CDC acknowledgment; Presidential apology, 1997.</p>
       </div>
       <div class="t-item red">
         <p class="t-year">1946–1948 — Guatemala</p>
         <p class="t-title">US Government Syphilis Experiments</p>
-        <p class="t-desc">US government researchers, led by John Charles Cutler (who also worked on the Tuskegee study), <strong>deliberately infected</strong> at least 1,300 Guatemalan prisoners, soldiers, sex workers, and psychiatric patients with syphilis and gonorrhea — without their knowledge or consent. The program was designed to test whether penicillin could prevent sexually transmitted infections. It was discovered by historian Susan Reverby in 2010 while researching the Tuskegee records. President Obama personally called Guatemalan President Álvaro Colom to apologize. <strong>Source:</strong> Presidential Commission for the Study of Bioethical Issues, "Ethically Impossible" (2011).</p>
+        <p class="t-desc">US researchers <strong>deliberately infected</strong> at least 1,300 Guatemalan prisoners, soldiers, sex workers, and psychiatric patients with syphilis and gonorrhea, without knowledge or consent. Discovered by a historian in 2010; Obama called Guatemala's president to apologize. <strong>Source:</strong> Presidential Commission for the Study of Bioethical Issues, "Ethically Impossible" (2011).</p>
       </div>
       <div class="t-item red">
         <p class="t-year">1953–1973 — United States and Canada</p>
         <p class="t-title">Project MKUltra</p>
-        <p class="t-desc">The CIA conducted mind control experiments on unwitting American and Canadian citizens, including administering LSD, electroshock therapy, sensory deprivation, and psychological torture. Subjects included prisoners, mental patients, drug addicts, and members of the public recruited through front organizations. <strong>At least one death — CIA employee Frank Olson — is directly attributed to the program.</strong> CIA Director Richard Helms ordered all MKUltra files destroyed in 1973. Twenty thousand pages survived due to a misfiling in the financial records. <strong>Source:</strong> Senate Church Committee (1975); CIA Inspector General Report (1963, declassified 2001).</p>
+        <p class="t-desc">The CIA ran mind-control experiments on unwitting Americans and Canadians — LSD, electroshock, sensory deprivation — on prisoners, patients, and members of the public. <strong>At least one death is directly attributed to it.</strong> The CIA director ordered all files destroyed in 1973; 20,000 pages survived a misfiling. <strong>Source:</strong> Senate Church Committee (1975).</p>
       </div>
       <div class="t-item red">
         <p class="t-year">1950 — San Francisco</p>
         <p class="t-title">Operation Sea-Spray</p>
-        <p class="t-desc">The US Navy sprayed <em>Serratia marcescens</em> bacteria over San Francisco from a ship offshore to test the city's vulnerability to a biological weapon attack. The entire city of 800,000 people was exposed without knowledge or consent. Hospital records show a spike in pneumonia and urinary tract infections in the weeks following. At least one person — Edward Nevin — died from a <em>Serratia</em> infection consistent with the test. <strong>The military conducted similar open-air biological tests over New York City (subway system, 1966), Minneapolis, St. Louis, and other cities.</strong> <strong>Source:</strong> Senate Subcommittee on Health and Scientific Research (1977); Leonard Cole, <em>Clouds of Secrecy</em> (1988).</p>
+        <p class="t-desc">The US Navy sprayed <em>Serratia</em> bacteria over San Francisco — 800,000 people exposed without consent — to test vulnerability to biological attack. Infections spiked; at least one man died. <strong>Similar open-air tests were run over New York's subway, Minneapolis, and St. Louis.</strong> <strong>Source:</strong> Senate Subcommittee on Health (1977); Leonard Cole, <em>Clouds of Secrecy</em> (1988).</p>
       </div>
       <div class="t-item red">
         <p class="t-year">1944–1974 — United States</p>
         <p class="t-title">Radiation Experiments on US Citizens</p>
-        <p class="t-desc">The US government conducted radiation experiments on approximately 16,000 Americans. Researchers injected hospital patients with plutonium without their knowledge. They fed radioactive oatmeal to intellectually disabled children at the Fernald School in Massachusetts. They exposed prisoners to testicular radiation. Many subjects were selected because they were poor, institutionalized, or members of racial minorities — people with no power to refuse. The Advisory Committee on Human Radiation Experiments documented the full scope in 1994. President Clinton publicly apologized. <strong>Source:</strong> Advisory Committee on Human Radiation Experiments, Final Report (1995); Presidential apology, October 3, 1995.</p>
+        <p class="t-desc">~16,000 Americans were used in radiation experiments: hospital patients injected with plutonium, disabled children fed radioactive oatmeal, prisoners exposed to testicular radiation. Subjects were chosen because they had no power to refuse. Clinton publicly apologized in 1995. <strong>Source:</strong> Advisory Committee on Human Radiation Experiments, Final Report (1995).</p>
       </div>
     </div>
 
@@ -550,13 +550,7 @@
 
     <p class="page-hook"><strong>The FBI ran a systematic, multi-decade campaign to surveil, infiltrate, discredit, and destroy domestic political movements — including the civil rights movement, the anti-war movement, and Black political organizations.</strong> This is confirmed by the FBI's own files, released through congressional investigation.</p>
 
-    <p><strong>COINTELPRO</strong> — the Counter Intelligence Program — operated from 1956 to 1971. Its targets were not foreign spies. They were American citizens exercising constitutionally protected rights to organize, protest, and advocate for political change.</p>
-
-    <p>The FBI targeted:</p>
-
-    <p>The Southern Christian Leadership Conference (Martin Luther King Jr.'s organization). The Black Panther Party. The American Indian Movement. The Communist Party USA. The Socialist Workers Party. The anti-Vietnam War movement. Student organizations. Feminist groups. The "New Left" broadly.</p>
-
-    <p><strong>The methods.</strong> These are documented in the FBI's own files, released through the Church Committee and subsequent FOIA requests:</p>
+    <p><strong>COINTELPRO</strong> ran from 1956 to 1971. Its targets were not foreign spies but Americans exercising constitutional rights: Martin Luther King Jr.'s SCLC, the Black Panthers, the American Indian Movement, the anti-war movement, student and feminist groups. The methods below are documented in the FBI's own files:</p>
 
     <details class="claim-card">
       <summary>Infiltration and provocation <span class="claim-blurb">FBI's own internal memos confirm</span></summary>
@@ -588,10 +582,10 @@
       </div>
     </details>
 
-    <p><strong>The broader record.</strong> The Church Committee documented that COINTELPRO operations included sending anonymous letters to spouses of targets to destroy their marriages, planting false media stories to discredit organizations, getting targets fired from their jobs, having people wrongfully arrested, and — in the case of the Black Panther Party — creating conditions that led directly to violence and death.</p>
+    <p><strong>The broader record:</strong> anonymous letters to spouses to destroy marriages, planted media stories, targets fired and wrongfully arrested — and, with the Panthers, conditions that led directly to death.</p>
 
     <div class="callout dark">
-      <strong>The timing matters.</strong> COINTELPRO was running at the same time the United States was publicly presenting itself as the defender of freedom against Soviet authoritarianism. The FBI was telling Americans that the threat to democracy came from communists abroad — while simultaneously conducting Soviet-style operations against American citizens at home. The irony was not lost on the Church Committee, which noted that "the Bureau conducted a sophisticated vigilante operation aimed squarely at preventing the exercise of First Amendment rights of speech and association."
+      <strong>The timing matters.</strong> This ran while the US presented itself as freedom's defender against Soviet authoritarianism — conducting, in the Church Committee's words, "a sophisticated vigilante operation aimed squarely at preventing the exercise of First Amendment rights."
     </div>
 
     <div class="btn-group">
@@ -642,15 +636,9 @@
 
     <p class="page-hook"><strong>For over a decade, US and UK officials categorically denied the existence of mass domestic surveillance — including under oath to Congress. In 2013, Edward Snowden proved they were lying.</strong></p>
 
-    <p><strong>The denial.</strong> On March 12, 2013, Senator Ron Wyden asked Director of National Intelligence James Clapper a direct question during a public Senate Intelligence Committee hearing: "Does the NSA collect any type of data at all on millions or hundreds of millions of Americans?"</p>
+    <p>March 2013, under oath before the Senate: "Does the NSA collect any type of data at all on millions or hundreds of millions of Americans?" Director of National Intelligence James Clapper: <strong>"No, sir… not wittingly."</strong> It was a lie — he later admitted it, calling it the "least untruthful" answer available. He was never prosecuted.</p>
 
-    <p>Clapper responded: "No, sir… not wittingly."</p>
-
-    <p>This was a lie. Clapper knew it was a lie. He later admitted it was a lie, calling it the "least untruthful" answer he could give in a public setting. He was never prosecuted for perjury.</p>
-
-    <p>Three months later, Edward Snowden — a 29-year-old NSA contractor — began releasing classified documents to journalists Glenn Greenwald, Laura Poitras, and Ewen MacAskill. The documents revealed the largest surveillance apparatus in human history.</p>
-
-    <p><strong>What Snowden revealed:</strong></p>
+    <p>Three months later, NSA contractor Edward Snowden began releasing the documents that revealed the largest surveillance apparatus in human history:</p>
 
     <details class="claim-card">
       <summary>PRISM — direct access to tech company servers <span class="claim-blurb">Confirmed by declassified FISA Court orders</span></summary>
@@ -692,9 +680,7 @@
       </div>
     </details>
 
-    <p><strong>The whistleblowers who came before.</strong> Snowden was not the first to try. NSA mathematicians William Binney and J. Kirk Wiebe, and senior NSA executive Thomas Drake, tried to report the surveillance through official channels — the NSA Inspector General, the Department of Defense Inspector General, and congressional intelligence committees. All three were investigated. Drake was charged under the Espionage Act. The charges were eventually dropped, but his career was destroyed. The message was clear: use the official channels, and you will be punished. Go public, and you become a fugitive.</p>
-
-    <p>Snowden, having watched what happened to his predecessors, went directly to journalists. He has lived in exile in Russia since 2013. He was charged under the Espionage Act, which does not allow a public interest defense — meaning he could not argue in court that the disclosures served the public good.</p>
+    <p><strong>The whistleblowers who came before</strong> — Binney, Wiebe, Drake — used the official channels and were investigated and prosecuted for it; Drake's career was destroyed. Snowden watched, went directly to journalists instead, and has lived in exile since 2013, charged under an Espionage Act that allows no public-interest defense.</p>
 
     <div class="callout dark">
       <strong>The scale.</strong> The documents Snowden revealed described a surveillance system that collected, in the NSA's own words, "nearly everything a user does on the internet." The system operated for over a decade. It was denied under oath by the most senior intelligence official in the country. It was authorized by secret court rulings that reinterpreted public law in ways the law's own authors said were never intended. When it was exposed, no official was prosecuted for the illegal surveillance. The person who exposed it was charged with espionage.
@@ -865,9 +851,7 @@
 
     <p>This is not evidence. It is logic applied to the historical record:</p>
 
-    <p>Every decade since the 1940s has produced major revelations of government deception — programs that were actively denied, classified, and only confirmed decades later. The institutions that ran those programs still exist. Their secrecy powers have expanded. Their oversight mechanisms have weakened. Their budgets have grown. Their technological capabilities have increased by orders of magnitude.</p>
-
-    <p>The 30-year declassification cycle, based on historical averages, suggests that the major deceptions of the post-9/11 era would begin surfacing between approximately 2030 and 2055. But as Station 1 noted, the architecture of state secrecy changed after 9/11. The privatization of intelligence operations to FOIA-immune contractors, the routine use of parallel construction to erase evidence trails, and the shift from paper archives to encrypted digital systems all mean the old declassification model may no longer hold. Some post-9/11 secrets may surface through the traditional path of congressional investigation or whistleblowers. Others may never surface at all, because the filing system that would have preserved them no longer exists. The question is not just "when will we learn what they did?" It is whether the infrastructure of exposure, congressional committees, FOIA, investigative journalism, whistleblower protections, is strong enough to function against a secrecy apparatus that was specifically redesigned to defeat it.</p>
+    <p>Every decade since the 1940s has produced major revelations of deception. The institutions that ran those programs still exist — with expanded secrecy powers, weakened oversight, bigger budgets, and capabilities greater by orders of magnitude. The historical cycle says the post-9/11 deceptions surface between 2030 and 2055. But as Station 1's deep dive explains, the secrecy architecture was redesigned after 9/11 to defeat exactly that cycle. The question is not just "when will we learn what they did?" — it's whether the infrastructure of exposure still works at all.</p>
 
     <div class="stat-grid">
       <div class="stat-card">

@@ -165,6 +165,17 @@
   }
   .callout strong { color: var(--amber); }
 
+  /* ── Inline deep dive ── */
+  details.deep-expand { background: var(--track); border: 1px solid var(--border); border-left: 3px solid var(--amber); border-radius: 6px; margin: 1.2rem 0 1.8rem; }
+  details.deep-expand summary { cursor: pointer; padding: .85rem 1.2rem; color: var(--amber); font-weight: 600; font-size: .88rem; letter-spacing: .04em; list-style: none; display: flex; align-items: center; gap: .5rem; transition: color .2s; }
+  details.deep-expand summary::-webkit-details-marker { display: none; }
+  details.deep-expand summary::before { content: '▸'; font-size: .9rem; transition: transform .2s; flex-shrink: 0; }
+  details.deep-expand[open] summary::before { transform: rotate(90deg); }
+  details.deep-expand summary:hover { color: var(--text); }
+  details.deep-expand .expand-content { padding: 0 1.2rem 1.2rem; font-size: .93rem; color: #B8B2AA; }
+  details.deep-expand .expand-content p { margin-bottom: .9rem; }
+  details.deep-expand .expand-content p:last-child { margin-bottom: 0; }
+
   /* ── Buttons ── */
   .btn-group { display: flex; flex-direction: column; gap: .75rem; margin-top: 2.5rem; }
   .btn {
@@ -542,13 +553,9 @@
         <p style="font-size:.8rem; color: var(--muted); margin-top:.9rem; margin-bottom:0;">Each station has an optional <span style="color:var(--amber)">◆ Deep Dive</span> if you want the full picture. Skip them freely.</p>
       </div>
 
-      <p>Before we get into theory, let's start with the only fact that actually matters: <strong>humans need stuff to survive.</strong> Food, shelter, warmth. To get that stuff, we have to do work. And to do work at scale, we need to organise ourselves: tools, labour, land, coordination.</p>
+      <p>One fact matters before any theory: <strong>humans need stuff to survive</strong>, and every society has to answer the same question: <em>how do we organise the getting of stuff?</em> Communist theory is an attempt to explain how the current answer works, why it produces specific problems, and what a different answer might look like.</p>
 
-      <p>Every society in human history has answered the same basic question: <em>how do we organise the getting of stuff?</em> Hunters pooled their kills. Farmers owned their plots. Factories had owners and workers. The answer a society lands on, its method of economic organisation, shapes almost everything else about how that society looks and feels.</p>
-
-      <p>Communist theory is, at its core, an attempt to <strong>explain how the current answer works</strong>, why it produces specific problems, and what a different answer might look like.</p>
-
-      <p>That's it. Let's start with the current answer.</p>
+      <p>Let's start with the current answer.</p>
 
       <div class="btn-group">
         <button class="btn btn-primary" onclick="go('station1')">Station 1: The Engine. How does capitalism actually run?</button>
@@ -561,17 +568,13 @@
     <p class="eyebrow">Station 1 of 8</p>
     <h2>The Engine</h2>
 
-    <p>Every economy involves buying and selling. But not all buying and selling is the same. There are actually two completely different games being played, and which one you're playing determines everything.</p>
-
-    <p><strong>Game 1: You have something, you want something else.</strong> A farmer grows more wheat than she needs. She sells it, takes the money, and buys shoes. She started with wheat, ended with shoes. The money was just a bridge. This is trade. It's been around forever.</p>
+    <p>Two completely different games are played in every economy, and which one you're playing determines everything.</p>
 
     <div class="formula">
       <span class="dim">Game 1 (trade):</span><br>
       Wheat <span class="arrow">→</span> Money <span class="arrow">→</span> Shoes<br>
-      <span class="vs">You start with a thing. You end with a different thing. The money is just the middleman.</span>
+      <span class="vs">You start with a thing. You end with a different thing. Money is just the middleman.</span>
     </div>
-
-    <p><strong>Game 2: You start with money. You end with more money.</strong> You don't want shoes. You want to grow your pile. So you use your pile to buy things (machines, a building, people's time) and then sell whatever comes out for more than you put in.</p>
 
     <div class="formula">
       <span class="dim">Game 2 (capitalism):</span><br>
@@ -579,11 +582,9 @@
       <span class="vs">You start with money. You end with more money. Growth is the entire point.</span>
     </div>
 
-    <p>This second game has no natural stopping point. There's no moment where you say "I have enough wheat now, I'm done." The goal is always more. This is what Marx called the formula of <strong>infinite accumulation</strong>. Not a bug. The fundamental design of the system.</p>
+    <p>Game 2 has no stopping point. There is no "enough" — the goal is always more. Marx called this <strong>infinite accumulation</strong>: not a bug, the fundamental design of the system.</p>
 
-    <p>Which immediately raises an obvious question: <strong>where does the extra money come from?</strong></p>
-
-    <p>You bought raw materials at their market price. You bought machines at their market price. You paid people... well. How much did you actually pay people, and how does that create more value than you started with?</p>
+    <p>Which raises the question the whole theory hangs on: <strong>where does the extra money come from?</strong> You bought the materials and machines at market price. The only variable left is what you paid people.</p>
 
     <div class="btn-group">
       <button class="btn btn-dive" onclick="go('dive_labor')">◆ Deep Dive: Show me the actual math on where profit comes from</button>
@@ -635,27 +636,17 @@
     <p class="eyebrow">Station 2 of 8</p>
     <h2>The Glitch</h2>
 
-    <p>Here's where the engine starts eating itself.</p>
+    <p>Here's where the engine starts eating itself. Every worker has two identities at once, and they are at war: <strong>to your boss you are a cost</strong> — the lower your wage, the better the margin — and <strong>to every other business you are the customer</strong> they need to survive.</p>
 
-    <p>Every worker in a capitalist system has two identities at once, and these two identities are in direct conflict with each other.</p>
-
-    <p><strong>Identity 1: You are a cost.</strong> To your boss, your wage is a line item on a spreadsheet. The lower it is, the better the profit margin. Every rational business wants to pay workers as little as possible.</p>
-
-    <p><strong>Identity 2: You are a customer.</strong> To every other business in the economy, you're the person they need to buy their stuff. The car company needs you to buy cars. The landlord needs you to pay rent. The grocery store needs you to show up with money.</p>
-
-    <p>Now run those two identities simultaneously across the entire economy. Every boss, rationally, pushes wages down. But in doing so, every boss is also draining the purchasing power of every other business's customers.</p>
+    <p>Run that across a whole economy. Every boss rationally pushes wages down, and in doing so drains the purchasing power of everyone else's customers.</p>
 
     <div class="pull">
       "Workers are cheap to your own factory and broke at everyone else's store, at the same time."
     </div>
 
-    <p>At some point, the factories have produced more goods than the workers can afford to buy. Shelves are full. Warehouses are packed. But wallets are empty. So sales slow. Businesses start cutting costs, which means more layoffs, which means even fewer people with money, which means even fewer sales.</p>
+    <p>Eventually the warehouses are full and the wallets are empty. Sales slow, layoffs follow, fewer people can buy, sales slow further. The economy seizes up <strong>not from scarcity but from abundance</strong> — Marx's <em>Crisis of Overproduction</em>. And this is not capitalism failing. <strong>It's what capitalism, running correctly, inevitably produces.</strong></p>
 
-    <p>The economy seizes up, <strong>not because there isn't enough stuff, but because there's too much of it</strong> relative to what people can pay. Marx called this the <em>Crisis of Overproduction</em>. It's a market freeze caused by abundance, not scarcity.</p>
-
-    <p>And here's the part that should make your head spin: <strong>this is not a failure of capitalism. It's what capitalism, running correctly, inevitably produces.</strong> It's built in.</p>
-
-    <p>This glitch shows up everywhere once you know what to look for. Pick the real-world version that hits closest to home:</p>
+    <p>The glitch shows up everywhere once you know what to look for. Pick the version that hits closest to home:</p>
 
     <div class="btn-group">
       <button class="btn btn-dive" onclick="go('dive_boots')">◆ Deep Dive: Show me the abstract math, the boot factory model</button>
@@ -808,17 +799,13 @@
     <p class="eyebrow">Station 3 of 8</p>
     <h2>The Band-Aids</h2>
 
-    <p>Capitalism has been running for about 250 years. The glitch from Station 2 is real and well-documented. There have been major crashes in 1873, 1929, 2008, and many smaller ones in between. But the system hasn't collapsed for good. Why not?</p>
+    <p>The glitch is real — 1873, 1929, 2008 — yet the system hasn't collapsed for good. Why not? Because it's constantly patched. The "free market" doesn't actually exist anywhere; what exists is capitalism <em>plus a dense layer of stabilisers</em> that capitalism can't provide for itself.</p>
 
-    <p>Because it's been constantly patched.</p>
+    <p><strong>Band-Aid 1: Credit.</strong> Workers borrow tomorrow's wages to buy today's goods — a mortgage is 30 years of future labour spent now. It defers the crisis, with interest. It doesn't cure it.</p>
 
-    <p>These aren't theoretical patches. They're giant, structural interventions that bend or suspend the normal rules of the market. Communist theory would point out something interesting: the "free market" most people think they live in doesn't actually exist anywhere. What exists is capitalism <em>plus a dense layer of stabilisers</em> that capitalism itself can't provide.</p>
+    <p><strong>Band-Aid 2: Government intervention.</strong> When markets seize, the state injects the purchasing power the wage system drained out: contracts, public jobs, stimulus cheques — money the market wouldn't spend, on people the market wouldn't employ.</p>
 
-    <p><strong>Band-Aid 1: Credit and Debt.</strong> Workers can't afford goods with today's wages, so they borrow tomorrow's wages to buy them today. A mortgage is 30 years of future labour spent right now. A car loan is 5 years. Credit cards are next month. This keeps consumption going past what wages alone could support. But it creates a timer: eventually those debts come due, with interest, compressing future purchasing power even more. Debt is deferred overproduction crisis, not a cure.</p>
-
-    <p><strong>Band-Aid 2: Government Intervention.</strong> When markets seize, governments step in. They buy things directly (military contracts, infrastructure), employ people (public sector jobs), or send cash directly (unemployment benefits, stimulus cheques). This injects purchasing power that the wage system drained out. But it requires the government to act against the pure logic of the market, spending money the market wouldn't spend, on people the market wouldn't employ.</p>
-
-    <p><strong>Band-Aid 3: Planned Supply Controls.</strong> Some sectors are so critical, and so prone to the overproduction glitch, that governments quietly build what amounts to a planned economy inside the market. Not communist in name, but functionally identical in mechanism.</p>
+    <p><strong>Band-Aid 3: Planned supply controls.</strong> In sectors too critical to let crash, governments quietly run what amounts to a planned economy inside the market.</p>
 
     <div class="btn-group">
       <button class="btn btn-dive" onclick="go('dive_dairy')">◆ Deep Dive: Show me a real-world example of planned supply control inside capitalism</button>
@@ -873,36 +860,28 @@
     <p class="eyebrow">Station 4 of 8: The Horizon</p>
     <h2>What Comes After?</h2>
 
-    <p>Let's fast-forward. Assume the engine keeps running, the band-aids keep patching, and technology keeps advancing. Where does this go?</p>
+    <p>Fast-forward: the engine keeps running, the band-aids keep patching, technology keeps advancing. Where does it go? <strong>Automation.</strong></p>
 
-    <p>There's a slow-motion crisis already playing out that doesn't get discussed clearly: <strong>automation.</strong></p>
+    <p>Profit is the gap between what workers produce and what they're paid. Machines drive that labour cost toward zero — but <strong>machines don't earn wages, and machines don't buy things.</strong> Automate enough of the economy and you reach the boot factory at civilizational scale: cheap, abundant goods and nobody left with wages to buy them. This is the terminal contradiction: capitalism is most efficient exactly when it can least function.</p>
 
-    <p>Remember that profit comes from the gap between what workers produce and what they're paid. Machines are replacing workers in more and more jobs: not just factory workers, but accountants, paralegals, radiologists, truck drivers. Every time a machine replaces a person, the owner gets the same output with near-zero labour cost. Profit goes up.</p>
-
-    <p>But here's the problem: <strong>machines don't earn wages. Machines don't buy things.</strong></p>
-
-    <p>If you automate enough of the economy, you eventually reach the boot factory math but at civilizational scale. Goods are produced. Goods are produced <em>cheaply</em>. But the workers who used to buy them have been replaced by machines that don't. Who buys the stuff? The owners of the machines don't need a million t-shirts. There's nobody left with wages to spend.</p>
-
-    <p>This is the terminal contradiction communist theory predicts: capitalism is most efficient when it needs the least human labour, but it can only function if humans have enough income to keep buying. The two goals eat each other.</p>
+    <details class="deep-expand">
+      <summary>Deep Dive: Why automation breaks the machine, in slow motion</summary>
+      <div class="expand-content">
+        <p>Machines are replacing workers in more and more jobs: not just factory workers, but accountants, paralegals, radiologists, truck drivers. Every time a machine replaces a person, the owner gets the same output with near-zero labour cost. Profit goes up.</p>
+        <p>But the workers who used to buy the products have been replaced by machines that don't. Who buys the stuff? The owners of the machines don't need a million t-shirts. Capitalism can only function if humans have enough income to keep buying — and its own efficiency drive removes that income. The two goals eat each other.</p>
+      </div>
+    </details>
 
     <hr class="divider">
 
-    <p>This is where the theory points beyond capitalism entirely. Not just to "more regulation" or "better wages," but to a completely different answer to that original question: <em>how do we organise the getting of stuff?</em></p>
-
-    <p>If the machines that produce most of what we need are <strong>owned collectively</strong> (by the public, by workers, by communities) then their output doesn't need to flow to a single owner. It can flow to everyone. Production isn't chasing a profit margin; it's responding to what people actually need.</p>
-
-    <p>This is what "post-scarcity" means in the theory: not a world of infinite magic, but a world where the bottleneck is no longer output (we can produce more than enough) but <em>distribution</em>. And distribution based on ownership is a choice, not a law of physics.</p>
-
-    <p>Communist theory's endgame is a world where the question "who owns the means of production?" doesn't need to be answered by any individual or company, because the answer is simply: <em>everyone</em>. And in that world, work and production are organised around what humans need, not around what generates the largest gap between wages paid and value extracted.</p>
+    <p>This is where the theory points beyond capitalism entirely: if the machines that produce what we need are <strong>owned collectively</strong>, their output doesn't flow to a single owner. It flows to everyone, organised around need instead of margin. That's what "post-scarcity" means: the bottleneck stops being output and becomes <em>distribution</em> — and distribution based on ownership is a choice, not a law of physics.</p>
 
     <div class="final-quote">
       <blockquote>"From each according to their ability, to each according to their need."</blockquote>
       <cite>Karl Marx, 1875</cite>
     </div>
 
-    <p>What this actually means, stripped of the weight of history: <strong>you contribute what you genuinely can, and you receive what you genuinely need.</strong> Not equal outputs for unequal people. Not pay tied to how much leverage you have in a negotiation. A society organised around human beings instead of capital accumulation.</p>
-
-    <p>That's the engine, the glitch, the band-aids, and the first glimpse of the horizon. But what does that horizon actually <em>feel like</em> to live in? Marx had specific ideas about that, and they're more human than most people expect.</p>
+    <p>Stripped of history's weight, it means: <strong>you contribute what you genuinely can, and you receive what you genuinely need.</strong> But what does that world actually <em>feel like</em> to live in? Marx had specific ideas, and they're more human than most people expect.</p>
 
     <div class="btn-group">
       <button class="btn btn-primary" onclick="go('station5')">Station 5: The Dream. What Marx actually envisioned →</button>
@@ -916,19 +895,15 @@
     <p class="eyebrow">Station 5 of 8</p>
     <h2>The Dream: What Marx Actually Wanted</h2>
 
-    <p>Here's something that gets lost almost immediately whenever communism gets discussed: <strong>Marx was not primarily interested in economics.</strong> The economics were a diagnosis. The dream behind it was about something much more human.</p>
+    <p><strong>Marx was not primarily interested in economics.</strong> The economics were a diagnosis. The dream was that people would be fully, richly <em>alive</em>.</p>
 
-    <p>He wanted people to be fully, richly <em>alive.</em></p>
-
-    <p>Think about what capitalism actually asks of most people. You wake up. You go to a job you may not have chosen, doing tasks you may not find meaningful, for goals that benefit someone else, for the majority of your waking hours, for the majority of your life. Your creativity, your curiosity, your relationships, your sense of purpose: all of this gets fitted around the edges of a 40-hour (or 60-hour) work week. You are, structurally, a worker first and a human being second.</p>
-
-    <p>Marx called this <strong>alienation</strong>, and he meant it literally. You are separated from the product of your work (it belongs to your employer). You are separated from the <em>process</em> of your work (you don't design it, you execute it). You are separated from other people (workers are competitors as much as colleagues). And you become separated from your own sense of what a full life could look like, because the system has no use for that question.</p>
+    <p>Capitalism asks most people to spend most of their waking life on someone else's goals, fitting creativity, relationships, and purpose around the edges. Marx called this <strong>alienation</strong>: separated from what you make (it belongs to your employer), from how you make it (you execute, you don't design), from other people (colleagues are competitors), and from your own sense of what a full life could be.</p>
 
     <div class="pull">
       "The measure of a good society isn't its GDP. It's whether the people in it have the time and freedom to become who they actually are."
     </div>
 
-    <p>The communist horizon isn't just "everyone gets food and shelter." That's the floor, not the ceiling. Marx was gesturing at something much larger: a world where <strong>human need</strong> includes all of it.</p>
+    <p>The communist horizon isn't just "everyone gets food and shelter." That's the floor, not the ceiling. <strong>Human need</strong> includes all of it:</p>
 
     <div class="needs-grid">
       <div class="need-card">
@@ -963,26 +938,23 @@
       </div>
     </div>
 
-    <p>Marx actually wrote, in a passage that surprises most people who find it, about a communist society where a person could "hunt in the morning, fish in the afternoon, rear cattle in the evening, criticise after dinner, just as I have a mind, without becoming hunter, fisherman, herdsman or critic." The language is 19th century, but the point is vivid: <strong>you wouldn't be defined by your economic function.</strong> You would be a full human being with varied interests, and the economy would be organised to support that, not to extract from it.</p>
+    <p>Marx wrote of a society where a person could "hunt in the morning, fish in the afternoon, rear cattle in the evening, criticise after dinner... without becoming hunter, fisherman, herdsman or critic." The language is 19th century, but the point is vivid: <strong>you wouldn't be defined by your economic function.</strong></p>
 
-    <p>This is also why communist theory sees individualism differently than its critics assume. It's not anti-individual. It argues the opposite: that capitalism <em>suppresses</em> genuine individuality by reducing every person to their labour-market value. The lawyer who secretly wants to be a sculptor. The warehouse worker with a gift for mathematics who never had access to it. The carer who pours creativity into their work but gets paid poverty wages because "the market" doesn't value it highly.</p>
-
-    <p>Post-scarcity, in this vision, isn't just about having enough goods. It's about having enough <em>space</em> (time, security, freedom from anxiety) for culture, identity, and meaning to actually flourish. Art doesn't have to be commercially viable. Science doesn't have to promise quarterly returns. Music doesn't have to compete for streams. People can pursue things because they're worth pursuing.</p>
-
-    <div class="callout">
-      <strong>The core argument:</strong> When survival is guaranteed and working hours are dramatically reduced by automation and collective organisation, what fills that space isn't laziness. It's humanity. People make things. They learn. They form communities. They develop identities that aren't just job titles. Culture doesn't shrink in this world; it explodes.
-    </div>
-
-    <p>This vision is explicitly <em>not</em> uniform. The grey, identical, personality-less future that the word "communism" tends to conjure in people's minds is almost the exact opposite of what the theory describes. Uniformity is what you get when everyone is flattened to their economic function, when you're a consumer demographic or a worker category, not a person. The communist argument is that <strong>genuine diversity of human expression becomes possible only when economic anxiety isn't the primary organising force of your life.</strong></p>
+    <details class="deep-expand">
+      <summary>Deep Dive: "Wouldn't that be grey and uniform?" — the exact opposite</summary>
+      <div class="expand-content">
+        <p>Communist theory isn't anti-individual. It argues that capitalism <em>suppresses</em> genuine individuality by reducing every person to their labour-market value: the lawyer who secretly wants to be a sculptor, the warehouse worker with a gift for mathematics who never had access to it, the carer paid poverty wages because "the market" doesn't value care.</p>
+        <p>Post-scarcity isn't just about enough goods. It's about enough <em>space</em> — time, security, freedom from anxiety — for culture, identity, and meaning to flourish. Art doesn't have to be commercially viable. Science doesn't have to promise quarterly returns. When survival is guaranteed and working hours shrink, what fills the space isn't laziness. It's humanity: people make things, learn, form communities, develop identities that aren't job titles.</p>
+        <p>The grey, identical future the word "communism" conjures is the opposite of what the theory describes. Uniformity is what you get when everyone is flattened to their economic function — a consumer demographic, a worker category. Genuine diversity of human expression becomes possible only when economic anxiety isn't the organising force of your life.</p>
+      </div>
+    </details>
 
     <div class="final-quote">
       <blockquote>"The free development of each is the condition for the free development of all."</blockquote>
       <cite>Marx &amp; Engels, The Communist Manifesto, 1848</cite>
     </div>
 
-    <p>That's the dream. Not a hive. Not uniformity. A world where everyone gets enough runway to find out who they actually are.</p>
-
-    <p>Before you take any of this further, let's clear out the fog. Because this theory comes loaded with some genuinely persistent misconceptions that make it nearly impossible to think about clearly.</p>
+    <p>That's the dream. Not a hive. Not uniformity. A world where everyone gets enough runway to find out who they actually are. Now let's clear the fog around it.</p>
 
     <div class="btn-group">
       <button class="btn btn-primary" onclick="go('station6')">Station 6: Myths &amp; Misconceptions: let's clear the air →</button>
@@ -996,9 +968,7 @@
     <p class="eyebrow">Station 6 of 8</p>
     <h2>Myths &amp; Misconceptions</h2>
 
-    <p>Communist theory is one of the most persistently misrepresented bodies of thought in modern life. Some of this is honest confusion: the vocabulary is dense, the history is messy, and there are genuinely many strands that disagree with each other. Some of it is less honest.</p>
-
-    <p>Tap any myth below to see what the theory actually says.</p>
+    <p>Communist theory is one of the most persistently misrepresented bodies of thought in modern life — some of it honest confusion, some of it not. Tap any myth to see what the theory actually says.</p>
 
     <div id="myth-list">
 
@@ -1116,9 +1086,7 @@
     <p class="eyebrow">Station 7 of 8: The Present</p>
     <h2>Where Are We Now, and Now What?</h2>
 
-    <p>Everything in this guide so far has been theory. Now let's look out the window.</p>
-
-    <p>The conditions Marx's framework predicted would emerge from a mature, advanced capitalism (concentration of wealth, wage stagnation relative to productivity, market power shifting from workers to capital, recurring financial crises, automation displacing labour) are not abstract anymore. They're the daily backdrop of most people's lives in wealthy countries.</p>
+    <p>Everything so far has been theory. Now look out the window. The conditions the framework predicted — wealth concentration, wages decoupled from productivity, monopoly, recurring crises, automation displacing labour — are the daily backdrop of life in wealthy countries.</p>
 
     <div class="stat-grid">
       <div class="stat-card">
@@ -1143,17 +1111,13 @@
       </div>
     </div>
 
-    <p>None of these numbers require a Marxist lens to observe. They're mainstream data from mainstream institutions. The Marxist lens is just one framework for explaining <em>why</em> they're happening and what, structurally, they point toward.</p>
-
-    <p>What the framework says is this: these aren't policy failures or accidents. They're what the engine produces when it runs without interruption. Capital concentrates because the formula <strong>M → C → M+</strong> always directs the surplus upward. Wages stagnate because workers are a cost to be minimised. Monopoly forms because market competition rewards scale until only the largest survive. This isn't greed. It's mechanics.</p>
+    <p>These are mainstream numbers from mainstream institutions. The framework's claim is that they aren't policy failures or accidents — they're what the engine produces when it runs correctly. Capital concentrates, wages stagnate, monopoly forms. Not greed. Mechanics.</p>
 
     <hr class="divider">
 
     <h2 style="font-size: clamp(1.2rem, 3vw, 1.6rem); margin-bottom: 1rem;">The question no one can avoid: Reform or Revolution?</h2>
 
-    <p>Here's where the theory runs into its hardest problem: not a theoretical one, but a practical one. If the diagnosis is right, what do you actually <em>do</em> about it?</p>
-
-    <p>This is genuinely one of the oldest and most unresolved debates within the Marxist tradition itself. There are serious, thoughtful people on both sides, and the honest answer is that neither side has a clean record.</p>
+    <p>If the diagnosis is right, what do you actually <em>do</em> about it? This is the oldest unresolved debate inside the tradition itself, and neither side has a clean record.</p>
 
     <div class="debate-grid">
       <div class="debate-card reform">
@@ -1178,7 +1142,7 @@
       </div>
     </div>
 
-    <p>Notice Rosa Luxemburg appears on both sides because she genuinely held both concerns simultaneously. She believed revolutionary change was necessary but was one of the sharpest critics of authoritarian vanguard methods. She was assassinated in 1919 before she could resolve that tension. The tension hasn't been resolved since.</p>
+    <p>Rosa Luxemburg appears on both sides because she held both concerns at once: revolutionary change was necessary, and vanguard methods bred tyranny. She was assassinated in 1919 before she could resolve that tension. Nobody has since.</p>
 
     <div class="tension">
       <p class="tension-label">What each path has going for and against it</p>
@@ -1204,24 +1168,19 @@
       </div>
     </div>
 
-    <p>There's a third position that's increasingly prominent and doesn't map cleanly onto either: <strong>prefigurative politics</strong>, the idea that you build the world you want inside the shell of the old one. Worker cooperatives. Community land trusts. Open-source infrastructure. Platform co-ops. Local food networks. Public banking. These don't wait for revolution or for electoral victory. They demonstrate in practice that different economic relationships are possible, and they expand from there.</p>
+    <p>A third position doesn't map onto either: <strong>prefigurative politics</strong> — build the world you want inside the shell of the old one. Worker co-ops, land trusts, open-source infrastructure, public banking. They don't wait for revolution or election; they demonstrate that different economic relationships are possible. Whether that scales is the open question.</p>
 
-    <p>Whether that scales, and how fast, is the open question.</p>
-
-    <hr class="divider">
-
-    <h2 style="font-size: clamp(1.2rem, 3vw, 1.6rem); margin-bottom: 1rem;">What this means for you, specifically</h2>
-
-    <p>Here's the part that usually gets left out of theory guides: the way the current system affects individuals isn't abstract, and it isn't uniform.</p>
-
-    <p>If you're a renter in a major city, you're experiencing the housing version of the overproduction paradox in reverse: housing is being built, but as an investment asset, not a place to live. Its price must go up (that's the point), which means affordability must go down. Your landlord's profit and your ability to afford rent are structurally opposed. No amount of personal financial discipline resolves that.</p>
-
-    <p>If you're a gig worker, you're experiencing the latest iteration of the surplus value formula: Uber, DoorDash, and Deliveroo own the platform (the means of production), you provide the labour, the gap between what customers pay and what you earn is the margin. The "flexibility" framing is a rebranding of the oldest arrangement in the book.</p>
-
-    <p>If you feel like you're working harder than your parents did for less stability than they had, the data supports you. That's not a personal failing. It's the productivity/wage gap in your lived experience. Real wages for the median worker in most wealthy countries have barely moved in decades while the economy has more than doubled in size. The growth went somewhere. It went up.</p>
+    <details class="deep-expand">
+      <summary>Deep Dive: What this means for you, specifically</summary>
+      <div class="expand-content">
+        <p>If you're a renter in a major city, housing is being built as an investment asset, not a place to live. Its price must go up — that's the point — so affordability must go down. Your landlord's profit and your rent are structurally opposed. No amount of personal financial discipline resolves that.</p>
+        <p>If you're a gig worker, Uber and DoorDash own the platform (the means of production), you provide the labour, and the gap between what customers pay and what you earn is the margin. The "flexibility" framing is a rebranding of the oldest arrangement in the book.</p>
+        <p>If you feel like you're working harder than your parents did for less stability, the data supports you. Real median wages in most wealthy countries have barely moved in decades while the economy more than doubled. The growth went somewhere. It went up.</p>
+      </div>
+    </details>
 
     <div class="callout">
-      <strong>The point of all this theory</strong> is not to make you feel powerless. It's the opposite. A structural problem with structural causes has structural solutions. The system isn't working because of bad luck or bad people; it's working exactly as designed. Which means redesigning it is a coherent goal, not a fantasy. Whether through reform, structural replacement, or building alternatives from the ground up, understanding the mechanics is where that starts.
+      <strong>The point of the theory</strong> is not to make you feel powerless. It's the opposite: a structural problem has structural solutions. The system is working exactly as designed — which means redesigning it is a coherent goal, not a fantasy.
     </div>
 
     <div class="final-quote">
@@ -1229,7 +1188,7 @@
       <cite>Karl Marx, Theses on Feuerbach, 1845</cite>
     </div>
 
-    <p>You've covered the engine, the glitch, the band-aids, the horizon, the dream, the myths, and the present. There's one question left, the one that always comes last and matters most: has any of this ever actually been tried? What happened when people attempted to build something different?</p>
+    <p>One question left, the one that matters most: has any of this ever actually been tried? What happened?</p>
 
     <div class="btn-group">
       <button class="btn btn-primary" onclick="go('station8')">Station 8: Getting There. The real attempts, honestly assessed →</button>
@@ -1243,21 +1202,13 @@
     <p class="eyebrow">Station 8 of 8</p>
     <h2>Getting There: Capitalism as a Stepping Stone, and the Attempts Beyond It</h2>
 
-    <p>Here's something that surprises almost everyone when they first encounter it: <strong>Marx didn't think capitalism was simply evil and needed to be destroyed immediately.</strong> He thought it was a necessary stage, a brutal, exploitative, but historically essential step that humanity had to pass through.</p>
-
-    <p>Why? Because communism, as Marx described it, requires abundance. The whole point is a society that produces enough for everyone and distributes it based on need rather than profit. But you can't redistribute abundance that doesn't exist yet. Pre-industrial societies (feudal villages, agrarian communes) were organised around <em>scarcity</em>. Most people were subsistence farmers one bad harvest away from starvation. There was nothing to redistribute.</p>
-
-    <p>Capitalism, for all its violence, did something unprecedented: it generated <strong>industrial-scale surplus</strong>. It built the railways, the factories, the global supply chains, the agricultural technology, the medical advances. It created, for the first time in human history, a world capable of feeding, housing, and providing healthcare to everyone on the planet. Not a world that <em>does</em> those things, but a world technically capable of them.</p>
+    <p>Here's what surprises almost everyone: <strong>Marx didn't think capitalism was simply evil.</strong> He thought it was a necessary stage — because communism requires abundance, and you can't redistribute abundance that doesn't exist. Capitalism, for all its violence, built the first world technically capable of feeding, housing, and healing everyone on the planet. Capable. Not willing.</p>
 
     <div class="pull">
       "The bourgeoisie, during its rule of scarce one hundred years, has created more massive and more colossal productive forces than have all preceding generations together." (Marx &amp; Engels, 1848)
     </div>
 
-    <p>Marx saw capitalism as a kind of violent but necessary engine of development, like a chrysalis. It concentrates resources, builds infrastructure, develops technology, and creates a working class large enough and organised enough to potentially take collective ownership of what's been built. Then, in theory, the chrysalis breaks open.</p>
-
-    <p>The problem is the chrysalis doesn't break open automatically. Someone has to break it. And every attempt to do that in the 20th century ran into the same set of brutal, messy, real-world complications that the theory didn't fully anticipate.</p>
-
-    <p>What follows is an honest look at six real attempts, not to celebrate or condemn them, but to understand what each actually tried, what worked, what didn't, and what we can learn.</p>
+    <p>Marx saw capitalism as a chrysalis: it concentrates resources, builds the machines, and creates a working class organised enough to take collective ownership of what's been built. But the chrysalis doesn't break open by itself — and every 20th-century attempt to break it ran into brutal real-world complications the theory didn't anticipate. Six real attempts, honestly assessed:</p>
 
     <div class="btn-group">
       <button class="btn btn-dive" onclick="go('dive_ussr')">◆ The Soviet Union: the first attempt, 1917-1991</button>
