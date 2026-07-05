@@ -14,13 +14,15 @@ This document is the map: **what is where**, **how the pieces are built**, and t
 
 | File | Role | ~Length |
 |------|------|--------|
-| [index.html](index.html) | Landing page. Three linked cards, one per guide. Static — no passage engine. | 88 lines |
-| [communist-theory-interactive.html](communist-theory-interactive.html) | **Part 1 · The Engine** — how capitalism works. 8 stations + deep dives + myth cards. | ~1640 lines |
-| [imperialism-guide.html](imperialism-guide.html) | **Part 2 · The Global Picture** — where the wealth went. 5 stations + deep dives. | ~630 lines |
-| [palestine-guide.html](palestine-guide.html) | **Part 3 · The Case Study** — Palestine & Israel. 7 stations + deep dives + claim cards + video embeds. | ~1195 lines |
+| [index.html](index.html) | Landing page. Five linked cards, one per guide. Static — no passage engine. | ~100 lines |
+| [communist-theory-interactive.html](communist-theory-interactive.html) | **Part 1 · The Engine** — how capitalism works. 8 stations + deep dives + myth cards. | ~1650 lines |
+| [imperialism-guide.html](imperialism-guide.html) | **Part 2 · The Global Picture** — where the wealth went. 5 stations + deep dives. | ~635 lines |
+| [palestine-guide.html](palestine-guide.html) | **Part 3 · The Case Study** — Palestine & Israel. 9 stations + deep dives + claim cards + video embeds. | ~1560 lines |
+| [deception-guide.html](deception-guide.html) | **Part 4 · The Deception** — what Western governments hid from their own people. 7 stations + deep dives + claim cards. | ~965 lines |
+| [vc-genocide-guide.html](vc-genocide-guide.html) | **Part 5 · The Money** — venture capital, surveillance, and the genocide. 7 stations, claim cards + inline expandables only (no full deep-dive passages). | ~650 lines |
 
-The three guides are a trilogy and cross-link to each other in their final stations.
-Read order is Part 1 → 2 → 3, but each works standalone ("No prior reading required").
+The five guides are a series and cross-link to each other in their final stations.
+Read order is Part 1 → 2 → 3 → 4 → 5, but each works standalone ("No prior reading required").
 
 There is no shared stylesheet or JS file — **each guide duplicates the engine and
 component CSS inline.** A change to a shared component must be made in each file
@@ -30,7 +32,7 @@ separately. This is intentional: every guide is portable as a single file.
 
 ## 2. Shared architecture (the "passage engine")
 
-All three guides are single-page apps built on the same hand-rolled pattern. The
+All five guides are single-page apps built on the same hand-rolled pattern. The
 landing page is the only exception (it's plain anchor links).
 
 ### The passage model
@@ -65,10 +67,12 @@ const diveParent  = { dive_cia:'s2', dive_debt:'s2', dive_media:'s4' };
   a reader inside a deep dive still sees where they are on the main track.
 
 ### Naming convention gotcha
-- imperialism & palestine name stations `s1`…`s7`.
+- imperialism (`s1`…`s5`), palestine (`s1`…`s9`), deception & vc-genocide (`s1`…`s7`) use `sN`.
 - communist-theory names them `station1`…`station8`.
 - Deep-dive passages are always `dive_<slug>` (`dive_cia`, `dive_congo`, `dive_ussr`…).
 - The intro passage is always `start`.
+- vc-genocide has no `dive_*` passages (and no `diveParent` map) — it uses claim cards
+  and inline `deep-expand` details only.
 
 ---
 
@@ -97,12 +101,13 @@ A lighter-weight alternative to a full deep-dive passage — used inside Palesti
 timelines for "more detail here" without leaving the station. Native `<details>`/`<summary>`,
 rotated `▸` marker, no JS.
 
-### d. Claim cards (`<details class="claim-card">`) — Palestine "The Record"
+### d. Claim cards (`<details class="claim-card">`) — Palestine, Deception & VC guides
 Self-sourcing collapsible cards. Collapsed shows a serif **headline** + a **blurb**;
 expanded reveals `.claim-body` prose ending with a **Source:** line linking to the
 primary source (HRW, CNN, UN OHCHR, WaPo, +972, CPJ…). The `+` / `–` affordance is a CSS
 `::after`. Native `<details>`, no JS. This is the pattern for "many discrete, individually
-sourced claims."
+sourced claims." Used heavily in Palestine (The Record, The Silence, The Lies, The Myths),
+Deception (programs, cover-ups, Snowden), and VC-genocide (network, spyware, silencing).
 
 ### e. Myth cards (`.myth-card`) — communist-theory "Myths" station
 JS-toggled (`onclick="toggleMyth(this)"`, toggles `.open`). Structure: a `Myth` tag +
@@ -151,7 +156,9 @@ This is the editorial template the guides converge on (most explicit in the rece
 4. **Stations move in a deliberate arc**, e.g.:
    - Capitalism: Engine → Glitch → Band-Aids → Horizon → Dream → Myths → Now What? → Getting There
    - Imperialism: Thesis → How It Works → The Record → The Propaganda → Now What?
-   - Palestine: The Frame → The History → The Occupation → US Role → Gaza Now → The Record → The Silence
+   - Palestine: The Frame → The History → The Occupation → US Role → Gaza Now → The Record → The Silence → The Lies → The Myths
+   - Deception: The Pattern → The Wars → The Programs → The Crackdown → The Surveillance → The Cover-Ups → The Present
+   - Money: The Statement → The Money → The Network → The Weapons → Surveillance → Silencing → The Plan
    A recurring late beat is **"The Propaganda / The Silence"** (why you weren't told this)
    and a closing **"Now What?"** that lays out *options*, not a single prescription.
 5. **Optional deep dives** hang off stations for country/case detail; **the main track
@@ -213,6 +220,8 @@ stat numbers) + **DM Sans** (body).
 | index / palestine | olive `#7A9A3A` + sand `#C8B882` + red `#C04030` | earthy, military-olive |
 | imperialism | gold `#C8942A` + rust `#B04A1A` | extraction/gold |
 | communist-theory | red `#E03030` | revolutionary red |
+| deception | steel `#5A8AAA` + warn `#C07040` | cold-file blue/grey |
+| vc-genocide | gold `#C8A060` + blue `#7FB3C8` + red `#C06040` | money/valley gold |
 
 Shared traits: near-black bg, 680px max content column, 17px/1.75 body, `red`-tinted
 timeline dots for violence, green/red for gain/loss in data blocks.
