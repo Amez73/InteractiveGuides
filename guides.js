@@ -52,6 +52,14 @@ const GUIDES = [
     desc:  'Who is funding it. What they built. How they are watching you. The venture capital network, the surveillance apparatus, and the plan for what comes next.',
     badges: [{ text: '~15 min read' }, { text: 'Interactive', format: true }],
   },
+  {
+    file:  'mirror-guide.html',
+    part:  'Part 6 · The Mirror',
+    title: 'Unlearning the Double Standard',
+    short: 'The Mirror',
+    desc:  'The capstone. Every charge levelled at "authoritarian" states — surveillance, crushed dissent, forced labor, rigged politics — with the flag stripped off. A declassified CIA file, a quiz that answers itself, and two lenses for reading everything you just learned.',
+    badges: [{ text: '~15 min read' }, { text: 'Interactive Quiz', format: true }],
+  },
 ];
 
 /* ── The filename of the page we're currently on ────────────────────────── */

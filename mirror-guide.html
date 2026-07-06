@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Mirror — Unlearning the Double Standard</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #0D0C11;
+    --surface:  #14121A;
+    --border:   #262230;
+    --violet:   #9C88C8;
+    --violet-dim:#4A3E66;
+    --flag:     #C05050;
+    --text:     #DCD8E4;
+    --muted:    #6A6478;
+    --track:    #16141E;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  #app { max-width: 680px; margin: 0 auto; padding: 0 1.25rem; }
+
+  .passage { display: none; padding: 3rem 0 5rem; animation: fadeIn .35s ease; }
+  .passage.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; } }
+
+  /* ── Progress ── */
+  #progress-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 3px; background: var(--border); }
+  #progress-fill { height: 100%; background: var(--violet); transition: width .4s ease; }
+
+  /* ── Nav ── */
+  #station-nav {
+    position: fixed; top: 3px; left: 0; right: 0; z-index: 99;
+    background: rgba(13,12,17,.94); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    gap: .5rem; padding: .55rem 1rem;
+    font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+    font-weight: 500; color: var(--muted); flex-wrap: wrap;
+  }
+  .nav-stop { cursor: pointer; padding: .2rem .55rem; border-radius: 2rem; transition: color .2s, background .2s; white-space: nowrap; }
+  .nav-stop:hover { color: var(--text); }
+  .nav-stop.visited { color: var(--muted); }
+  .nav-stop.current { color: var(--violet); background: rgba(156,136,200,.12); }
+  .nav-sep { color: var(--border); }
+
+  /* ── Typography ── */
+  .eyebrow { font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--violet); margin-bottom: .9rem; }
+  h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; margin-bottom: 1.5rem; color: var(--text); }
+  h1 em { font-style: italic; color: var(--violet); }
+  h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.5rem, 4vw, 2rem); line-height: 1.2; margin-bottom: 1.2rem; }
+  p { margin-bottom: 1.15rem; color: #B4AEC2; }
+  p:last-of-type { margin-bottom: 0; }
+  strong { color: var(--text); font-weight: 600; }
+  a { color: var(--violet); }
+
+  /* ── Page hook ── */
+  .page-hook {
+    border-left: 3px solid var(--violet);
+    padding: .6rem 1.2rem; margin: 0 0 1.8rem;
+    font-size: 1.05rem; line-height: 1.6;
+    color: #C4BED2;
+  }
+
+  /* ── Pull quote ── */
+  .pull {
+    border-left: 3px solid var(--violet-dim);
+    padding: .6rem 1.2rem; margin: 1.8rem 0;
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.15rem; font-style: italic;
+    color: #8E86A6; line-height: 1.5;
+  }
+
+  /* ── Callout ── */
+  .callout {
+    background: rgba(156,136,200,.07); border: 1px solid rgba(156,136,200,.22);
+    border-radius: 6px; padding: 1.1rem 1.4rem; margin: 1.6rem 0;
+    font-size: .93rem; color: #968EB0;
+  }
+  .callout strong { color: var(--violet); }
+
+  .callout.warn {
+    background: rgba(192,80,80,.07); border-color: rgba(192,80,80,.25);
+    color: #B09090;
+  }
+  .callout.warn strong { color: var(--flag); }
+
+  .callout.frame {
+    background: rgba(156,136,200,.05); border-color: rgba(156,136,200,.18);
+    color: #8E86A4;
+  }
+  .callout.frame strong { color: var(--violet); }
+
+  /* ── Math / data block ── */
+  .math-block {
+    background: var(--track); border: 1px solid var(--border);
+    border-left: 3px solid var(--violet); border-radius: 6px;
+    padding: 1.4rem 1.6rem; margin: 1.8rem 0; font-size: .93rem;
+  }
+  .math-block .label { font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--violet); margin-bottom: .9rem; }
+  .math-row { display: flex; justify-content: space-between; align-items: baseline; padding: .35rem 0; border-bottom: 1px solid var(--border); gap: 1rem; }
+  .math-row:last-child { border-bottom: none; }
+  .math-row .desc { color: #7E7890; font-size: .88rem; }
+  .math-row .val { font-weight: 600; white-space: normal; text-align: right; }
+  .math-row .val.neg { color: #D07070; }
+  .math-row .val.gap { color: var(--violet); }
+
+  /* ── Stat grid ── */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: .85rem; margin: 1.8rem 0; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1.2rem 1.3rem; }
+  .stat-number { font-family: 'DM Serif Display', serif; font-size: 2rem; line-height: 1; color: var(--violet); margin-bottom: .3rem; }
+  .stat-label { font-size: .82rem; color: var(--muted); line-height: 1.45; margin: 0; }
+  .stat-source { font-size: .68rem; color: #363044; margin-top: .4rem; margin-bottom: 0; }
+
+  /* ── Claim cards ── */
+  .claim-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; margin: 1rem 0; overflow: hidden; }
+  .claim-card summary { padding: 1rem 1.3rem; cursor: pointer; list-style: none; display: flex; align-items: baseline; gap: .6rem; font-weight: 600; color: var(--text); font-size: .95rem; }
+  .claim-card summary::-webkit-details-marker { display: none; }
+  .claim-card summary::before { content: '▸'; color: var(--violet); font-size: .85rem; transition: transform .2s; flex-shrink: 0; }
+  .claim-card[open] summary::before { transform: rotate(90deg); }
+  .claim-card .claim-body { padding: 0 1.3rem 1.2rem; font-size: .91rem; color: #8E88A0; line-height: 1.7; }
+  .claim-card .claim-body p { margin-bottom: .8rem; }
+  .claim-blurb { font-size: .82rem; color: var(--muted); font-weight: 400; margin-left: .3rem; }
+
+  /* ── Dive banner ── */
+  .dive-banner { display: flex; align-items: center; gap: .8rem; background: rgba(156,136,200,.08); border: 1px solid rgba(156,136,200,.2); border-radius: 6px; padding: .7rem 1.1rem; margin-bottom: 2rem; font-size: .82rem; color: var(--violet); font-weight: 500; letter-spacing: .04em; }
+  .dive-banner::before { content: '◆'; font-size: .65rem; }
+
+  /* ── Inline deep dive ── */
+  details.deep-expand { background: var(--track); border: 1px solid var(--border); border-left: 3px solid var(--violet); border-radius: 6px; margin: 1.2rem 0 1.8rem; }
+  details.deep-expand summary { cursor: pointer; padding: .85rem 1.2rem; color: var(--violet); font-weight: 600; font-size: .88rem; letter-spacing: .04em; list-style: none; display: flex; align-items: center; gap: .5rem; transition: color .2s; }
+  details.deep-expand summary::-webkit-details-marker { display: none; }
+  details.deep-expand summary::before { content: '▸'; font-size: .9rem; transition: transform .2s; flex-shrink: 0; }
+  details.deep-expand[open] summary::before { transform: rotate(90deg); }
+  details.deep-expand summary:hover { color: var(--text); }
+  details.deep-expand .expand-content { padding: 0 1.2rem 1.2rem; font-size: .93rem; color: #ACA6BC; }
+  details.deep-expand .expand-content p { margin-bottom: .9rem; }
+  details.deep-expand .expand-content p:last-child { margin-bottom: 0; }
+
+  /* ── Dossier (declassified document facsimile) ── */
+  .dossier { background: #0F0E09; border: 1px solid #3A3524; border-radius: 4px; margin: 1.8rem 0; font-family: 'Courier New', Courier, monospace; color: #C8C0A0; overflow: hidden; }
+  .dossier-band { border-bottom: 1px solid #3A3524; text-align: center; padding: .6rem .5rem; letter-spacing: .3em; font-weight: 700; color: #A89868; font-size: .7rem; }
+  .dossier-body { padding: 1.2rem 1.4rem; }
+  .dossier-row { display: flex; gap: 1rem; padding: .18rem 0; font-size: .78rem; line-height: 1.5; }
+  .dossier-row .k { width: 110px; flex-shrink: 0; color: #7A7052; text-transform: uppercase; }
+  .dossier-stamp { display: inline-block; border: 2px solid #8A2A2A; color: #B05050; padding: .05rem .6rem; letter-spacing: .3em; font-weight: 700; margin: .9rem .6rem .9rem 0; transform: rotate(-2deg); font-size: .78rem; }
+  .dossier-note { display: inline-block; border: 1px solid #6A6048; padding: .05rem .5rem; font-size: .7rem; color: #A09870; margin: .9rem 0; }
+  .dossier-quote { border-left: 2px solid #6A6048; padding: .4rem 1rem; margin: .9rem 0; line-height: 1.75; color: #D8D0B0; font-size: .84rem; }
+  .dossier-footer { border-top: 1px solid #3A3524; padding: .5rem 1rem; font-size: .68rem; color: #7A7052; text-align: center; letter-spacing: .05em; }
+
+  /* ── Quiz cards ── */
+  .quiz-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.4rem 1.5rem; margin: 1.6rem 0; }
+  .quiz-tag { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 700; color: var(--violet); margin-bottom: .7rem; }
+  .quiz-q { font-size: 1rem; color: var(--text); line-height: 1.65; margin-bottom: 1.1rem; }
+  .quiz-opts { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  @media (max-width: 560px) { .quiz-opts { grid-template-columns: 1fr; } }
+  .quiz-opt { background: var(--track); border: 1px solid var(--border); border-radius: 6px; color: #B4AEC2; font-family: 'DM Sans', sans-serif; font-size: .92rem; font-weight: 500; padding: .7rem 1rem; cursor: pointer; text-align: left; transition: border-color .15s, background .15s; }
+  .quiz-opt:hover:not(:disabled) { border-color: var(--violet-dim); background: rgba(156,136,200,.06); }
+  .quiz-opt:disabled { cursor: default; opacity: .55; }
+  .quiz-opt.wrong { border-color: rgba(192,80,80,.6); color: #C08080; opacity: 1; }
+  .quiz-opt.wrong::after { content: ' ✕'; }
+  .quiz-opt.reveal-right { border-color: var(--violet); color: var(--text); background: rgba(156,136,200,.1); opacity: 1; }
+  .quiz-opt.reveal-right::after { content: ' ✓'; color: var(--violet); }
+  .quiz-reveal { display: none; border-top: 1px solid var(--border); margin-top: 1.2rem; padding-top: 1.1rem; font-size: .91rem; color: #948EA8; line-height: 1.7; }
+  .quiz-reveal.open { display: block; animation: fadeIn .3s ease; }
+  .quiz-reveal p { margin-bottom: .8rem; }
+  .quiz-verdict { font-weight: 700; color: var(--text); font-size: .95rem; }
+
+  /* ── Two lenses matrix ── */
+  .lens-block { margin: 1.6rem 0; }
+  .lens-topic { font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; color: var(--muted); margin-bottom: .6rem; }
+  .lens-pair { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+  @media (max-width: 560px) { .lens-pair { grid-template-columns: 1fr; } }
+  .lens-box { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.15rem; font-size: .89rem; line-height: 1.65; color: #9E98B0; }
+  .lens-box p { margin: 0; color: inherit; font-size: inherit; }
+  .lens-tag { display: block; font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; margin-bottom: .45rem; }
+  .lens-box.lib .lens-tag { color: #7E96B0; }
+  .lens-box.lib { border-left: 3px solid #3E5468; }
+  .lens-box.left .lens-tag { color: var(--flag); }
+  .lens-box.left { border-left: 3px solid #6E3038; }
+
+  /* ── Buttons ── */
+  .btn-group { display: flex; flex-direction: column; gap: .75rem; margin-top: 2.5rem; }
+  .btn { display: block; width: 100%; padding: .95rem 1.4rem; border-radius: 6px; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: .95rem; font-weight: 500; text-align: left; transition: background .18s, transform .1s; position: relative; }
+  .btn:active { transform: scale(.99); }
+  .btn-primary { background: var(--violet); color: #0D0C11; }
+  .btn-primary:hover { background: #AC98D8; }
+  .btn-primary::after { content: '→'; position: absolute; right: 1.2rem; top: 50%; transform: translateY(-50%); opacity: .6; }
+  .btn-dive { background: var(--track); color: var(--text); border: 1px solid var(--border); }
+  .btn-dive:hover { background: #201C2A; border-color: #322C40; }
+  .btn-dive::before { content: '↳ '; color: var(--violet); }
+  .btn-back { background: transparent; color: var(--muted); border: 1px solid var(--border); font-size: .87rem; }
+  .btn-back:hover { color: var(--text); border-color: #444; }
+  .btn-back::before { content: '← '; }
+  .btn-ext { background: rgba(156,136,200,.1); color: var(--violet); border: 1px solid rgba(156,136,200,.3); font-size: .9rem; }
+  .btn-ext:hover { background: rgba(156,136,200,.18); }
+  .btn-ext::after { content: ' ↗'; position: absolute; right: 1.2rem; top: 50%; transform: translateY(-50%); opacity: .7; }
+
+  /* ── Track preview ── */
+  .track-preview { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem 1.4rem; margin: 2rem 0; }
+  .tp-label { font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 600; color: var(--muted); margin-bottom: 1rem; }
+  .track-line { display: flex; align-items: center; flex-wrap: wrap; gap: .3rem; font-size: .82rem; }
+  .track-stop { background: var(--track); border: 1px solid var(--border); border-radius: 3px; padding: .25rem .65rem; color: var(--muted); white-space: nowrap; }
+  .track-stop.main { color: var(--text); border-color: #322C40; }
+  .track-conn { color: var(--border); font-size: .8rem; }
+
+  /* ── Divider ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+  .spacer { height: 4rem; }
+  .subtitle { font-size: 1.1rem; color: var(--muted); margin-bottom: 2.5rem; font-weight: 300; line-height: 1.6; }
+
+  /* ── Final quote ── */
+  .final-quote { text-align: center; padding: 2.5rem 1rem; border: 1px solid var(--border); border-radius: 8px; margin: 2rem 0; background: var(--surface); }
+  .final-quote blockquote { font-family: 'DM Serif Display', serif; font-size: clamp(1.1rem, 3vw, 1.4rem); font-style: italic; color: var(--text); line-height: 1.6; margin-bottom: .8rem; }
+  .final-quote cite { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-style: normal; }
+
+  /* ── Companion badge ── */
+  .companion-badge {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: rgba(156,136,200,.1); border: 1px solid rgba(156,136,200,.25);
+    border-radius: 3px; padding: .3rem .8rem;
+    font-size: .72rem; font-weight: 600; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--violet); margin-bottom: 1.5rem;
+  }
+  .companion-badge::before { content: '◈'; }
+
+  /* ── Lesson box ── */
+  .sc-lesson { background: rgba(156,136,200,.07); border: 1px solid rgba(156,136,200,.2); border-radius: 5px; padding: .9rem 1rem; margin-top: 1rem; font-size: .87rem; color: #968EB0; }
+  .sc-lesson strong { color: var(--violet); }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"><div id="progress-fill" style="width:0%"></div></div>
+
+<nav id="station-nav">
+  <span class="nav-stop current" data-passage="start" onclick="go('start')">Intro</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s1" onclick="go('s1')">The Word</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s2" onclick="go('s2')">The Mirror</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s3" onclick="go('s3')">The Pattern</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s4" onclick="go('s4')">Two Lenses</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s5" onclick="go('s5')">Now What?</span>
+</nav>
+
+<div id="app">
+
+  <!-- ══ START ══ -->
+  <div class="passage active" id="passage-start">
+    <div style="padding-top:4rem;">
+      <div class="companion-badge">Companion Guide · Part 6 · Series Capstone</div>
+      <h1>The Mirror — Unlearning the <em>Double Standard</em></h1>
+      <p class="subtitle">The last test. Take every charge levelled at "authoritarian" states — mass surveillance, crushed dissent, forced labor, rigged politics — strip the flag off it, and ask who did it.</p>
+
+      <div class="track-preview">
+        <p class="tp-label">Your route</p>
+        <div class="track-line">
+          <span class="track-stop main">The Word</span>
+          <span class="track-conn">──▶</span>
+          <span class="track-stop main">The Mirror</span>
+          <span class="track-conn">──▶</span>
+          <span class="track-stop main">The Pattern</span>
+          <span class="track-conn">──▶</span>
+          <span class="track-stop main">The Two Lenses</span>
+          <span class="track-conn">──▶</span>
+          <span class="track-stop main">Now What?</span>
+        </div>
+        <p style="font-size:.8rem;color:var(--muted);margin-top:.9rem;margin-bottom:0;">Station 1 has an optional <span style="color:var(--violet)">◆ Deep Dive</span> into a declassified CIA file. Station 2 is a quiz.</p>
+      </div>
+
+      <p>Parts 1–5 of this series laid out a record: how the economic engine works, where the extracted wealth went, what that looks like on the ground in Palestine, what Western governments hid from their own people, and who is funding the machinery now. No prior reading is required — this guide stands alone — but if you've read the others, this one is where they converge.</p>
+
+      <p>Because there is one obstacle the record alone can't remove. Most people can read all five guides, accept every sourced fact, and still file it under a different heading than the same facts would get if the flag were different. A surveillance state over there is <em>tyranny</em>; the same apparatus at home is a <em>policy controversy</em>. A coup over there is <em>aggression</em>; a coup run from Langley is a <em>Cold War excess</em>.</p>
+
+      <p><strong>That filing system is the double standard, and it's not an accident — it's taught.</strong> This guide is a set of exercises for noticing it in yourself. That's all. It doesn't ask you to adopt a conclusion. It asks you to use one standard.</p>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="go('s1')">Station 1: The Word — what "authoritarian" does, and doesn't, measure</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ STATION 1: THE WORD ══ -->
+  <div class="passage" id="passage-s1">
+    <p class="eyebrow">Station 1 of 5</p>
+    <h2>The Word — What "Authoritarian" Actually Sorts</h2>
+
+    <p class="page-hook"><strong>"Authoritarian," as used in Western public discourse, is not a measurement — it's a sorting label.</strong> It bundles a set of state behaviours (surveillance, repression, unfree labor, rigged politics) and assigns the bundle to official enemies, while quietly unbundling it for allies and for home.</p>
+
+    <p>Test the word the way you'd test any category: does it apply wherever its defining features appear? If it does, it's a description. If it applies only to states on one side of a geopolitical line, it's a flag reader — it tells you whose side a state is on, not how it treats people.</p>
+
+    <p>Watch it fail the test on allies:</p>
+
+    <div class="math-block">
+      <p class="label">The ally exemption — same features, different label</p>
+      <div class="math-row"><span class="desc">Saudi Arabia — absolute monarchy; mass executions (81 men beheaded in one day, March 2022); US intelligence concluded Crown Prince Mohammed bin Salman approved the murder of journalist Jamal Khashoggi</span><span class="val gap">"Strategic partner"</span></div>
+      <div class="math-row"><span class="desc">Egypt — General Sisi took power in a 2013 military coup; security forces then killed at least 817 protesters in Rabaa Square in a single day (HRW: likely over 1,000)</span><span class="val gap">$1.3B/yr in US military aid, uninterrupted</span></div>
+      <div class="math-row"><span class="desc">Chile under Pinochet — seized power in a coup, executed or disappeared 3,000+ people, tortured ~38,000 (Rettig &amp; Valech commissions)</span><span class="val gap">Backed and recognized by Washington</span></div>
+    </div>
+
+    <p style="font-size:.82rem;color:var(--muted);"><strong>Sources:</strong> Saudi executions — Reuters, AP (12 Mar 2022); Khashoggi — ODNI declassified assessment (Feb 2021). Rabaa — Human Rights Watch, <em>All According to Plan</em> (2014). Chile — Rettig Report (1991), Valech Report (2004); Church Committee, <em>Covert Action in Chile</em> (1975).</p>
+
+    <p>None of this makes the states the label <em>is</em> applied to innocent. China runs a real surveillance state. Russia jails and kills opposition figures. The point is narrower and sharper: <strong>the word doesn't track the conduct. It tracks the alignment.</strong> Conduct that earns an enemy the label earns an ally a weapons contract.</p>
+
+    <div class="callout frame">
+      <strong>What this guide isn't saying.</strong> It is not saying China, Russia, or Iran are fine, or that Western societies are uniquely evil, or that "everyone is equally bad so nothing matters." Every abuse in this guide's quiz has real equivalents in the states you'd expect. The claim is only this: if a criticism is valid, it is valid wherever the conduct appears — including at home. A standard you apply in only one direction isn't a standard. It's a weapon.
+    </div>
+
+    <p>Before running the test, one piece of evidence for how deliberately the public vocabulary was built: a look at what the CIA's own classified channel allowed itself to say about the "dictator" cartoon — at the exact moment saying it in public could end your career.</p>
+
+    <div class="btn-group">
+      <button class="btn btn-dive" onclick="go('dive_cia')">◆ Deep Dive: The 1955 CIA file — the nuance that was classified</button>
+      <button class="btn btn-primary" onclick="go('s2')">Station 2: The Mirror — the quiz</button>
+    </div>
+  </div>
+
+  <!-- ══ DEEP DIVE: THE 1955 CIA FILE ══ -->
+  <div class="passage" id="passage-dive_cia">
+    <div class="dive-banner">Deep Dive — Declassified Spotlight · March 1955</div>
+    <h2>The Nuance That Was Classified</h2>
+
+    <p>In March 1955, the United States was at the peak of its anti-communist fever. Senator McCarthy had been censured only weeks earlier, but the machinery he rode was intact: loyalty oaths, blacklists, careers and lives destroyed for "un-American" views. The compulsory public picture of the Soviet Union was a cartoon — one absolute dictator, total one-man rule, a nation of automatons.</p>
+
+    <p>That same month, this circulated inside the CIA, stamped SECRET:</p>
+
+    <div class="dossier">
+      <div class="dossier-band">INFORMATION&nbsp;REPORT &nbsp;·&nbsp; CENTRAL&nbsp;INTELLIGENCE&nbsp;AGENCY</div>
+      <div class="dossier-body">
+        <div class="dossier-row"><span class="k">Country</span><span>USSR</span></div>
+        <div class="dossier-row"><span class="k">Subject</span><span>Comments on the Change in Soviet Leadership</span></div>
+        <div class="dossier-row"><span class="k">Date distr.</span><span>2 March 1955</span></div>
+        <div class="dossier-row"><span class="k">No. of pages</span><span>2</span></div>
+        <div>
+          <span class="dossier-stamp">SECRET</span>
+          <span class="dossier-note">This is UNEVALUATED Information</span>
+        </div>
+        <div class="dossier-quote">1.&nbsp; Even in Stalin's time there was collective leadership. The Western idea of a dictator within the Communist setup is exaggerated. Misunderstandings on that subject are caused by lack of comprehension of the real nature and organization of the Communist power structure. Stalin, although holding wide powers, was merely the captain of a team&nbsp;…</div>
+      </div>
+      <div class="dossier-footer">Approved For Release 2008/02/26 : CIA-RDP80-00810A006000360009-0</div>
+    </div>
+
+    <p style="font-size:.82rem;color:var(--muted);"><strong>Source:</strong> CIA FOIA Reading Room, document <a href="https://www.cia.gov/readingroom/docs/CIA-RDP80-00810A006000360009-0.pdf" target="_blank">CIA-RDP80-00810A006000360009-0</a>, declassified 2008 (<a href="https://web.archive.org/web/2024id_/https://www.cia.gov/readingroom/docs/CIA-RDP80-00810A006000360009-0.pdf" target="_blank">archived copy</a>).</p>
+
+    <p><strong>Read it precisely — including the fine print.</strong> This is an <em>Information Report</em>: raw intelligence from a field source, relayed through CIA channels and stamped, in the CIA's own words, "UNEVALUATED." It is not a CIA analytical conclusion, and this guide won't pretend it is. The very same paragraph goes on to call the Soviet system "the Communist dictatorship" — the source was no admirer of Moscow. Anyone who tells you this document proves "the CIA knew Stalin wasn't a dictator" is overselling it, and you should know that before someone hostile points it out.</p>
+
+    <p><strong>What it actually proves is in some ways more interesting.</strong> The claim "Stalin was the captain of a team, not the caricature you've been shown" could be written, circulated, and filed inside the classified channel of the US government in March 1955 — treated as ordinary intelligence, worth two pages and a SECRET stamp. Outside that channel, an American who said the same sentence in public risked the blacklist. The state permitted itself a nuance it criminalized in its citizens. Two conversations existed: one for the cleared, and one for you.</p>
+
+    <p><strong>And the classified channel turned out closer to the truth.</strong> Mainstream Soviet historiography — not apologetics — landed roughly where the 1955 source did. Sheila Fitzpatrick's <em>On Stalin's Team</em> (Princeton, 2015) reconstructs three decades of Politburo politics in which Stalin dominated but ruled <em>through</em> a functioning team of rivals, dependents, and administrators. Oleg Khlevniuk's archival biography <em>Stalin: New Biography of a Dictator</em> (Yale, 2015) documents both the reality of his personal power and the collective machinery it ran on. Neither book softens the record — Stalin's state executed hundreds of thousands in the Terror and worked prisoners to death in the Gulag, and no serious historian disputes it. What they dismantle is the cartoon: a lone madman and a nation of puppets, a picture designed to make the system unintelligible rather than understood.</p>
+
+    <div class="sc-lesson">
+      <strong>The lesson isn't about Stalin.</strong> It's about the vocabulary. The simplified enemy — the single deranged dictator, the mindless population — is a product built for domestic consumption, and the state that builds it doesn't necessarily believe it. When you hear the same cartoon today, about whichever state is currently the enemy, the right question isn't "is the enemy actually good?" (usually not). It's "what does the cartoon stop me from understanding — and who benefits from that?"
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-back" onclick="go('s1')">Back to Station 1</button>
+      <button class="btn btn-primary" onclick="go('s2')">Continue to Station 2: The Mirror →</button>
+    </div>
+  </div>
+
+  <!-- ══ STATION 2: THE MIRROR ══ -->
+  <div class="passage" id="passage-s2">
+    <p class="eyebrow">Station 2 of 5</p>
+    <h2>The Mirror — Who Did It?</h2>
+
+    <p class="page-hook"><strong>Five descriptions of state conduct, flags removed. Guess the state.</strong> Every description is documented — the sources are in each answer. The reflex you notice in yourself while guessing is what this station is about.</p>
+
+    <div class="quiz-card">
+      <p class="quiz-tag">Who did it? · 1 of 5 · Crushing dissent</p>
+      <p class="quiz-q">The security police wiretapped the country's best-known civil-rights leader for years, then mailed him an anonymous package: recordings from his hotel rooms, and a letter telling him to kill himself — "there is only one thing left for you to do" — before his "filthy, abnormal fraudulent self" was exposed to the nation.</p>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="pickQuiz(this)">East Germany (Stasi)</button>
+        <button class="quiz-opt" onclick="pickQuiz(this)">USSR (KGB)</button>
+        <button class="quiz-opt" data-answer="1" onclick="pickQuiz(this)">United States (FBI)</button>
+        <button class="quiz-opt" onclick="pickQuiz(this)">Apartheid South Africa</button>
+      </div>
+      <div class="quiz-reveal">
+        <p class="quiz-verdict">The FBI. The leader was Martin Luther King Jr.</p>
+        <p>In November 1964 — 34 days before King received the Nobel Peace Prize — the FBI's domestic intelligence division mailed him the "suicide letter" with recordings from bugs that J. Edgar Hoover had personally authorized on his hotel rooms. The original letter sits in the National Archives. The Church Committee documented it as part of COINTELPRO, the FBI's 15-year campaign to infiltrate, discredit, and destroy the civil rights movement, the Black Panthers, and the anti-war movement.</p>
+        <p>The Stasi comparison isn't rhetorical, and it isn't exoneration of the Stasi — East Germany's surveillance of its citizens was vast and real. That's the point: you had no trouble believing the description fit a Stasi file. It fits an FBI file.</p>
+        <p><strong>Source:</strong> Senate Church Committee, Book III (1976); Beverly Gage, "What an Uncensored Letter to M.L.K. Reveals," <em>NYT Magazine</em> (2014). Full story: Part 4, Station 4.</p>
+      </div>
+    </div>
+
+    <div class="quiz-card">
+      <p class="quiz-tag">Who did it? · 2 of 5 · Mass surveillance</p>
+      <p class="quiz-q">The state secretly collected the phone records of virtually every citizen for years. When the nation's top intelligence official was asked under oath whether the government collected "any type of data at all on millions or hundreds of millions" of its citizens, he answered: "No, sir… not wittingly."</p>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="pickQuiz(this)">China</button>
+        <button class="quiz-opt" onclick="pickQuiz(this)">Russia</button>
+        <button class="quiz-opt" onclick="pickQuiz(this)">Iran</button>
+        <button class="quiz-opt" data-answer="1" onclick="pickQuiz(this)">United States (NSA)</button>
+      </div>
+      <div class="quiz-reveal">
+        <p class="quiz-verdict">The United States. The official was Director of National Intelligence James Clapper.</p>
+        <p>Clapper gave that answer to Senator Ron Wyden in March 2013. Three months later, the Snowden documents proved the NSA was collecting the phone metadata of essentially every American under Section 215 of the PATRIOT Act. A federal appeals court ruled the program unlawful in 2015 (<em>ACLU v. Clapper</em>). Clapper was never charged with perjury.</p>
+        <p>Yes — China's surveillance state is real, and in dimensions like facial-recognition coverage it is more extensive. Two differences are worth naming precisely: China doesn't deny it under oath, and the Western model runs substantially through private companies — ad-tech data brokers, platform monopolies, and contractors like Palantir — whose harvest flows to agencies without a warrant ever being needed. Part 5 of this series covers that pipeline.</p>
+        <p><strong>Source:</strong> Senate Intelligence Committee hearing (12 Mar 2013); <em>ACLU v. Clapper</em>, 785 F.3d 787 (2d Cir. 2015); Snowden archive reporting, <em>The Guardian</em>/<em>WaPo</em> (2013). Full story: Part 4, Station 5.</p>
+      </div>
+    </div>
+
+    <div class="quiz-card">
+      <p class="quiz-tag">Who did it? · 3 of 5 · Forced labor</p>
+      <p class="quiz-q">This country holds roughly one in five of the world's prisoners while having about 4% of its population. Its constitution explicitly permits involuntary servitude "as a punishment for crime." Most of its prisoners work — typically for cents per hour, and in several of its states for nothing at all.</p>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="pickQuiz(this)">China</button>
+        <button class="quiz-opt" data-answer="1" onclick="pickQuiz(this)">United States</button>
+        <button class="quiz-opt" onclick="pickQuiz(this)">Russia</button>
+        <button class="quiz-opt" onclick="pickQuiz(this)">Egypt</button>
+      </div>
+      <div class="quiz-reveal">
+        <p class="quiz-verdict">The United States.</p>
+        <p>About 1.9 million people are locked up in the US (Prison Policy Initiative, 2024) — the largest known prison population on Earth and the highest incarceration rate of any large country. Against the World Prison Brief's global total of ~10.7 million, that's roughly a sixth to a fifth of the world's prisoners, depending on the year and on whose uncounted detainees you estimate; the rank isn't disputed.</p>
+        <p>The 13th Amendment (1865) abolished slavery "except as a punishment for crime whereof the party shall have been duly convicted." Southern states used that clause within months: Black Codes criminalized unemployment and loitering for Black men, and convict leasing rented the convicted back to plantations and mines — Douglas Blackmon's Pulitzer-winning <em>Slavery by Another Name</em> documents the system running into the 1940s.</p>
+        <p>Its descendant is current: the ACLU and the University of Chicago Law School found (<em>Captive Labor</em>, 2022) that about 800,000 incarcerated people work, producing over $11 billion in goods and services a year, at average wages of 13–52 cents per hour for most jobs — and seven states pay nothing at all for most prison work. Prisoners who refuse can lose visitation, phone access, or parole eligibility.</p>
+        <p><strong>Source:</strong> Prison Policy Initiative, <em>Whole Pie</em> (2024); World Prison Brief (ICPR); ACLU/UChicago, <em>Captive Labor</em> (2022); Blackmon (2008). This material is new to the series — it appears in no other part.</p>
+      </div>
+    </div>
+
+    <div class="quiz-card">
+      <p class="quiz-tag">Who did it? · 4 of 5 · Rigged politics</p>
+      <p class="quiz-q">Political scientists tested 1,779 national policy outcomes over two decades against what different groups wanted. The preferences of ordinary citizens had a "minuscule, near-zero, statistically non-significant" effect on what became law. The preferences of economic elites predicted outcomes strongly.</p>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="pickQuiz(this)">Russia</button>
+        <button class="quiz-opt" onclick="pickQuiz(this)">Hungary</button>
+        <button class="quiz-opt" data-answer="1" onclick="pickQuiz(this)">United States</button>
+        <button class="quiz-opt" onclick="pickQuiz(this)">Turkey</button>
+      </div>
+      <div class="quiz-reveal">
+        <p class="quiz-verdict">The United States.</p>
+        <p>Martin Gilens (Princeton) and Benjamin Page (Northwestern), "Testing Theories of American Politics" (<em>Perspectives on Politics</em>, 2014), examined 1,779 policy questions from 1981–2002, comparing outcomes to the preferences of median-income Americans, the affluent, and organized interest groups. Their conclusion, in their words: "the preferences of the average American appear to have only a minuscule, near-zero, statistically non-significant impact upon public policy."</p>
+        <p>Honest caveat, per this series' rules: later scholars (Enns 2015; Bashir 2015) disputed the <em>size</em> of the effect, noting the median voter often wants what elites want and "wins" alongside them. What survives every re-analysis is the direction: when the average citizen and the affluent disagree, the affluent win. That is a functional definition of oligarchy — it just doesn't get the label, because the label is reserved for Russians.</p>
+        <p>Notice the mechanism doesn't require a rigged ballot box. Two parties can compete fiercely on real cultural differences while both operating inside an economic band set by the donors who fund them. The vote is real; the menu is fixed.</p>
+        <p><strong>Source:</strong> Gilens &amp; Page (2014); Gilens, <em>Affluence and Influence</em> (2012). This material is new to the series.</p>
+      </div>
+    </div>
+
+    <div class="quiz-card">
+      <p class="quiz-tag">Who did it? · 5 of 5 · Protest suppression</p>
+      <p class="quiz-q">Police used water cannons on demonstrators in sub-freezing temperatures, alongside rubber bullets and concussion grenades — hundreds were injured in one night. A private security contractor ran counterterrorism-style operations against the movement, comparing its members in internal documents to "jihadist" insurgents.</p>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="pickQuiz(this)">Belarus</button>
+        <button class="quiz-opt" onclick="pickQuiz(this)">Iran</button>
+        <button class="quiz-opt" onclick="pickQuiz(this)">China</button>
+        <button class="quiz-opt" data-answer="1" onclick="pickQuiz(this)">United States</button>
+      </div>
+      <div class="quiz-reveal">
+        <p class="quiz-verdict">The United States. Standing Rock, November 2016.</p>
+        <p>On the night of November 20, 2016, at Backwater Bridge in North Dakota, police sprayed water cannons on Standing Rock water protectors in roughly –2°C air; volunteer medics reported treating around 300 people for hypothermia and injuries from rubber bullets and grenades. TigerSwan, the private contractor hired around the Dakota Access pipeline, described the indigenous-led movement in leaked internal documents as "an ideologically driven insurgency" and applied counterinsurgency methods developed in Iraq and Afghanistan.</p>
+        <p>Four years later, during the 2020 George Floyd protests, police made more than 10,000 arrests in the first two weeks; federal officers cleared Lafayette Square with chemical agents ahead of a presidential photo op, and DHS agents in unmarked vans detained protesters off Portland streets.</p>
+        <p><strong>Source:</strong> The Intercept, "Leaked Documents Reveal Counterterrorism Tactics Used at Standing Rock" (2017); <em>The Guardian</em> (21 Nov 2016); AP arrest tally (June 2020); ACLU litigation, Portland (2020). Full pattern: Part 4, Stations 4 and 7.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>If by the third card you were just clicking "United States" — that reflex is the finding.</strong> You already knew this record; most of it is documented at length in Part 4. What the quiz exposes is the filing system: the same conduct is "authoritarianism" when the flag is red and a "policy controversy" when it's red, white, and blue. The conduct is often symmetrical. The label almost never is.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-ext" onclick="window.open('deception-guide.html','_blank')">Part 4 has the full documented record behind cards 1, 2 and 5</button>
+      <button class="btn btn-primary" onclick="go('s3')">Station 3: The Pattern — what actually triggers intervention</button>
+    </div>
+  </div>
+
+  <!-- ══ STATION 3: THE PATTERN ══ -->
+  <div class="passage" id="passage-s3">
+    <p class="eyebrow">Station 3 of 5</p>
+    <h2>The Pattern — What Actually Triggers Intervention</h2>
+
+    <p class="page-hook"><strong>Three elected governments nationalized their natural resources. The CIA overthrew all three — and its role in each is now declassified or officially admitted.</strong> "Authoritarianism" did not predict who got overthrown. The nationalizations did.</p>
+
+    <p>If US foreign policy were driven by opposition to authoritarianism, its targets would be authoritarian states and its allies wouldn't be. Station 1 showed the allies. Here are the targets:</p>
+
+    <div class="math-block">
+      <p class="label">The tell — elected, nationalized, overthrown</p>
+      <div class="math-row"><span class="desc"><strong>Iran, 1953.</strong> Elected PM Mossadegh nationalized the Anglo-Iranian Oil Company (today's BP)</span><span class="val neg">CIA &amp; MI6 organized the coup — admitted in the CIA's own declassified history (2013)</span></div>
+      <div class="math-row"><span class="desc"><strong>Guatemala, 1954.</strong> Elected President Árbenz expropriated United Fruit's uncultivated land, offering compensation</span><span class="val neg">CIA ran Operation PBSuccess to depose him — declassified 1997</span></div>
+      <div class="math-row"><span class="desc"><strong>Chile, 1973.</strong> Elected President Allende nationalized copper — by a unanimous vote of Chile's Congress</span><span class="val neg">Nixon ordered the CIA to "make the economy scream"; the military coup installed Pinochet</span></div>
+    </div>
+
+    <p style="font-size:.82rem;color:var(--muted);"><strong>Sources:</strong> National Security Archive, "CIA Confirms Role in 1953 Iran Coup" (2013); CIA Historical Review, PBSuccess releases (1997); Richard Helms's handwritten notes of Nixon's 15 Sep 1970 order, declassified; Church Committee, <em>Covert Action in Chile 1963–1973</em> (1975).</p>
+
+    <p>Now finish each story. The Shah's SAVAK tortured dissidents for 25 years. The juntas that followed Árbenz killed some 200,000 people in a civil war whose army campaigns a UN-backed truth commission ruled genocidal against the Maya. Pinochet's record you saw in Station 1. <strong>In all three cases, Washington replaced an elected government with an actual dictatorship — and supported it.</strong> The word "authoritarian" followed the alignment, never the conduct.</p>
+
+    <p>The military coup is only the loudest instrument. The quieter ones — debt, sanctions, and IMF structural adjustment programs that force privatization and austerity as loan conditions — do the same job without tanks, and Part 2 documents them station by station. The one-line version: <strong>the trigger is never how a government treats its people. It's whether it interrupts the flow of resources and profits outward.</strong></p>
+
+    <div class="sc-lesson">
+      <strong>Apply the mirror here too:</strong> when the next intervention is sold to you as a defense of democracy, don't ask whether the target is authoritarian — it may well be. Ask what it nationalized, what it defaulted on, or whose pipeline, canal, or shipping lane it sits on. The record says that's the variable doing the work.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-ext" onclick="window.open('imperialism-guide.html','_blank')">Part 2 has the full record: the coups, the debt, structural adjustment</button>
+      <button class="btn btn-primary" onclick="go('s4')">Station 4: The Two Lenses — liberal and leftist readings of the same facts</button>
+    </div>
+  </div>
+
+  <!-- ══ STATION 4: THE TWO LENSES ══ -->
+  <div class="passage" id="passage-s4">
+    <p class="eyebrow">Station 4 of 5</p>
+    <h2>The Two Lenses — Same Facts, Two Readings</h2>
+
+    <p class="page-hook"><strong>Everything in this series is sourced fact. What divides a liberal from a leftist is not the facts — it's which pattern the facts are read as.</strong> A liberal reads each case as an exception to a sound system. A leftist reads the repetition as the system. This station lays both readings side by side, steelmanned, and lets you judge which explains the record better.</p>
+
+    <div class="lens-block">
+      <p class="lens-topic">The word "authoritarian"</p>
+      <div class="lens-pair">
+        <div class="lens-box lib"><span class="lens-tag">Liberal lens</span><p>There is a real category of authoritarian regimes, and Western democracies — whatever their abuses — are categorically different: abuses here get exposed, litigated, and reformed.</p></div>
+        <div class="lens-box left"><span class="lens-tag">Leftist lens</span><p>All states deploy surveillance, police power, and propaganda in proportion to the threats their rulers perceive. The useful question isn't which category a state is in — it's who the state serves, and who its violence lands on.</p></div>
+      </div>
+    </div>
+
+    <div class="lens-block">
+      <p class="lens-topic">The domestic record (Parts 4–5)</p>
+      <div class="lens-pair">
+        <div class="lens-box lib"><span class="lens-tag">Liberal lens</span><p>COINTELPRO, MKUltra, and mass surveillance were scandals — and the system caught them: committees investigated, laws were passed. Self-correction is slow but real.</p></div>
+        <div class="lens-box left"><span class="lens-tag">Leftist lens</span><p>Deny, classify, confirm decades later, punish no one, rebuild the program bigger — that cycle has run every decade since the 1940s. Self-correction that never costs the institution anything isn't correction. It's metabolism.</p></div>
+      </div>
+    </div>
+
+    <div class="lens-block">
+      <p class="lens-topic">Foreign policy (Parts 2–3)</p>
+      <div class="lens-pair">
+        <div class="lens-box lib"><span class="lens-tag">Liberal lens</span><p>The coups and wars were tragic mistakes — Cold War overreach, flawed intelligence, fear that curdled into excess. The intentions were broadly good; the execution failed.</p></div>
+        <div class="lens-box left"><span class="lens-tag">Leftist lens</span><p>A century of "mistakes" that all land on the same side of the ledger isn't error — it's policy. Intervention tracks capital's access to resources, markets, and labor; the moral language is applied after the target is chosen (Station 3).</p></div>
+      </div>
+    </div>
+
+    <div class="lens-block">
+      <p class="lens-topic">Elections</p>
+      <div class="lens-pair">
+        <div class="lens-box lib"><span class="lens-tag">Liberal lens</span><p>The vote is the lever. Better candidates, higher turnout, and campaign-finance reform can steer the system from inside; that's what the franchise is for.</p></div>
+        <div class="lens-box left"><span class="lens-tag">Leftist lens</span><p>The vote is real but bounded — Gilens &amp; Page measured the bounds. Cultural questions are genuinely contested; the economic band is set by donors before any ballot is printed. Every major concession — the weekend, the eight-hour day, civil rights — was won by organized pressure that made the status quo more expensive than the concession, and then ratified at the ballot box afterward.</p></div>
+      </div>
+    </div>
+
+    <div class="lens-block">
+      <p class="lens-topic">What follows</p>
+      <div class="lens-pair">
+        <div class="lens-box lib"><span class="lens-tag">Liberal lens</span><p>Reform the institutions: real oversight, whistleblower protection, prosecute perjury, close the 13th Amendment loophole, publicly finance elections.</p></div>
+        <div class="lens-box left"><span class="lens-tag">Leftist lens</span><p>Organize where you have leverage the donor class can't buy back — workplaces, unions, tenant associations, movements — because the record says institutions concede to organized power, not to arguments.</p></div>
+      </div>
+    </div>
+
+    <div class="callout frame">
+      <strong>This guide doesn't pick for you.</strong> Both lenses are held by serious, honest people, and the reforms in the left column of the last row are worth winning under either lens. The test this series does insist on is the one this guide is named for: whichever lens you adopt, point it at the whole map. If "authoritarian" means something when you look east, it has to mean the same thing when you look in the mirror. The only indefensible position is the double standard.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="go('s5')">Station 5: Now What? — the end of the series</button>
+    </div>
+  </div>
+
+  <!-- ══ STATION 5: NOW WHAT? ══ -->
+  <div class="passage" id="passage-s5">
+    <p class="eyebrow">Station 5 of 5 · End of the series</p>
+    <h2>Now What?</h2>
+
+    <p class="page-hook"><strong>You now have the engine, the map, the case study, the record of deception, the money, and the mirror.</strong> What you do with it was never in the documents.</p>
+
+    <p>The habit this guide tried to install is small and portable: <strong>strip the flag before you judge.</strong> When a state action is described to you — surveillance, a crackdown, a coup, prison labor — evaluate the action first and learn the flag second. You will be right more often, you will be manipulated less often, and you will notice within a week how rarely the news is written to permit it.</p>
+
+    <p>Where you go next depends on which lens from Station 4 you left wearing:</p>
+
+    <p><strong>If the liberal lens holds for you</strong> — the abuses are real but the system can be repaired — the repairs have names: whistleblower protection with teeth, prosecution for officials who lie under oath, ending prison labor (Colorado, Utah, Nebraska, Alabama, Oregon, Tennessee and Vermont have already voted the servitude exception out of their state constitutions), and public campaign financing to shrink the donor band. None of it happens without pressure.</p>
+
+    <p><strong>If the leftist lens holds for you</strong> — the pattern is the system working as designed — then Part 1's closing stations lay out the organizing traditions and their honest track records, wins and failures both. The one-sentence version of a century of labor history: nothing was ever given; everything was won.</p>
+
+    <p><strong>Under either lens:</strong> the standard you just practiced is the discipline. Apply it to the states you're told to hate, to the states you're told to trust, and — hardest of all — to your own.</p>
+
+    <div class="final-quote">
+      <blockquote>"I love America more than any other country in the world, and, exactly for this reason, I insist on the right to criticize her perpetually."</blockquote>
+      <cite>James Baldwin, Notes of a Native Son — 1955, the same year as the file in Station 1</cite>
+    </div>
+
+    <p>That's the series. Six guides, one framework, sources throughout. The conclusions are yours.</p>
+
+    <hr class="divider">
+
+    <p style="font-size:.88rem; color: var(--muted);">This is Part 6, the capstone. The companion guides hold the full record this one only mirrors.</p>
+
+    <div class="btn-group">
+      <button class="btn btn-ext" onclick="window.open('communist-theory-interactive.html','_blank')">Part 1: How Capitalism Actually Works — the engine</button>
+      <button class="btn btn-ext" onclick="window.open('imperialism-guide.html','_blank')">Part 2: Where Did the Wealth Actually Go? — the global extraction</button>
+      <button class="btn btn-ext" onclick="window.open('palestine-guide.html','_blank')">Part 3: Palestine — the case study</button>
+      <button class="btn btn-ext" onclick="window.open('deception-guide.html','_blank')">Part 4: The Deception — what governments hid</button>
+      <button class="btn btn-ext" onclick="window.open('vc-genocide-guide.html','_blank')">Part 5: The Money — who is funding it</button>
+      <button class="btn btn-back" onclick="go('start')" style="text-align:center;">Start this guide over</button>
+    </div>
+
+    <div class="spacer"></div>
+  </div>
+
+</div><!-- /app -->
+
+<script>
+  const progressMap = {
+    start:0, s1:20, s2:40, s3:60, s4:80, s5:100,
+    dive_cia:20
+  };
+  const diveParent = { dive_cia:'s1' };
+  const visited = new Set(['start']);
+  let current = 'start';
+
+  function go(id) {
+    document.querySelectorAll('.passage').forEach(p => p.classList.remove('active'));
+    const el = document.getElementById('passage-' + id);
+    if (!el) return;
+    el.classList.add('active');
+    current = id;
+    visited.add(id);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    updateNav();
+  }
+
+  function updateNav() {
+    const pct = progressMap[current] ?? 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+
+    document.querySelectorAll('.nav-stop[data-passage]').forEach(btn => {
+      const p = btn.dataset.passage;
+      btn.classList.remove('current', 'visited');
+      if (p === current) btn.classList.add('current');
+      else if (visited.has(p)) btn.classList.add('visited');
+    });
+
+    if (diveParent[current]) {
+      document.querySelectorAll('.nav-stop').forEach(btn => btn.classList.remove('current'));
+      const parentBtn = document.querySelector(`.nav-stop[data-passage="${diveParent[current]}"]`);
+      if (parentBtn) parentBtn.classList.add('current');
+    }
+  }
+
+  function pickQuiz(btn) {
+    const card = btn.closest('.quiz-card');
+    if (card.classList.contains('answered')) return;
+    card.classList.add('answered');
+    if (btn.dataset.answer !== '1') btn.classList.add('wrong');
+    card.querySelectorAll('.quiz-opt').forEach(b => {
+      b.disabled = true;
+      if (b.dataset.answer === '1') b.classList.add('reveal-right');
+    });
+    card.querySelector('.quiz-reveal').classList.add('open');
+  }
+
+  updateNav();
+</script>
+<script src="guides.js" data-guide-nav></script>
+</body>
+</html>

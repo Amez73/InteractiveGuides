@@ -14,15 +14,18 @@ This document is the map: **what is where**, **how the pieces are built**, and t
 
 | File | Role | ~Length |
 |------|------|--------|
-| [index.html](index.html) | Landing page. Five linked cards, one per guide. Static — no passage engine. | ~100 lines |
+| [index.html](index.html) | Landing page. Six linked cards, one per guide. Static — no passage engine. | ~100 lines |
 | [communist-theory-interactive.html](communist-theory-interactive.html) | **Part 1 · The Engine** — how capitalism works. 8 stations + deep dives + myth cards. | ~1650 lines |
 | [imperialism-guide.html](imperialism-guide.html) | **Part 2 · The Global Picture** — where the wealth went. 5 stations + deep dives. | ~635 lines |
 | [palestine-guide.html](palestine-guide.html) | **Part 3 · The Case Study** — Palestine & Israel. 9 stations + deep dives + claim cards + video embeds. | ~1560 lines |
 | [deception-guide.html](deception-guide.html) | **Part 4 · The Deception** — what Western governments hid from their own people. 7 stations + deep dives + claim cards. | ~965 lines |
 | [vc-genocide-guide.html](vc-genocide-guide.html) | **Part 5 · The Money** — venture capital, surveillance, and the genocide. 5 stations, claim cards + inline expandables only (no full deep-dive passages). | ~640 lines |
+| [mirror-guide.html](mirror-guide.html) | **Part 6 · The Mirror** — the capstone: unlearning the double standard. 5 stations + 1 deep dive (the 1955 CIA file, dossier-styled) + "Who did it?" quiz cards + liberal/leftist lens matrix. | ~665 lines |
 
-The five guides are a series and cross-link to each other in their final stations.
-Read order is Part 1 → 2 → 3 → 4 → 5, but each works standalone ("No prior reading required").
+The six guides are a series and cross-link to each other in their final stations.
+Read order is Part 1 → 2 → 3 → 4 → 5 → 6, but each works standalone ("No prior reading required").
+Part 6 is deliberately last: it re-reads the record of Parts 1–5 through one new lens
+(the double standard) and links back rather than re-teaching.
 
 There is no shared stylesheet or JS file — **each guide duplicates the engine and
 component CSS inline.** A change to a shared component must be made in each file
@@ -67,7 +70,7 @@ const diveParent  = { dive_cia:'s2', dive_debt:'s2', dive_media:'s4' };
   a reader inside a deep dive still sees where they are on the main track.
 
 ### Naming convention gotcha
-- imperialism (`s1`…`s5`), vc-genocide (`s1`…`s5`), deception (`s1`…`s7`), palestine (`s1`…`s9`) use `sN`.
+- imperialism (`s1`…`s5`), vc-genocide (`s1`…`s5`), mirror (`s1`…`s5`), deception (`s1`…`s7`), palestine (`s1`…`s9`) use `sN`.
 - communist-theory names them `station1`…`station8`.
 - Deep-dive passages are always `dive_<slug>` (`dive_cia`, `dive_congo`, `dive_ussr`…).
 - The intro passage is always `start`.
@@ -115,11 +118,32 @@ the quoted misconception (`.myth-claim`) + chevron; body holds the rebuttal pros
 green-checked `.myth-verdict` ("What the theory actually says: …"). Use for
 "steelman a misconception, then answer it."
 
-### f. Landing-page cards (`a.card`) — index.html only
+### f. Quiz cards (`.quiz-card`) — mirror guide's "Who did it?" station
+A description of state conduct with the flag stripped, four `.quiz-opt` buttons, and a
+hidden `.quiz-reveal` breakdown. JS `pickQuiz(this)` (the correct option carries
+`data-answer="1"`): first click locks the card, marks the picked option `.wrong` if
+wrong, highlights the correct one `.reveal-right`, and opens the reveal. The reveal ends
+with a **Source:** line and a pointer to the sibling guide holding the full record.
+Use for "let the reader catch their own bias" moments.
+
+### g. Dossier (`.dossier`) — mirror guide's declassified-document facsimile
+A monospaced facsimile of a real declassified file: `.dossier-band` header
+(INFORMATION REPORT), `.dossier-row` field rows (COUNTRY/SUBJECT/DATE DISTR.),
+rotated red `.dossier-stamp` (SECRET), boxed `.dossier-note` ("This is UNEVALUATED
+Information" — reproduce caveats honestly, they're load-bearing), `.dossier-quote`
+excerpt, and an "Approved For Release" `.dossier-footer`. Mimic the actual document's
+layout, not a generic "top secret" look.
+
+### h. Lens matrix (`.lens-block`) — mirror guide's liberal/leftist comparison
+Per topic: a `.lens-topic` label and a two-column `.lens-pair` grid (stacks under
+560px) of `.lens-box.lib` / `.lens-box.left` cards, color-coded left borders. Both
+readings steelmanned — "framework, not verdict."
+
+### i. Landing-page cards (`a.card`) — index.html only
 Each is a link card: `Part N · Subtitle` eyebrow, `<h2>`, blurb with a `.go` "Start
 reading →", and a `.badge-row` (read-time + format). Pure CSS hover lift.
 
-### g. Repeating content components (shared CSS across guides)
+### j. Repeating content components (shared CSS across guides)
 | Class | Purpose |
 |-------|---------|
 | `.page-hook` | Bold summary paragraph at the top of a station (left border, sand `<strong>`). |
@@ -159,6 +183,7 @@ This is the editorial template the guides converge on (most explicit in the rece
    - Palestine: The Frame → The History → The Occupation → US Role → Gaza Now → The Record → The Silence → The Lies → The Myths
    - Deception: The Pattern → The Wars → The Programs → The Crackdown → The Surveillance → The Cover-Ups → The Present
    - Money: The Money → The Weapons → Surveillance → Silencing → The Plan
+   - Mirror: The Word → The Mirror → The Pattern → The Two Lenses → Now What?
    A recurring late beat is **"The Propaganda / The Silence"** (why you weren't told this)
    and a closing **"Now What?"** that lays out *options*, not a single prescription.
 5. **Optional deep dives** hang off stations for country/case detail; **the main track
@@ -222,6 +247,7 @@ stat numbers) + **DM Sans** (body).
 | communist-theory | red `#E03030` | revolutionary red |
 | deception | steel `#5A8AAA` + warn `#C07040` | cold-file blue/grey |
 | vc-genocide | gold `#C8A060` + blue `#7FB3C8` + red `#C06040` | money/valley gold |
+| mirror | violet `#9C88C8` + flag-red `#C05050` | mirror-glass violet |
 
 Shared traits: near-black bg, 680px max content column, 17px/1.75 body, `red`-tinted
 timeline dots for violence, green/red for gain/loss in data blocks.
