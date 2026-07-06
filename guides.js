@@ -68,18 +68,40 @@ function currentFile() {
   return path || 'index.html';
 }
 
+/* ── Reading state: one localStorage entry per guide, fails silently ─────── */
+const STORE_PREFIX = 'ig:v1:';
+
+function readGuideState(file) {
+  try {
+    return JSON.parse(localStorage.getItem(STORE_PREFIX + file));
+  } catch (_) { return null; }
+}
+
+function writeGuideState(file, state) {
+  try {
+    localStorage.setItem(STORE_PREFIX + file, JSON.stringify(state));
+  } catch (_) {}
+}
+
 /* ── Landing page: build the guide cards ────────────────────────────────── */
 function renderCards(container) {
   container.innerHTML = GUIDES.map(g => {
     const badges = g.badges
       .map(b => `<span class="badge${b.format ? ' format' : ''}">${b.text}</span>`)
       .join('');
+    const st = readGuideState(g.file);
+    const inProgress = !!(st && !st.done && st.current && st.current !== 'start');
+    const progressBadge = st && st.done
+      ? '<span class="badge format">✓ Read</span>'
+      : (inProgress && st.pct > 0 ? `<span class="badge">${st.label} · ${st.pct}%</span>` : '');
+    const href = inProgress ? `${g.file}#${st.current}` : g.file;
+    const cta = inProgress ? 'Continue →' : 'Start reading →';
     return `
-      <a class="card" href="${g.file}">
+      <a class="card" href="${href}">
         <div class="part">${g.part}</div>
         <h2>${g.title}</h2>
-        <p>${g.desc} <span class="go">Start reading →</span></p>
-        <div class="badge-row">${badges}</div>
+        <p>${g.desc} <span class="go">${cta}</span></p>
+        <div class="badge-row">${progressBadge}${badges}</div>
       </a>`;
   }).join('');
 }
@@ -172,6 +194,145 @@ function injectNav() {
   });
 }
 
+/* ── Guide pages: hash routing + resume-where-you-left-off ─────────────────
+   Wraps the guide's inline go() so every navigation updates the URL hash
+   (browser back/forward walks the stations, stations are shareable links)
+   and persists reading state. Reads the engine's top-level bindings
+   (progressMap, diveParent, visited) by bare name — the inline engine script
+   runs before this file, and all reads are typeof-guarded because the
+   bindings vary per guide (vc-genocide has no diveParent, etc.). */
+function enhanceGuide() {
+  const origGo = window.go;
+  if (typeof origGo !== 'function' || typeof window.updateNav !== 'function') return;
+
+  const file = currentFile();
+  const exists = id => !!document.getElementById('passage-' + id);
+  const stations = Array.from(document.querySelectorAll('.nav-stop[data-passage]'))
+    .map(el => el.dataset.passage);
+  const pctOf = id =>
+    (typeof progressMap !== 'undefined' && progressMap[id] != null) ? progressMap[id] : 0;
+  const parentOf = id =>
+    (typeof diveParent !== 'undefined' && diveParent[id]) || null;
+  const visitedSet =
+    (typeof visited !== 'undefined' && visited instanceof Set) ? visited : null;
+  const hashId = () => {
+    try { return decodeURIComponent(location.hash.slice(1)); }
+    catch (_) { return location.hash.slice(1); }
+  };
+
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+  let activeId = 'start';
+  let fromHash = false;
+
+  function save(id) {
+    const prev = readGuideState(file) || {};
+    const eff = parentOf(id) || id;   // credit a dive to its parent station
+    const n = stations.indexOf(eff);
+    const label = n > 0 ? `Station ${n} of ${stations.length - 1}`
+                : n === 0 ? 'Intro'
+                : prev.label || 'In progress';
+    const pct = pctOf(id);
+    writeGuideState(file, {
+      current: id,
+      visited: visitedSet ? Array.from(visitedSet) : [id],
+      pct,
+      label,
+      done: prev.done === true || pct >= 100,
+      t: Date.now(),
+    });
+  }
+
+  window.go = function (id) {
+    origGo(id);
+    if (!exists(id)) return;   // origGo bailed early; nothing changed
+    activeId = id;
+    dismissResume();
+    if (!fromHash && hashId() !== id &&
+        !(id === 'start' && location.hash === '')) {
+      location.hash = id;      // plain assignment → one history entry per step
+    }
+    save(id);
+  };
+
+  window.addEventListener('hashchange', () => {
+    const id = hashId() || 'start';
+    if (id === activeId) return;   // echo of our own hash write above
+    if (id !== 'start' && !exists(id)) {
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+    fromHash = true;
+    window.go(exists(id) ? id : 'start');
+    fromHash = false;
+  });
+
+  /* Initial load — precedence: URL hash > resume prompt > start. */
+  const saved = readGuideState(file);
+  if (visitedSet && saved && Array.isArray(saved.visited)) {
+    saved.visited.forEach(v => { if (exists(v)) visitedSet.add(v); });
+  }
+  const h = hashId();
+  if (h && exists(h)) {
+    fromHash = true;
+    window.go(h);
+    fromHash = false;
+  } else if (h) {
+    history.replaceState(null, '', location.pathname + location.search);
+    window.updateNav();
+  } else {
+    window.updateNav();   // repaint chips with the restored visited set
+    if (saved && !saved.done && saved.current &&
+        saved.current !== 'start' && exists(saved.current)) {
+      showResumeBanner(saved);
+    }
+  }
+}
+
+function showResumeBanner(saved) {
+  const style = document.createElement('style');
+  style.textContent = `
+    #guide-resume { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+      z-index: 102; display: flex; align-items: center; gap: .5rem;
+      background: rgba(18,18,14,.95); backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(200,184,130,.3); border-radius: 2rem;
+      padding: .45rem .45rem .45rem 1rem; max-width: min(92vw, 480px);
+      font-family: 'DM Sans', sans-serif; box-shadow: 0 8px 30px rgba(0,0,0,.5); }
+    #guide-resume .gr-text { color: #C0B8A8; font-size: .8rem; line-height: 1.35; }
+    #guide-resume .gr-text strong { color: #E4DCC4; font-weight: 600; }
+    #guide-resume .gr-go { cursor: pointer; border: 1px solid rgba(200,184,130,.45);
+      background: rgba(200,184,130,.12); color: #C8B882; border-radius: 2rem;
+      font-family: inherit; font-size: .72rem; font-weight: 600; letter-spacing: .06em;
+      text-transform: uppercase; padding: .38rem .85rem; line-height: 1;
+      white-space: nowrap; transition: border-color .2s, color .2s; }
+    #guide-resume .gr-go:hover { border-color: rgba(200,184,130,.8); color: #E4DCC4; }
+    #guide-resume .gr-x { cursor: pointer; border: none; background: none;
+      color: #8A8268; font-size: .95rem; line-height: 1; padding: .35rem .55rem; }
+    #guide-resume .gr-x:hover { color: #E4DCC4; }
+  `;
+  document.head.appendChild(style);
+
+  const wrap = document.createElement('div');
+  wrap.id = 'guide-resume';
+  wrap.innerHTML = `
+    <span class="gr-text">Continue where you left off ·
+      <strong>${saved.label || 'In progress'}</strong></span>
+    <button class="gr-go" type="button">Continue</button>
+    <button class="gr-x" type="button" aria-label="Dismiss">✕</button>
+  `;
+  document.body.appendChild(wrap);
+  wrap.querySelector('.gr-go').addEventListener('click', () => window.go(saved.current));
+  wrap.querySelector('.gr-x').addEventListener('click', dismissResume);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') dismissResume();
+  });
+}
+
+function dismissResume() {
+  const el = document.getElementById('guide-resume');
+  if (el) el.remove();
+}
+
 /* ── Dispatch based on the flag on this script's own tag ─────────────────── */
 (function () {
   const mode = document.currentScript.dataset;
@@ -181,6 +342,7 @@ function injectNav() {
       if (container) renderCards(container);
     } else if ('guideNav' in mode) {
       injectNav();
+      enhanceGuide();
     }
   };
   if (document.readyState === 'loading') {

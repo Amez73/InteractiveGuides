@@ -51,8 +51,11 @@ landing page is the only exception (it's plain anchor links).
   }
   ```
 
-- Every button/nav element calls `onclick="go('s2')"` etc. No router, no history API,
-  no hash — back/forward is done with on-page **Back** buttons, not the browser.
+- Every button/nav element calls `onclick="go('s2')"` etc. The inline engines have
+  no router of their own — but `guides.js` wraps `window.go()` at DOMContentLoaded
+  to add hash routing and reading-state persistence on top (see §2b). Browser
+  back/forward, deep links (`guide.html#s4`), and resume-where-you-left-off all
+  work through that shared layer; the guide files themselves stay router-free.
 
 ### Fixed chrome (top of every guide)
 - `#progress-bar` → `#progress-fill` : a thin top bar whose width is driven by
@@ -68,6 +71,33 @@ const diveParent  = { dive_cia:'s2', dive_debt:'s2', dive_media:'s4' };
 - `progressMap` gives a deep dive the **same progress %** as the station it belongs to.
 - `diveParent` makes the nav highlight the **parent station** while a dive is open, so
   a reader inside a deep dive still sees where they are on the main track.
+
+### 2b. Shared routing + resume layer (guides.js, zero per-guide code)
+`guides.js` (loaded after the inline engine via `data-guide-nav`) enhances every
+guide at DOMContentLoaded — `enhanceGuide()`:
+
+- **Hash routing.** Wraps `window.go()`: each navigation sets `location.hash` to the
+  passage id (`#s4`, `#dive_cia`), so browser back/forward walks the stations, a
+  refresh keeps your place, and any station is a shareable link. A `hashchange`
+  listener handles back/forward; invalid hashes fall back to `start` and are
+  stripped from the URL. Element ids are `passage-s4` while hashes are `s4`, so
+  native fragment scrolling never fires.
+- **Reading state.** Every navigation writes `localStorage["ig:v1:<file>.html"]`:
+  `{ current, visited[], pct, label ("Station 4 of 7"), done, t }`. All storage
+  access is try/catch-wrapped — private mode degrades to exactly the old behavior.
+- **Resume toast.** On a plain load (no hash) with saved progress past `start`, a
+  fixed bottom-center toast offers "Continue where you left off · Station N of M".
+  Precedence: **URL hash > resume toast > start**. Visited chips are restored
+  either way. Dismiss (✕/Escape) is session-only. Not shown once `done`.
+- **Index cards.** `renderCards()` reads the same state: in-progress guides get a
+  progress badge + "Continue →" deep link to the saved station; finished guides
+  get "✓ Read" and a plain link.
+- It reads the engine's top-level bindings (`progressMap`, `diveParent`, `visited`)
+  by bare name with `typeof` guards, so per-guide gaps (vc-genocide has no
+  `diveParent`; communist-theory declares it inside `updateNav()`) are tolerated.
+  A dive is credited to its parent station for the "Station N of M" label.
+- **New guides get all of this for free** — the station list is derived from the
+  `.nav-stop[data-passage]` chips, not hardcoded.
 
 ### Naming convention gotcha
 - imperialism (`s1`…`s5`), vc-genocide (`s1`…`s5`), mirror (`s1`…`s5`), deception (`s1`…`s7`), palestine (`s1`…`s9`) use `sN`.
