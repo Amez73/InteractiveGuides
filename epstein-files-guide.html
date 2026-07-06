@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Case File: What the Epstein Files Actually Document</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #0B0D0C;
+    --surface:   #121715;
+    --border:    #232B27;
+    --green:     #7FBFA0;
+    --green-dim: #3A5A4A;
+    --sand:      #C8B87A;
+    --blue:      #7FA8C8;
+    --violet:    #A890C8;
+    --red:       #C05050;
+    --text:      #DCE0DA;
+    --muted:     #6A7870;
+    --track:     #0F1311;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 17px; line-height: 1.75; min-height: 100vh; }
+  #app { max-width: 680px; margin: 0 auto; padding: 0 1.25rem; }
+
+  .passage { display: none; padding: 3rem 0 5rem; animation: fadeIn .35s ease; }
+  .passage.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; } }
+
+  #progress-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 3px; background: var(--border); }
+  #progress-fill { height: 100%; background: var(--green); transition: width .4s ease; }
+
+  #station-nav {
+    position: fixed; top: 3px; left: 0; right: 0; z-index: 99;
+    background: rgba(11,13,12,.94); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    gap: .5rem; padding: .55rem 1rem;
+    font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+    font-weight: 500; color: var(--muted); flex-wrap: wrap;
+  }
+  .nav-stop { cursor: pointer; padding: .2rem .55rem; border-radius: 2rem; transition: color .2s, background .2s; white-space: nowrap; }
+  .nav-stop:hover { color: var(--text); }
+  .nav-stop.visited { color: var(--muted); }
+  .nav-stop.current { color: var(--green); background: rgba(127,191,160,.12); }
+  .nav-sep { color: var(--border); }
+
+  .eyebrow { font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--green); margin-bottom: .9rem; }
+  h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; margin-bottom: 1.5rem; }
+  h1 em { font-style: italic; color: var(--green); }
+  h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.4rem, 4vw, 1.9rem); line-height: 1.2; margin-bottom: 1.2rem; }
+  h3 { font-family: 'DM Serif Display', serif; font-size: 1.15rem; margin-bottom: .7rem; color: var(--text); }
+  p { margin-bottom: 1.15rem; color: #B4BCB4; }
+  p:last-of-type { margin-bottom: 0; }
+  strong { color: var(--text); font-weight: 600; }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .page-hook { font-size: clamp(1.1rem, 2.6vw, 1.25rem); line-height: 1.55; color: var(--text); border-left: 3px solid var(--green-dim); padding: .15rem 0 .15rem 1.25rem; margin: 0 0 1.6rem; font-weight: 400; }
+  .page-hook strong { color: var(--green); font-weight: 600; }
+
+  .pull { border-left: 3px solid var(--green-dim); padding: .6rem 1.2rem; margin: 1.8rem 0; font-family: 'DM Serif Display', serif; font-size: 1.12rem; font-style: italic; color: #A0AC9E; line-height: 1.55; }
+
+  .callout { background: rgba(127,191,160,.07); border: 1px solid rgba(127,191,160,.22); border-radius: 6px; padding: 1.1rem 1.4rem; margin: 1.6rem 0; font-size: .93rem; color: #A8C0AE; }
+  .callout strong { color: var(--green); }
+  .callout.warn { background: rgba(192,80,80,.06); border-color: rgba(192,80,80,.25); color: #C0A8A0; }
+  .callout.warn strong { color: var(--red); }
+
+  .subtitle { font-size: 1.05rem; color: var(--muted); margin-bottom: 2rem; font-weight: 300; line-height: 1.65; }
+
+  .companion-badge { display: inline-flex; align-items: center; gap: .5rem; background: rgba(127,191,160,.1); border: 1px solid rgba(127,191,160,.25); border-radius: 3px; padding: .3rem .8rem; font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--green); margin-bottom: 1.5rem; }
+  .companion-badge::before { content: '◈'; }
+
+  .track-preview { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem 1.4rem; margin: 2rem 0; }
+  .tp-label { font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 600; color: var(--muted); margin-bottom: 1rem; }
+  .track-line { display: flex; align-items: center; flex-wrap: wrap; gap: .3rem; font-size: .82rem; }
+  .track-stop { background: var(--track); border: 1px solid var(--border); border-radius: 3px; padding: .25rem .65rem; color: var(--muted); white-space: nowrap; }
+  .track-stop.main { color: var(--text); border-color: #35403A; }
+  .track-conn { color: var(--border); font-size: .8rem; }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); gap: .85rem; margin: 1.8rem 0; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1.2rem 1.3rem; }
+  .stat-number { font-family: 'DM Serif Display', serif; font-size: 2rem; line-height: 1; color: var(--green); margin-bottom: .3rem; }
+  .stat-label { font-size: .82rem; color: var(--muted); line-height: 1.45; margin: 0; }
+  .stat-source { font-size: .68rem; color: #35403A; margin-top: .4rem; margin-bottom: 0; }
+
+  /* ── Evidence-tier chips: the signature of this page ── */
+  .tier { display: inline-block; font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; padding: .12rem .5rem; border-radius: 2px; border: 1px solid; white-space: nowrap; }
+  .tier.doc    { color: var(--green);  border-color: rgba(127,191,160,.45); background: rgba(127,191,160,.08); }
+  .tier.tape   { color: var(--blue);   border-color: rgba(127,168,200,.45); background: rgba(127,168,200,.08); }
+  .tier.court  { color: var(--sand);   border-color: rgba(200,184,122,.45); background: rgba(200,184,122,.08); }
+  .tier.sworn  { color: var(--violet); border-color: rgba(168,144,200,.45); background: rgba(168,144,200,.08); }
+  .tier.rep    { color: var(--red);    border-color: rgba(192,80,80,.5);    background: rgba(192,80,80,.08); }
+  .tier-row { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: .15rem; }
+
+  .tier-legend { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem 1.4rem; margin: 1.8rem 0; }
+  .tier-legend .tl-row { display: flex; align-items: baseline; gap: .8rem; margin-bottom: .55rem; font-size: .85rem; color: #A0AC9E; }
+  .tier-legend .tl-row:last-child { margin-bottom: 0; }
+  .tier-legend .tier { flex-shrink: 0; min-width: 172px; text-align: center; }
+  @media (max-width: 480px) { .tier-legend .tl-row { flex-direction: column; gap: .25rem; } .tier-legend .tier { min-width: 0; align-self: flex-start; } }
+
+  details.claim-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin: .85rem 0; transition: border-color .2s, background .2s; }
+  details.claim-card:hover { border-color: #35403A; }
+  details.claim-card[open] { border-color: var(--green-dim); background: rgba(127,191,160,.03); }
+  details.claim-card summary { cursor: pointer; padding: 1.1rem 3rem 1.1rem 1.35rem; list-style: none; display: flex; flex-direction: column; gap: .3rem; position: relative; }
+  details.claim-card summary::-webkit-details-marker { display: none; }
+  .claim-headline { font-family: 'DM Serif Display', serif; font-size: 1.12rem; line-height: 1.3; color: var(--text); }
+  details.claim-card[open] .claim-headline { color: var(--green); }
+  .claim-blurb { font-size: .88rem; line-height: 1.5; color: var(--muted); }
+  details.claim-card summary::after { content: '+'; position: absolute; right: 1.25rem; top: 1rem; color: var(--green); font-size: 1.4rem; line-height: 1; font-weight: 300; transition: transform .2s, color .2s; }
+  details.claim-card[open] summary::after { content: '\2013'; }
+  .claim-body { padding: 1.05rem 1.35rem 1.2rem; border-top: 1px solid var(--border); font-size: .93rem; color: #B4BCB4; }
+  .claim-body p { margin-bottom: .9rem; }
+  .claim-body p:last-child { margin-bottom: 0; }
+  .claim-body .src { font-size: .75rem; color: var(--muted); margin-top: .8rem; padding-top: .8rem; border-top: 1px solid var(--border); }
+  .claim-body .src a { color: var(--blue); }
+
+  /* Verbatim email/audio excerpt — monospace, like an exhibit */
+  .exhibit { background: var(--track); border: 1px solid var(--border); border-left: 3px solid var(--green-dim); border-radius: 4px; padding: 1rem 1.2rem; margin: 1.1rem 0; font-family: 'Courier New', monospace; font-size: .87rem; line-height: 1.65; color: #C4CCC4; }
+  .exhibit .ex-meta { display: block; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .55rem; }
+
+  details.deep-expand { background: var(--track); border: 1px solid var(--border); border-left: 3px solid var(--green-dim); border-radius: 6px; margin: 1.2rem 0 1.8rem; }
+  details.deep-expand summary { cursor: pointer; padding: .85rem 1.2rem; color: var(--green); font-weight: 600; font-size: .88rem; letter-spacing: .04em; list-style: none; display: flex; align-items: center; gap: .5rem; transition: color .2s; }
+  details.deep-expand summary::-webkit-details-marker { display: none; }
+  details.deep-expand summary::before { content: '▸'; font-size: .9rem; transition: transform .2s; flex-shrink: 0; }
+  details.deep-expand[open] summary::before { transform: rotate(90deg); }
+  details.deep-expand summary:hover { color: var(--text); }
+  details.deep-expand .expand-content { padding: 0 1.2rem 1.2rem; font-size: .93rem; color: #B4BCB4; }
+  details.deep-expand .expand-content p { margin-bottom: .9rem; }
+  details.deep-expand .expand-content p:last-child { margin-bottom: 0; }
+  details.deep-expand .expand-content .src { font-size: .75rem; color: var(--muted); margin-top: .8rem; padding-top: .8rem; border-top: 1px solid var(--border); }
+
+  .btn-group { display: flex; flex-direction: column; gap: .75rem; margin-top: 2.5rem; }
+  .btn { display: block; width: 100%; padding: .95rem 1.4rem; border-radius: 6px; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: .95rem; font-weight: 500; text-align: left; transition: background .18s, transform .1s; position: relative; }
+  .btn:active { transform: scale(.99); }
+  .btn-primary { background: var(--green); color: var(--bg); }
+  .btn-primary:hover { background: #8FCFB0; }
+  .btn-primary::after { content: '\2192'; position: absolute; right: 1.2rem; top: 50%; transform: translateY(-50%); opacity: .6; }
+  .btn-back { background: transparent; color: var(--muted); border: 1px solid var(--border); font-size: .87rem; }
+  .btn-back:hover { color: var(--text); }
+  .btn-ext { background: rgba(127,191,160,.1); color: var(--green); border: 1px solid rgba(127,191,160,.3); font-size: .9rem; }
+  .btn-ext:hover { background: rgba(127,191,160,.18); }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+  .spacer { height: 4rem; }
+
+  .final-quote { text-align: center; padding: 2.5rem 1rem; border: 1px solid var(--border); border-radius: 8px; margin: 2rem 0; background: var(--surface); }
+  .final-quote blockquote { font-family: 'DM Serif Display', serif; font-size: clamp(1.1rem, 3vw, 1.35rem); font-style: italic; color: var(--text); line-height: 1.6; margin-bottom: .8rem; border: none; padding: 0; }
+  .final-quote cite { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-style: normal; }
+
+  @media (max-width: 480px) {
+    .stat-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"><div id="progress-fill" style="width:0%"></div></div>
+
+<nav id="station-nav">
+  <span class="nav-stop current" data-passage="start" onclick="go('start')">Intro</span>
+  <span class="nav-sep">&middot;</span>
+  <span class="nav-stop" data-passage="s1" onclick="go('s1')">In Their Own Words</span>
+  <span class="nav-sep">&middot;</span>
+  <span class="nav-stop" data-passage="s2" onclick="go('s2')">The Cameras</span>
+  <span class="nav-sep">&middot;</span>
+  <span class="nav-stop" data-passage="s3" onclick="go('s3')">The Deal</span>
+  <span class="nav-sep">&middot;</span>
+  <span class="nav-stop" data-passage="s4" onclick="go('s4')">The Pipeline</span>
+  <span class="nav-sep">&middot;</span>
+  <span class="nav-stop" data-passage="s5" onclick="go('s5')">The Window</span>
+</nav>
+
+<div id="app">
+
+  <!-- ══ START ══ -->
+  <div class="passage active" id="passage-start">
+    <div style="padding-top:4rem;">
+      <div class="companion-badge">Companion &middot; The Case File</div>
+      <h1>The Epstein Files:<br><em>Not an Anomaly. A Window.</em></h1>
+      <p class="subtitle">One corpus of released emails, audio, police inventories, court rulings, and sworn testimony &mdash; read with the framework the six guides built. Including the evidence that cuts the other way.</p>
+
+      <div class="track-preview">
+        <p class="tp-label">Your route</p>
+        <div class="track-line">
+          <span class="track-stop main">In Their Own Words</span>
+          <span class="track-conn">&#9654;</span>
+          <span class="track-stop main">The Cameras</span>
+          <span class="track-conn">&#9654;</span>
+          <span class="track-stop main">The Deal</span>
+          <span class="track-conn">&#9654;</span>
+          <span class="track-stop main">The Pipeline</span>
+          <span class="track-conn">&#9654;</span>
+          <span class="track-stop main">The Window</span>
+        </div>
+        <p style="font-size:.8rem;color:var(--muted);margin-top:.9rem;margin-bottom:0;">Every card carries an evidence-strength label. No prior reading required &mdash; but this page tests the framework Parts 1&ndash;6 built.</p>
+      </div>
+
+      <p>Between November 2025 and February 2026, Congress and the Justice Department released the Epstein files: <strong>over 3 million pages</strong>, 20,000+ emails from his estate, 180,000 images, 2,000 videos, and hours of audio. Most coverage mined them for names. This page reads them for something else.</p>
+
+      <p>The files are a window. What they show, from the inside, is what the six guides show from the outside: a class of people who privately acknowledge the system should produce revolt, who muse about <em>getting rid of the poor</em>, who fail upward without consequence, who built a surveillance apparatus inside their houses, whose crimes the state resolved with a secret deal a judge later ruled illegal &mdash; and whose money moved frictionlessly into the surveillance industry now aimed at journalists and dissidents.</p>
+
+      <p><strong>The files don't prove a conspiracy.</strong> They document something more mundane and more frightening: a class that operates with shared interests, closed ranks, mutual protection, and contempt for the people beneath them &mdash; and says so, in private, in writing.</p>
+
+      <div class="tier-legend">
+        <p class="tp-label">How to read the labels on every card</p>
+        <div class="tl-row"><span class="tier doc">In Writing</span><span>Released emails and records. The strongest tier: their own words, in the corpus.</span></div>
+        <div class="tl-row"><span class="tier tape">On Tape</span><span>Released audio or video. You can hear or watch it yourself.</span></div>
+        <div class="tl-row"><span class="tier court">Court / Official Record</span><span>Rulings, police inventories, government findings &mdash; including findings that cut against this page's thesis.</span></div>
+        <div class="tl-row"><span class="tier sworn">Sworn Testimony</span><span>Statements under oath or in court filings. Serious, but contested where noted.</span></div>
+        <div class="tl-row"><span class="tier rep">Reported &mdash; Unconfirmed</span><span>Journalism resting on anonymous sources. Included with its full provenance chain, so you can weigh it &mdash; not swallow it.</span></div>
+      </div>
+
+      <div class="callout"><strong>What this page isn't.</strong> It is not a "client list" page, and it does not claim Epstein ran a blackmail operation for a spy agency &mdash; the DOJ says it found no credible evidence of blackmail of prominent individuals, and that finding is on a card below with the same weight as everything else. Where the evidence is thin, the label says so. The argument here doesn't need the unproven parts.</div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="go('s1')">Station 1: In Their Own Words</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══ STATION 1: IN THEIR OWN WORDS ══ -->
+  <div class="passage" id="passage-s1">
+    <p class="eyebrow">Station 1 of 5</p>
+    <h2>In Their Own Words &mdash; The Class Talking to Itself</h2>
+
+    <p class="page-hook"><strong>Why aren't the poor in revolt?</strong> The people at the top asked each other exactly that question &mdash; and wrote their answers down.</p>
+
+    <p><a href="communist-theory-interactive.html">Part 1</a> argues that capitalism runs on a class with shared interests, and <a href="imperialism-guide.html">Part 2</a> follows where the wealth went. Both argue from outcomes and records. The estate emails add a register the guides couldn't: <strong>the class talking to itself, with no audience assumed.</strong></p>
+
+    <details class="claim-card">
+      <summary>
+        <span class="tier-row"><span class="tier doc">In Writing</span></span>
+        <span class="claim-headline">"The group that should be in the streets, has been bought off"</span>
+        <span class="claim-blurb">Jes Staley &mdash; then one of the most powerful bankers alive, later CEO of Barclays &mdash; explains to Epstein why America isn't S&atilde;o Paulo.</span>
+      </summary>
+      <div class="claim-body">
+        <div class="exhibit">
+          <span class="ex-meta">Email &middot; Jes Staley to Jeffrey Epstein &middot; House Oversight estate release, Nov 2025</span>
+          "you want to know why we are not S&atilde;o Paolo, watch the TV adds on the Superbowl. Its all about hip blacks in hip cars with white women. The group that should be in the streets, has been bought off. By Jay Z" <em>[sic throughout]</em>
+        </div>
+        <p>Read what the banker is conceding. S&atilde;o Paulo is his shorthand for a city where the rich live behind walls and fly helicopters over the poor. Staley isn't asking <em>whether</em> the system he sits on top of should put people in the streets &mdash; he takes that as given. His only question is why it hasn't happened, and his answer is that consumerism and celebrity bought the anger off. That is the analysis of <a href="communist-theory-interactive.html">Part 1</a>, made casually, by the CEO-class, in private &mdash; wrapped in the casual racism of a man describing Black Americans as a pacified threat.</p>
+        <p>When leftists say the system produces class conflict, it gets called ideology. Staley says it to Epstein and it's just two rich men agreeing on how the world works.</p>
+        <p class="src">Source: House Oversight Committee estate release (Nov 2025), via <a href="https://jacobin.com/2026/02/working-class-consumerism-staley-epstein" target="_blank">Jacobin</a> &middot; <a href="https://www.counterfire.org/article/epstein-its-the-system-stupid-weekly-briefing/" target="_blank">Counterfire</a></p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>
+        <span class="tier-row"><span class="tier doc">In Writing</span></span>
+        <span class="claim-headline">"How do we get rid of poor people as a whole"</span>
+        <span class="claim-blurb">The question Epstein put to Bill Gates &mdash; as recalled in writing by a Hollywood producer who'd been mulling his own answer.</span>
+      </summary>
+      <div class="claim-body">
+        <div class="exhibit">
+          <span class="ex-meta">Email &middot; Barry Josephson to Jeffrey Epstein &middot; Feb 4, 2011 &middot; DOJ release, Feb 2026</span>
+          "I've been thinking a lot about that question that you asked Bill Gates, 'how do we get rid of poor people as a whole' and I have an answer/comment regarding that for you."
+        </div>
+        <p><strong>Be precise about what this documents.</strong> It is a thirdhand attribution: Josephson, in writing, recalling a question he says Epstein asked Gates. There is no record of Gates's answer, no evidence Gates endorsed the sentiment, and Gates's spokespeople call claims of deeper involvement with Epstein "absolutely false." The DOJ itself cautions that the released investigative records contain unverified material.</p>
+        <p>What <em>is</em> documented: in this circle, "how do we get rid of poor people as a whole" was a normal enough dinner question that an associate spent days thinking about it and emailed over his answer. Nobody in the thread treats the question as monstrous. That normalcy &mdash; not any secret plan &mdash; is the finding.</p>
+        <p class="src">Source: <a href="https://www.justice.gov/epstein" target="_blank">DOJ Epstein Library</a> (Feb 2026 release under the Epstein Files Transparency Act); reported by <a href="https://en.royanews.tv/news/67453/Epstein-allegedly-asked-Gates-how-%E2%80%9Cto-get-rid-of-poor-people%E2%80%9D:-DOJ-file" target="_blank">Roya News</a> &middot; <a href="https://wabcradio.com/2026/02/05/doj-files-shows-epstein-and-gates-discussing-how-to-get-rid-of-poor-people/" target="_blank">77 WABC</a></p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>
+        <span class="tier-row"><span class="tier doc">In Writing</span></span>
+        <span class="claim-headline">Larry Summers and his "wing man"</span>
+        <span class="claim-blurb">Hundreds of emails, 2013&ndash;2019 &mdash; years after Epstein's conviction. What failing upward looks like from the inside.</span>
+      </summary>
+      <div class="claim-body">
+        <p>Larry Summers &mdash; former Treasury Secretary, former Harvard president &mdash; kept up a warm correspondence with Epstein from 2013 to 2019: <strong>years after Epstein was a convicted, registered sex offender.</strong> Summers sought his advice on Harvard projects, politics, and his pursuit of a woman he was mentoring. In November 2018 he wrote: <em>"Think for now I'm going nowhere with her except economics mentor."</em> Epstein, in the same period, described himself as Summers' <em>"wing man."</em></p>
+        <p>Now trace the arc. Summers left the Harvard presidency in 2006 under a cloud &mdash; and became Obama's top economic adviser. His Epstein friendship was publicly known by 2019 &mdash; and he joined the OpenAI board in 2023. Only in November 2025, when the emails themselves were published, did he declare himself <em>"deeply ashamed"</em> and step back from public commitments. <strong>The consequence arrived when the documents did &mdash; not when the facts did.</strong> The facts had been available for years. That is what <a href="imperialism-guide.html">Part 2</a> means by a class that fails upward: accountability is indexed to publicity, not to conduct.</p>
+        <p class="src">Sources: <a href="https://www.nbcnews.com/news/us-news/larry-summers-years-emails-jeffrey-epstein-roil-harvard-rcna244798" target="_blank">NBC News</a> &middot; <a href="https://www.thecrimson.com/article/2025/11/13/summers-epstein-messages/" target="_blank">Harvard Crimson</a> &middot; <a href="https://www.cnbc.com/2025/11/17/larry-summers-jeffrey-epstein-harvard.html" target="_blank">CNBC</a></p>
+      </div>
+    </details>
+
+    <div class="callout">The pattern across all three cards is the same: <strong>none of this was hidden from the class itself.</strong> Staley's worldview, Epstein's question, Summers' correspondence &mdash; all of it was known, tolerated, and reciprocated inside the circle for years. The only thing that ever changed anything was the outside finding out.</div>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="go('s2')">Station 2: The Cameras</button>
+      <button class="btn btn-back" onclick="go('start')">Back to intro</button>
+    </div>
+  </div>
+
+
+  <!-- ══ STATION 2: THE CAMERAS ══ -->
+  <div class="passage" id="passage-s2">
+    <p class="eyebrow">Station 2 of 5</p>
+    <h2>The Cameras &mdash; What the Record Shows, and Where It Stops</h2>
+
+    <p class="page-hook">Police inventories, released footage, an email about installing hidden cameras, and sworn testimony document <strong>a surveillance apparatus inside Epstein's houses.</strong> What it was ultimately <em>for</em> is where the documented record stops &mdash; and this page stops with it.</p>
+
+    <details class="claim-card">
+      <summary>
+        <span class="tier-row"><span class="tier court">Court / Official Record</span><span class="tier doc">In Writing</span></span>
+        <span class="claim-headline">2005: police pull cameras hidden inside clocks</span>
+        <span class="claim-blurb">The Palm Beach raid inventory. Plus an email about installing hidden cameras, and a DOJ review's finding about what the FBI believed.</span>
+      </summary>
+      <div class="claim-body">
+        <p>When Palm Beach police raided Epstein's Florida home in 2005, the items they removed included <strong>two covert "clock cameras,"</strong> and his computer held footage from a motion-activated camera hidden in a clock by his desk. This is a police evidence inventory, not an allegation. The files released in 2026 also include an email discussing the installation of hidden cameras in his properties.</p>
+        <p>The Justice Department's own Office of Professional Responsibility review (2020) records that the FBI <strong>"had reason to believe Epstein used hidden cameras in his New York residence to record his sexual encounters."</strong> That sentence sat in a government report for six years while officials publicly waved the topic off as internet conspiracy.</p>
+        <p class="src">Sources: Palm Beach PD raid inventory, via <a href="https://www.lbc.co.uk/article/jeffrey-epstein-footage-latest-files-5HjdSCt_2/" target="_blank">LBC</a> &middot; <a href="https://newrepublic.com/post/206429/epstein-email-install-hidden-cameras" target="_blank">The New Republic</a> (hidden-camera email) &middot; DOJ OPR review (2020)</p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>
+        <span class="tier-row"><span class="tier tape">On Tape</span></span>
+        <span class="claim-headline">2026: the footage from inside a carriage clock</span>
+        <span class="claim-blurb">Channel 4 News found spycam-style video of Epstein's own living room in the released files.</span>
+      </summary>
+      <div class="claim-body">
+        <p>In the February 2026 DOJ release, Channel 4 News identified footage of Epstein's Manhattan living room shot from inside a <strong>carriage clock</strong> &mdash; the camera concealed in an ordinary household object, recording the room where he received guests. Photographs in the files show further cameras in his properties in New York, New Mexico, and Little St. James, including one mounted above his bed.</p>
+        <p>You do not need to speculate about tapes of famous men &mdash; and this page doesn't. The documented finding is narrower and solid: <strong>the man maintained concealed recording equipment in the rooms where his crimes and his social life happened.</strong></p>
+        <p class="src">Sources: <a href="https://www.channel4.com/news/exclusive-spycam-style-footage-inside-jeffrey-epsteins-living-room-uncovered-in-latest-files" target="_blank">Channel 4 News exclusive</a> &middot; <a href="https://www.lbc.co.uk/article/jeffrey-epstein-footage-latest-files-5HjdSCt_2/" target="_blank">LBC</a></p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>
+        <span class="tier-row"><span class="tier sworn">Sworn Testimony</span></span>
+        <span class="claim-headline">The media room: "toilet, toilet, bed, bed, toilet, bed"</span>
+        <span class="claim-blurb">Maria Farmer, on what Epstein showed her in his New York mansion in the 1990s.</span>
+      </summary>
+      <div class="claim-body">
+        <p>Maria Farmer &mdash; the first woman known to have reported Epstein to the FBI, in 1996 &mdash; has testified and repeated in litigation that Epstein showed her a <strong>"media room"</strong> in the Manhattan mansion where men sat monitoring banks of screens fed by cameras throughout the house. Describing what the monitors showed: <em>"toilet, toilet, bed, bed, toilet, bed."</em> Her account is her sworn recollection, consistent across decades and consistent with the physical evidence above &mdash; but it is testimony, not an inventory.</p>
+        <p class="src">Sources: <a href="https://www.cbsnews.com/news/jeffrey-epstein-accuser-maria-farmer-says-his-house-under-constant-tv-surveillance/" target="_blank">CBS News interview</a> &middot; <a href="https://www.jamesmarshlaw.com/wp-content/uploads/2025/12/Doc-1-Complaint-05-29-2025.pdf" target="_blank">Farmer v. United States, complaint (2025)</a></p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>
+        <span class="tier-row"><span class="tier sworn">Sworn Testimony</span></span>
+        <span class="claim-headline">"Tell me everything": the debrief allegation</span>
+        <span class="claim-blurb">Virginia Giuffre's account &mdash; and the FBI finding that complicates it. Both belong on the table.</span>
+      </summary>
+      <div class="claim-body">
+        <p>In court filings and her posthumous memoir, Virginia Giuffre said Epstein and Maxwell directed her to have sex with powerful men and <strong>demanded she report the details back</strong> &mdash; which she understood as gathering leverage. The men she named all deny it.</p>
+        <p><strong>Now the complication, with the same weight:</strong> FBI investigative material released in 2026 records that other victims interviewed did not corroborate the specific allegation that Epstein "lent out" girls to powerful men as an organized practice. Giuffre's account is sworn and serious; it is also singular on this point in the released record. An honest reading holds both: a man with hidden cameras in his bedrooms and a documented appetite for leverage &mdash; and an allegation of systematic trafficking-for-blackmail that the released files do not independently confirm.</p>
+        <p class="src">Sources: 2019 unsealed civil filings (Giuffre v. Maxwell) &middot; <a href="https://www.pbs.org/newshour/show/epstein-survivor-virginia-giuffres-posthumous-memoir-exposes-abuse-by-powerful-men" target="_blank">PBS NewsHour on Giuffre's memoir</a> &middot; <a href="https://en.wikipedia.org/wiki/Epstein_files" target="_blank">Epstein files overview (FBI corroboration finding)</a></p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>
+        <span class="tier-row"><span class="tier court">Court / Official Record</span></span>
+        <span class="claim-headline">The counter-finding: DOJ says no credible evidence of blackmail</span>
+        <span class="claim-blurb">July 2025 memo: no "client list," no credible evidence Epstein blackmailed prominent people. This card cuts against the station &mdash; that's why it's here.</span>
+      </summary>
+      <div class="claim-body">
+        <p>In July 2025, the DOJ and FBI released a memo concluding that no incriminating "client list" exists, that Epstein's death was suicide, and that investigators found <em>"no credible evidence &hellip; that Epstein blackmailed prominent individuals as part of his actions."</em></p>
+        <p>Weigh it honestly, in both directions. Against this page's thesis: the government's review of the full evidence found no blackmail operation. For skepticism of that finding: the same government negotiated the secret 2008 deal a judge ruled illegal (next station), and Congressional members of both parties accuse the DOJ of still withholding the FBI's victim-interview 302s and Epstein's computer email archives. A finding issued by an institution with a documented history of protecting this man is evidence &mdash; but not a settlement of the question. <strong>What you cannot honestly do is cite the cameras and skip this memo, or cite this memo and skip the cameras.</strong></p>
+        <p class="src">Sources: <a href="https://www.justice.gov/opa/media/1407001/dl" target="_blank">DOJ/FBI memo, July 2025</a> &middot; <a href="https://www.npr.org/2025/07/07/g-s1-76367/doj-jeffrey-epstein-memo" target="_blank">NPR</a></p>
+      </div>
+    </details>
+
+    <p>This is the method of <a href="deception-guide.html">Part 4</a> pointed at one estate: put the physical record, the testimony, and the official denial side by side, label each, and let the reader see exactly where knowledge ends and inference begins.</p>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="go('s3')">Station 3: The Deal</button>
+      <button class="btn btn-back" onclick="go('s1')">Back to Station 1</button>
+    </div>
+  </div>
+
+
+  <!-- ══ STATION 3: THE DEAL ══ -->
+  <div class="passage" id="passage-s3">
+    <p class="eyebrow">Station 3 of 5</p>
+    <h2>The Deal &mdash; The Documented Scandal and the Undocumented Explanation</h2>
+
+    <p class="page-hook"><strong>The sweetheart deal is documented beyond dispute. The famous explanation for it is not.</strong> Keeping those two shelves separate is the whole discipline of this page.</p>
+
+    <p>In 2008, federal prosecutors in Florida had identified dozens of minor victims. The US Attorney, Alexander Acosta, signed a <strong>non-prosecution agreement</strong>: Epstein pleaded guilty to two state charges, served 13 months in a county jail wing with <strong>work release six days a week</strong>, and the agreement immunized his co-conspirators &mdash; named and unnamed. The victims were not told. The federal case evaporated.</p>
+
+    <details class="claim-card">
+      <summary>
+        <span class="tier-row"><span class="tier court">Court / Official Record</span></span>
+        <span class="claim-headline">A federal judge: the deal broke the law</span>
+        <span class="claim-blurb">2019: prosecutors violated the Crime Victims' Rights Act by hiding the agreement from the victims. 2020: DOJ review finds "poor judgment" &mdash; and no one is punished.</span>
+      </summary>
+      <div class="claim-body">
+        <p>In February 2019, US District Judge Kenneth Marra ruled that the prosecutors who concealed the non-prosecution agreement from Epstein's victims <strong>violated the Crime Victims' Rights Act</strong>. The government broke its own law to protect this man, and a federal court said so.</p>
+        <p>The DOJ's Office of Professional Responsibility then investigated its own and concluded in 2020 that Acosta had exercised <strong>"poor judgment"</strong> &mdash; a finding that carried no penalty. By then Acosta had already been promoted to US Secretary of Labor; he resigned in 2019 only when the Miami Herald's reporting made the deal a national story. Note the now-familiar shape: <strong>the consequence tracked the publicity, not the conduct.</strong></p>
+        <p class="src">Sources: Doe v. United States, ruling of Feb 21, 2019 (S.D. Fla.) &middot; DOJ OPR report, Nov 2020 &middot; <a href="https://www.pbs.org/newshour/politics/a-timeline-of-the-jeffrey-epstein-investigation-and-the-fight-to-make-the-governments-files-public" target="_blank">PBS: investigation timeline</a></p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>
+        <span class="tier-row"><span class="tier rep">Reported &mdash; Unconfirmed</span></span>
+        <span class="claim-headline">"He belonged to intelligence" &mdash; the full provenance chain</span>
+        <span class="claim-blurb">The most-quoted line in the whole affair rests on one anonymous source &mdash; and was denied under oath. Here is exactly how much it weighs.</span>
+      </summary>
+      <div class="claim-body">
+        <p>You have seen the quote: told to "leave it alone" because Epstein "belonged to intelligence." Trace it. It appears in a 2019 Daily Beast piece by journalist Vicky Ward, attributing it to <strong>one anonymous "former senior White House official"</strong> describing what Acosta supposedly said during his 2017 cabinet vetting. Acosta, asked directly at a 2019 press conference, deflected. Asked <strong>under oath</strong> by DOJ investigators whether Epstein was an intelligence asset, he answered: <em>"The answer is no."</em> The OPR review found no evidence intelligence played any role in the deal, and later reporting suggests Ward's source was likely Steve Bannon.</p>
+        <p>So the chain is: anonymous source &rarr; secondhand recollection &rarr; denied under oath &rarr; uncorroborated by the government's internal review. That is what "Reported &mdash; Unconfirmed" means, and no amount of repetition upgrades it.</p>
+        <p><strong>Here is the honest version of the point, and it is stronger:</strong> you don't need the intelligence theory. What's confirmed &mdash; a US Attorney's office breaking federal law to give a well-connected financier a secret pass, with no one punished &mdash; is already the scandal. The unproven explanation is seductive precisely because it makes the system's behavior exceptional. The documented record shows it wasn't exceptional. It was how the system treats its own. <a href="mirror-guide.html">Part 6</a> is about exactly this reflex: reaching for the exotic explanation to avoid the structural one.</p>
+        <p class="src">Sources: <a href="https://www.thedailybeast.com/jeffrey-epsteins-sick-story-played-out-for-years-in-plain-sight/" target="_blank">Vicky Ward, Daily Beast (2019)</a> &middot; DOJ OPR report (2020) &middot; <a href="https://www.skeptic.com/article/did-jeffrey-epstein-belong-to-intelligence/" target="_blank">Skeptic: tracing the quote</a></p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>
+        <span class="tier-row"><span class="tier court">Court / Official Record</span></span>
+        <span class="claim-headline">After 3 million pages: a handful of investigations, mostly abroad</span>
+        <span class="claim-blurb">The corpus named hundreds of powerful people. As of mid-2026, the criminal consequences fit in one sentence.</span>
+      </summary>
+      <div class="claim-body">
+        <p>As of early 2026, the releases had produced criminal investigations into <strong>three men</strong> &mdash; former Norwegian PM Thorbj&oslash;rn Jagland (charged with aggravated corruption), British politician Peter Mandelson, and Andrew Mountbatten-Windsor &mdash; two of the three pursued by <em>foreign</em> authorities. US prosecutors, sitting on the largest share of the corpus, have brought little. NPR's question in April 2026 &mdash; why so few arrests? &mdash; largely answers itself: statutes of limitations, immunized co-conspirators (see the 2008 deal above), and prosecutorial discretion exercised by the same institutions the files embarrass.</p>
+        <p class="src">Sources: <a href="https://www.npr.org/2026/04/03/nx-s1-5766260/epstein-files-arrests-doj-prosecutors" target="_blank">NPR: After the release, why so few arrests?</a> &middot; <a href="https://en.wikipedia.org/wiki/Epstein_files" target="_blank">Epstein files overview</a></p>
+      </div>
+    </details>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="go('s4')">Station 4: The Pipeline</button>
+      <button class="btn btn-back" onclick="go('s2')">Back to Station 2</button>
+    </div>
+  </div>
+
+
+  <!-- ══ STATION 4: THE PIPELINE ══ -->
+  <div class="passage" id="passage-s4">
+    <p class="eyebrow">Station 4 of 5</p>
+    <h2>The Pipeline &mdash; Epstein's Money in the Surveillance Industry</h2>
+
+    <p class="page-hook">The files connect Epstein to the Israeli surveillance industry documented in <a href="vc-genocide-guide.html"><strong>Part 5</strong></a> &mdash; through one man: <strong>Ehud Barak</strong>, former Israeli prime minister, whose name appears 4,078 times in the released corpus.</p>
+
+    <div class="stat-grid">
+      <div class="stat-card"><p class="stat-number">4,078</p><p class="stat-label">Mentions of Ehud Barak in the released Epstein files</p><p class="stat-source">Middle East Eye</p></div>
+      <div class="stat-card"><p class="stat-number">$1M</p><p class="stat-label">Epstein's 2015 investment in Reporty (now Carbyne), brokered by Barak, its board chairman</p><p class="stat-source">Forbes, Feb 2026</p></div>
+      <div class="stat-card"><p class="stat-number">2019</p><p class="stat-label">Barak co-founds Paragon &mdash; the spyware firm whose Graphite tool was later found on journalists' phones</p><p class="stat-source">Citizen Lab / Ynet</p></div>
+    </div>
+
+    <details class="claim-card">
+      <summary>
+        <span class="tier-row"><span class="tier doc">In Writing</span></span>
+        <span class="claim-headline">Carbyne: the convicted trafficker's money in emergency-surveillance tech</span>
+        <span class="claim-blurb">A $1M stake that could have been worth $100M &mdash; vouched for at prime-ministerial level, seven years after Epstein's conviction.</span>
+      </summary>
+      <div class="claim-body">
+        <p>In 2015 &mdash; seven years after his conviction &mdash; Epstein put <strong>$1 million into Reporty Homeland Security</strong>, the Israeli emergency-response tech startup founded by Unit 8200 veterans, chaired by Ehud Barak, and later renamed <strong>Carbyne</strong>. Barak brokered the investment. Peter Thiel invested in the same company. Forbes calculated that Epstein's stake, if held, could have been worth over <strong>$100 million</strong> after Carbyne's later acquisition announcement.</p>
+        <p>Carbyne's product plugs into 911 systems &mdash; live caller video, device location, integration with public-safety infrastructure across US jurisdictions. A convicted sex trafficker's capital sat inside it, and nobody in the chain &mdash; not the former prime minister, not the co-investors, not the counterparties &mdash; treated that as disqualifying.</p>
+        <p class="src">Source: <a href="https://www.forbes.com/sites/thomasbrewster/2026/02/10/epstein-police-surveillance-investments-with-ehud-barak/" target="_blank">Forbes: Epstein's secret police-tech investment</a></p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>
+        <span class="tier-row"><span class="tier tape">On Tape</span></span>
+        <span class="claim-headline">The Palantir audio: Epstein as broker</span>
+        <span class="claim-blurb">February 2013, released by the DOJ: Epstein steers Barak toward Peter Thiel &mdash; "he would put you on the board of Palantir."</span>
+      </summary>
+      <div class="claim-body">
+        <p>In audio from February 2013 released by the DOJ, Epstein advises Barak on Peter Thiel: <em>"However, he has a company called Palantir&hellip; he's going to come here next week so I wanted to talk to him, if I talk to you"</em> &mdash; suggesting Thiel <em>"would put you on the board of Palantir."</em> In the same recording Epstein admits: <em>"I've never met Peter Thiel."</em></p>
+        <p><strong>Scope this correctly.</strong> Epstein did not create the Silicon Valley&ndash;Israeli military-tech relationship &mdash; that pipeline predates him by decades, and <a href="vc-genocide-guide.html">Part 5</a> documents its actual scale. What the tape shows is the connective tissue: a convicted trafficker acting as a matchmaker between a former Israeli prime minister and the founder of the CIA-backed surveillance company that later signed with the IDF for "war-related missions." The door he was brokering access through was real, and it opened.</p>
+        <p class="src">Source: <a href="https://www.middleeasteye.net/news/epstein-advised-former-israeli-prime-minister-ehud-barak-look-palantir" target="_blank">Middle East Eye, on DOJ-released audio</a></p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>
+        <span class="tier-row"><span class="tier doc">In Writing</span><span class="tier court">Court / Official Record</span></span>
+        <span class="claim-headline">Paragon: where the pipeline ends up</span>
+        <span class="claim-blurb">Barak's next venture. Its spyware was found on journalists' phones across 24 countries &mdash; and in ICE's hands.</span>
+      </summary>
+      <div class="claim-body">
+        <p>In 2019, Barak co-founded <strong>Paragon Solutions</strong> with Ehud Schneerson, former commander of Unit 8200. Paragon's Graphite spyware was later forensically confirmed by Citizen Lab on journalists' phones; WhatsApp disrupted a campaign targeting <strong>90 journalists and civil-society figures across 24 countries</strong>; and the Trump administration handed ICE a Graphite contract.</p>
+        <p>Epstein's money is not in Paragon &mdash; the documented link is Barak, the partner he funded and advised for years. The point is not guilt by association; it's that <strong>the network the files map and the surveillance network <a href="vc-genocide-guide.html">Part 5</a> maps are the same network</strong>, sharing the same few nodes. Station 3 of Part 5 documents where Graphite landed.</p>
+        <p class="src">Sources: <a href="https://citizenlab.ca/research/first-forensic-confirmation-of-paragons-ios-mercenary-spyware-finds-journalists-targeted/" target="_blank">Citizen Lab</a> &middot; <a href="https://www.ynetnews.com/business/article/ryc4uibikl" target="_blank">Ynet: Barak's cyber firm</a> &middot; <a href="https://reason.com/2025/08/27/inside-jeffrey-epsteins-spy-industry-connections/" target="_blank">Reason: Epstein's spy-industry connections</a></p>
+      </div>
+    </details>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="go('s5')">Station 5: The Window</button>
+      <button class="btn btn-back" onclick="go('s3')">Back to Station 3</button>
+    </div>
+  </div>
+
+
+  <!-- ══ STATION 5: THE WINDOW ══ -->
+  <div class="passage" id="passage-s5">
+    <p class="eyebrow">Station 5 of 5</p>
+    <h2>The Window &mdash; A Class, Not a Conspiracy</h2>
+
+    <p class="page-hook"><strong>The files don't prove a conspiracy. They document a class.</strong> And the difference matters more than anything else on this page.</p>
+
+    <p>A conspiracy needs secret coordination. A class doesn't. What the corpus shows is not a hidden command structure &mdash; it's dinner parties, wing-man emails, investment rounds, and vetting calls. Staley didn't need instructions to think what he thought. Summers didn't need orders to keep writing. Barak didn't need a handler to take the money. <strong>Shared interests produce coordinated behavior without anyone coordinating</strong> &mdash; which is the central claim of <a href="communist-theory-interactive.html">Part 1</a>, demonstrated in the private correspondence of the people it describes.</p>
+
+    <p>That's also why the conspiracy framing, for all its edge, is the <em>softer</em> reading. A conspiracy can be arrested. A class that protects its own by reflex &mdash; prosecutors, presidents, prime ministers, professors, each acting in ordinary self-interest &mdash; regenerates around any indictment.</p>
+
+    <div class="callout"><strong>The mirror test.</strong> Run the exercise from <a href="mirror-guide.html">Part 6</a>: imagine this identical corpus surfacing about Russian oligarchs. Emails about the masses being pacified by state TV. A billionaire criminal given a secret pass by prosecutors, in violation of the law, with no one punished. His money in Kremlin-linked surveillance firms whose spyware turns up on journalists' phones. Every Western desk would name it in a week: <em>oligarchy, kompromat, a captured judiciary, regime cronyism.</em> The files hand you the same facts with your own flag on them. Whatever word you'd use for theirs is the word for this.</div>
+
+    <details class="deep-expand">
+      <summary>What is still withheld</summary>
+      <div class="expand-content">
+        <p>The DOJ declared final compliance with the Epstein Files Transparency Act in January 2026. Members of Congress &mdash; led by Rep. Ro Khanna &mdash; dispute it, saying the department is still withholding the <strong>FBI 302 victim-interview statements</strong>, a <strong>draft indictment and prosecution memo from the 2007 Florida investigation</strong>, and <strong>hundreds of thousands of emails and files from Epstein's computers</strong>. Every conclusion on this page is provisional in exactly that measure: it rests on what a reluctant institution chose to release.</p>
+        <p class="src">Sources: <a href="https://en.wikipedia.org/wiki/Epstein_files" target="_blank">Epstein files overview</a> &middot; <a href="https://www.cbsnews.com/live-updates/epstein-files-released-doj-2026/" target="_blank">CBS News on the Jan 2026 release</a> &middot; <a href="https://www.justice.gov/epstein" target="_blank">DOJ Epstein Library</a></p>
+      </div>
+    </details>
+
+    <p><strong>What the window shows, guide by guide:</strong> the class consciousness Part 1 describes, in Staley's own words. The upward failure Part 2 describes, in Summers' arc. The network reaching into the occupation Parts 3 and 5 document, through Barak, Carbyne, and Paragon. The state protecting its own and calling scrutiny a conspiracy theory, as Part 4 documents it doing for seventy years. And the double standard Part 6 trains you to catch &mdash; applied, this time, to the file with your own country's name on it.</p>
+
+    <div class="final-quote">
+      <blockquote>"The files don't prove a conspiracy. They document something more mundane and more frightening: a class with shared interests, closed ranks, and contempt for the people beneath them &mdash; that says so, in private, in writing."</blockquote>
+      <cite>The thesis of this page</cite>
+    </div>
+
+    <div class="callout"><strong>What this page is.</strong> A compilation of released emails and audio, police inventories, court rulings, sworn testimony, and official findings &mdash; including the official findings that cut against its thesis. Every card is labeled by evidence strength. The evidence is theirs. The conclusions are yours.</div>
+
+    <hr class="divider">
+
+    <p style="font-size:.88rem; color: var(--muted);">This is a companion, not a seventh part. It exists to test the series' framework against one corpus. If the framework is right, it should survive contact with the documents &mdash; including the ones that complicate it. You've now seen both.</p>
+
+    <div class="btn-group">
+      <button class="btn btn-ext" onclick="window.open('communist-theory-interactive.html','_blank')">Part 1: How Capitalism Works &mdash; the class analysis Staley confirmed</button>
+      <button class="btn btn-ext" onclick="window.open('imperialism-guide.html','_blank')">Part 2: Where Did the Wealth Go? &mdash; failing upward, systematized</button>
+      <button class="btn btn-ext" onclick="window.open('palestine-guide.html','_blank')">Part 3: Palestine &mdash; the ground the pipeline points at</button>
+      <button class="btn btn-ext" onclick="window.open('deception-guide.html','_blank')">Part 4: The Deception &mdash; the state's record of hiding its own</button>
+      <button class="btn btn-ext" onclick="window.open('vc-genocide-guide.html','_blank')">Part 5: The Money &mdash; the surveillance network, fully mapped</button>
+      <button class="btn btn-ext" onclick="window.open('mirror-guide.html','_blank')">Part 6: The Mirror &mdash; the lens this page was read through</button>
+      <button class="btn btn-back" onclick="go('start')" style="text-align:center;">Start this guide over</button>
+    </div>
+
+    <div class="spacer"></div>
+  </div>
+
+</div>
+
+<script>
+  const progressMap = {
+    start:0, s1:20, s2:40, s3:60, s4:80, s5:100
+  };
+  const visited = new Set(['start']);
+  let current = 'start';
+
+  function go(id) {
+    document.querySelectorAll('.passage').forEach(p => p.classList.remove('active'));
+    const el = document.getElementById('passage-' + id);
+    if (!el) return;
+    el.classList.add('active');
+    current = id;
+    visited.add(id);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    updateNav();
+  }
+
+  function updateNav() {
+    const pct = progressMap[current] ?? 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.querySelectorAll('.nav-stop[data-passage]').forEach(btn => {
+      const p = btn.dataset.passage;
+      btn.classList.remove('current', 'visited');
+      if (p === current) btn.classList.add('current');
+      else if (visited.has(p)) btn.classList.add('visited');
+    });
+  }
+
+  updateNav();
+</script>
+<script src="guides.js" data-guide-nav></script>
+</body>
+</html>

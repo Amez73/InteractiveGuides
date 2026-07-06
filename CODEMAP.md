@@ -14,13 +14,14 @@ This document is the map: **what is where**, **how the pieces are built**, and t
 
 | File | Role | ~Length |
 |------|------|--------|
-| [index.html](index.html) | Landing page. Six linked cards, one per guide. Static — no passage engine. | ~100 lines |
+| [index.html](index.html) | Landing page. One linked card per guide (rendered from `GUIDES` in guides.js). Static — no passage engine. | ~100 lines |
 | [communist-theory-interactive.html](communist-theory-interactive.html) | **Part 1 · The Engine** — how capitalism works. 8 stations + deep dives + myth cards. | ~1650 lines |
 | [imperialism-guide.html](imperialism-guide.html) | **Part 2 · The Global Picture** — where the wealth went. 5 stations + deep dives. | ~635 lines |
 | [palestine-guide.html](palestine-guide.html) | **Part 3 · The Case Study** — Palestine & Israel. 9 stations + deep dives + claim cards + video embeds. | ~1560 lines |
 | [deception-guide.html](deception-guide.html) | **Part 4 · The Deception** — what Western governments hid from their own people. 7 stations + deep dives + claim cards. | ~965 lines |
 | [vc-genocide-guide.html](vc-genocide-guide.html) | **Part 5 · The Money** — venture capital, surveillance, and the genocide. 5 stations, claim cards + inline expandables only (no full deep-dive passages). | ~640 lines |
 | [mirror-guide.html](mirror-guide.html) | **Part 6 · The Mirror** — the capstone: unlearning the double standard. 5 stations + 1 deep dive (the 1955 CIA file, dossier-styled) + "Who did it?" quiz cards + liberal/leftist lens matrix. | ~665 lines |
+| [epstein-files-guide.html](epstein-files-guide.html) | **Companion · The Case File** — the series' framework tested against the released Epstein files. 5 stations, claim cards with **evidence-tier chips** (In Writing / On Tape / Court / Sworn / Reported—Unconfirmed) + monospace `.exhibit` blocks for verbatim emails/audio. Deliberately *not* Part 7. | ~560 lines |
 
 The six guides are a series and cross-link to each other in their final stations.
 Read order is Part 1 → 2 → 3 → 4 → 5 → 6, but each works standalone ("No prior reading required").
@@ -163,6 +164,18 @@ rotated red `.dossier-stamp` (SECRET), boxed `.dossier-note` ("This is UNEVALUAT
 Information" — reproduce caveats honestly, they're load-bearing), `.dossier-quote`
 excerpt, and an "Approved For Release" `.dossier-footer`. Mimic the actual document's
 layout, not a generic "top secret" look.
+
+### g2. Evidence-tier chips (`.tier`) + exhibits (`.exhibit`) — case-file guide
+Each claim card's summary opens with a `.tier-row` of chips grading the evidence:
+`.tier.doc` (In Writing, green) · `.tier.tape` (On Tape, blue) · `.tier.court`
+(Court / Official Record, sand) · `.tier.sworn` (Sworn Testimony, violet) ·
+`.tier.rep` (Reported — Unconfirmed, red). A `.tier-legend` in the intro defines
+them. Verbatim email/audio excerpts render in a monospaced `.exhibit` block with
+an `.ex-meta` provenance line (sender → recipient → date → release). The rule the
+page enforces editorially: **counter-evidence gets a card at the same tier weight**
+(e.g. the DOJ "no credible evidence of blackmail" memo sits beside the camera
+inventories). Use this pattern whenever a topic is conspiracy-adjacent and the
+page's credibility depends on showing where knowledge ends and inference begins.
 
 ### h. Lens matrix (`.lens-block`) — mirror guide's liberal/leftist comparison
 Per topic: a `.lens-topic` label and a two-column `.lens-pair` grid (stacks under
