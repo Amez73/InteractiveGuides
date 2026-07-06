@@ -21,7 +21,7 @@ This document is the map: **what is where**, **how the pieces are built**, and t
 | [deception-guide.html](deception-guide.html) | **Part 4 · The Deception** — what Western governments hid from their own people. 7 stations + deep dives + claim cards. | ~965 lines |
 | [vc-genocide-guide.html](vc-genocide-guide.html) | **Part 5 · The Money** — venture capital, surveillance, and the genocide. 5 stations, claim cards + inline expandables only (no full deep-dive passages). | ~640 lines |
 | [mirror-guide.html](mirror-guide.html) | **Part 6 · The Mirror** — the capstone: unlearning the double standard. 5 stations + 1 deep dive (the 1955 CIA file, dossier-styled) + "Who did it?" quiz cards + liberal/leftist lens matrix. | ~665 lines |
-| [epstein-files-guide.html](epstein-files-guide.html) | **Companion · The Case File** — the series' framework tested against the released Epstein files. 5 stations, claim cards with **evidence-tier chips** (In Writing / On Tape / Court / Sworn / Reported—Unconfirmed) + monospace `.exhibit` blocks for verbatim emails/audio. Deliberately *not* Part 7. | ~560 lines |
+| [epstein-files-guide.html](epstein-files-guide.html) | **Companion · The Case File** — the series' framework tested against the released Epstein files. 5 stations, claim cards with **evidence-tier chips** (In Writing / On Tape / Court / Sworn) + monospace `.exhibit` blocks for verbatim emails/audio. Deliberately *not* Part 7. | ~520 lines |
 
 The six guides are a series and cross-link to each other in their final stations.
 Read order is Part 1 → 2 → 3 → 4 → 5 → 6, but each works standalone ("No prior reading required").
@@ -168,14 +168,17 @@ layout, not a generic "top secret" look.
 ### g2. Evidence-tier chips (`.tier`) + exhibits (`.exhibit`) — case-file guide
 Each claim card's summary opens with a `.tier-row` of chips grading the evidence:
 `.tier.doc` (In Writing, green) · `.tier.tape` (On Tape, blue) · `.tier.court`
-(Court / Official Record, sand) · `.tier.sworn` (Sworn Testimony, violet) ·
-`.tier.rep` (Reported — Unconfirmed, red). A `.tier-legend` in the intro defines
-them. Verbatim email/audio excerpts render in a monospaced `.exhibit` block with
-an `.ex-meta` provenance line (sender → recipient → date → release). The rule the
-page enforces editorially: **counter-evidence gets a card at the same tier weight**
-(e.g. the DOJ "no credible evidence of blackmail" memo sits beside the camera
-inventories). Use this pattern whenever a topic is conspiracy-adjacent and the
-page's credibility depends on showing where knowledge ends and inference begins.
+(Court / Official Record, sand) · `.tier.sworn` (Sworn Testimony, violet).
+A `.tier-legend` in the intro defines them. Verbatim email/audio excerpts render
+in a monospaced `.exhibit` block with an `.ex-meta` provenance line (sender →
+recipient → date → release). Two editorial rules the page enforces:
+**counter-evidence gets a card at the same tier weight** (e.g. the DOJ "no
+credible evidence of blackmail" memo sits beside the camera inventories), and
+**anonymous-source-only claims don't get a card at all** — the Acosta "belonged
+to intelligence" quote and the thirdhand Gates attribution were cut as too weak
+(July 2026, user call). Use this pattern whenever a topic is conspiracy-adjacent
+and the page's credibility depends on showing where knowledge ends and inference
+begins.
 
 ### h. Lens matrix (`.lens-block`) — mirror guide's liberal/leftist comparison
 Per topic: a `.lens-topic` label and a two-column `.lens-pair` grid (stacks under
