@@ -60,14 +60,6 @@ const GUIDES = [
     desc:  'The capstone. Every charge levelled at "authoritarian" states — surveillance, crushed dissent, forced labor, rigged politics — with the flag stripped off. A declassified CIA file, a quiz that answers itself, and two lenses for reading everything you just learned.',
     badges: [{ text: '~15 min read' }, { text: 'Interactive Quiz', format: true }],
   },
-  {
-    file:  'epstein-files-guide.html',
-    part:  'Companion · The Case File',
-    title: 'The Epstein Files: Not an Anomaly. A Window.',
-    short: 'The Case File',
-    desc:  'The series’ framework, tested against one corpus: 3 million pages of released emails, audio, police inventories, and court rulings. Every card labeled by evidence strength — including the official findings that cut the other way.',
-    badges: [{ text: '~15 min read' }, { text: 'Evidence-Tiered', format: true }],
-  },
 ];
 
 /* ── The filename of the page we're currently on ────────────────────────── */
