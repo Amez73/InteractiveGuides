@@ -142,6 +142,14 @@
   .t-title { font-weight: 700; margin-bottom: .3rem; color: var(--text); }
   .t-desc { font-size: .93rem; color: var(--muted); line-height: 1.6; }
   .t-desc strong { color: #A0AAB4; }
+  .t-hit { font-family: 'DM Serif Display', serif; font-size: clamp(1.35rem, 4.2vw, 1.75rem); line-height: 1.15; color: var(--steel); margin: .4rem 0 .2rem; font-variant-numeric: tabular-nums; }
+  .t-item.red .t-hit { color: var(--warn); }
+  .t-hit em { display: block; font-family: 'DM Sans', sans-serif; font-style: normal; font-size: .72rem; letter-spacing: .13em; text-transform: uppercase; line-height: 1.5; color: var(--muted); margin-top: .45rem; }
+  .t-hit em b { font-weight: 700; color: #A0AAB4; font-variant-numeric: tabular-nums; }
+  .t-item.red .t-hit em b { color: var(--warn); }
+  .t-expand { margin: .85rem 0 0; }
+  .t-expand summary { padding: .55rem 1rem; font-size: .82rem; }
+  .t-expand .expand-content { padding: 0 1rem .95rem; }
 
   /* ── Claim cards (collapsible) ── */
   .claim-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; margin: 1rem 0; overflow: hidden; }
@@ -337,22 +345,58 @@
       <div class="t-item red">
         <p class="t-year">1964 — Gulf of Tonkin</p>
         <p class="t-title">The Incident That Didn't Happen</p>
-        <p class="t-desc">The Johnson administration told Congress North Vietnamese boats had attacked the USS Maddox a second time. <strong>The attack did not happen.</strong> The NSA's own declassified history (2005) confirmed intercepts were cherry-picked and altered to support the story. The resolution it produced led to a war that killed 58,000 Americans and 2–3 million Vietnamese. <strong>Source:</strong> Robert Hanyok, NSA declassified report (2005).</p>
+        <p class="t-hit">The attack never happened
+          <em><b>58,000</b> Americans and <b>2–3 million</b> Vietnamese died for it</em>
+          <em>The NSA's own history admits the intercepts were altered</em>
+        </p>
+        <details class="deep-expand t-expand">
+          <summary>What happened</summary>
+          <div class="expand-content">
+            <p>The Johnson administration told Congress North Vietnamese boats had attacked the USS Maddox a second time. <strong>The attack did not happen.</strong> The NSA's own declassified history (2005) confirmed intercepts were cherry-picked and altered to support the story. The resolution it produced led to a war that killed 58,000 Americans and 2–3 million Vietnamese. <strong>Source:</strong> Robert Hanyok, NSA declassified report (2005).</p>
+          </div>
+        </details>
       </div>
       <div class="t-item red">
         <p class="t-year">1990 — The Nayirah Testimony</p>
         <p class="t-title">The Girl Who Wasn't a Witness</p>
-        <p class="t-desc">A 15-year-old "witness" told Congress she saw Iraqi soldiers pull Kuwaiti babies from incubators and leave them to die. Six senators cited her testimony in voting for the Gulf War; Bush repeated it at least ten times. <strong>It was a fabrication.</strong> "Nayirah" was the Kuwaiti ambassador's daughter, coached by PR firm Hill &amp; Knowlton on a $10.8M contract. <strong>Source:</strong> John MacArthur, <em>Second Front</em> (2004); CBC <em>Fifth Estate</em>.</p>
+        <p class="t-hit">A PR firm wrote the witness
+          <em>The Kuwaiti ambassador's daughter, coached on a <b>$10.8M</b> contract</em>
+          <em><b>Six senators</b> cited her voting for war. Bush repeated it ten times</em>
+        </p>
+        <details class="deep-expand t-expand">
+          <summary>What happened</summary>
+          <div class="expand-content">
+            <p>A 15-year-old "witness" told Congress she saw Iraqi soldiers pull Kuwaiti babies from incubators and leave them to die. Six senators cited her testimony in voting for the Gulf War; Bush repeated it at least ten times. <strong>It was a fabrication.</strong> "Nayirah" was the Kuwaiti ambassador's daughter, coached by PR firm Hill &amp; Knowlton on a $10.8M contract. <strong>Source:</strong> John MacArthur, <em>Second Front</em> (2004); CBC <em>Fifth Estate</em>.</p>
+          </div>
+        </details>
       </div>
       <div class="t-item red">
         <p class="t-year">2002–2003 — Iraq WMDs</p>
         <p class="t-title">The Weapons That Didn't Exist</p>
-        <p class="t-desc">The US and UK claimed Iraq had weapons of mass destruction. <strong>The evidence was fabricated or came from sources already flagged as unreliable</strong> — the key source, "Curveball," had been assessed a fabricator by German intelligence, which warned the CIA. No WMDs were found. The war killed an estimated 200,000–600,000+ Iraqi civilians and 4,600 US soldiers. <strong>Source:</strong> Senate Intelligence Committee (2004); Chilcot Report (2016).</p>
+        <p class="t-hit">There were no weapons. German intelligence had already warned the CIA its source was a fabricator.
+          <em><b>200,000–600,000+</b> Iraqi civilians killed</em>
+          <em><b>4,600</b> US soldiers killed</em>
+        </p>
+        <details class="deep-expand t-expand">
+          <summary>What happened</summary>
+          <div class="expand-content">
+            <p>The US and UK claimed Iraq had weapons of mass destruction. <strong>The evidence was fabricated or came from sources already flagged as unreliable</strong> — the key source, "Curveball," had been assessed a fabricator by German intelligence, which warned the CIA. No WMDs were found. The war killed an estimated 200,000–600,000+ Iraqi civilians and 4,600 US soldiers. <strong>Source:</strong> Senate Intelligence Committee (2004); Chilcot Report (2016).</p>
+          </div>
+        </details>
       </div>
       <div class="t-item red">
         <p class="t-year">2011 — Libya</p>
         <p class="t-title">The Humanitarian War That Wasn't</p>
-        <p class="t-desc">Sold as preventing an imminent massacre in Benghazi, complete with claims of mass rape and Viagra as a weapon of war. <strong>Amnesty, HRW, and a UN commission found no evidence for either claim.</strong> The UK Parliament concluded in 2016 the threat was "overstated" and the true driver was regime change. Libya's collapse produced an ongoing civil war and open-air slave markets, documented by CNN in 2017. <strong>Source:</strong> UK House of Commons Foreign Affairs Committee (2016).</p>
+        <p class="t-hit">The massacre they went in to prevent was never going to happen
+          <em>Amnesty, HRW and a UN commission found no evidence for it</em>
+          <em>The war left open-air slave markets, filmed by CNN in 2017</em>
+        </p>
+        <details class="deep-expand t-expand">
+          <summary>What happened</summary>
+          <div class="expand-content">
+            <p>Sold as preventing an imminent massacre in Benghazi, complete with claims of mass rape and Viagra as a weapon of war. <strong>Amnesty, HRW, and a UN commission found no evidence for either claim.</strong> The UK Parliament concluded in 2016 the threat was "overstated" and the true driver was regime change. Libya's collapse produced an ongoing civil war and open-air slave markets, documented by CNN in 2017. <strong>Source:</strong> UK House of Commons Foreign Affairs Committee (2016).</p>
+          </div>
+        </details>
       </div>
     </div>
 
@@ -446,27 +490,72 @@
       <div class="t-item red">
         <p class="t-year">1932–1972 — Tuskegee, Alabama</p>
         <p class="t-title">The US Public Health Service Syphilis Study</p>
-        <p class="t-desc">The US Public Health Service told 399 Black men they were being treated for "bad blood" while studying their untreated syphilis. <strong>The cure was deliberately withheld for 25 years after penicillin became standard.</strong> Men died; wives were infected; children were born with congenital syphilis. President Clinton formally apologized in 1997. <strong>Source:</strong> CDC acknowledgment; Presidential apology, 1997.</p>
+        <p class="t-hit">The cure existed. They withheld it for 25 more years to watch.
+          <em><b>399</b> Black men, told they were being treated</em>
+          <em>Men died. Wives were infected. Children born with syphilis</em>
+        </p>
+        <details class="deep-expand t-expand">
+          <summary>What happened</summary>
+          <div class="expand-content">
+            <p>The US Public Health Service told 399 Black men they were being treated for "bad blood" while studying their untreated syphilis. <strong>The cure was deliberately withheld for 25 years after penicillin became standard.</strong> Men died; wives were infected; children were born with congenital syphilis. President Clinton formally apologized in 1997. <strong>Source:</strong> CDC acknowledgment; Presidential apology, 1997.</p>
+          </div>
+        </details>
       </div>
       <div class="t-item red">
         <p class="t-year">1946–1948 — Guatemala</p>
         <p class="t-title">US Government Syphilis Experiments</p>
-        <p class="t-desc">US researchers <strong>deliberately infected</strong> at least 1,300 Guatemalan prisoners, soldiers, sex workers, and psychiatric patients with syphilis and gonorrhea, without knowledge or consent. Discovered by a historian in 2010; Obama called Guatemala's president to apologize. <strong>Source:</strong> Presidential Commission for the Study of Bioethical Issues, "Ethically Impossible" (2011).</p>
+        <p class="t-hit">US researchers deliberately infected 1,300 Guatemalans with syphilis
+          <em>Prisoners, soldiers, sex workers, psychiatric patients</em>
+          <em>Nobody found out until a historian dug it up in <b>2010</b></em>
+        </p>
+        <details class="deep-expand t-expand">
+          <summary>What happened</summary>
+          <div class="expand-content">
+            <p>US researchers <strong>deliberately infected</strong> at least 1,300 Guatemalan prisoners, soldiers, sex workers, and psychiatric patients with syphilis and gonorrhea, without knowledge or consent. Discovered by a historian in 2010; Obama called Guatemala's president to apologize. <strong>Source:</strong> Presidential Commission for the Study of Bioethical Issues, "Ethically Impossible" (2011).</p>
+          </div>
+        </details>
       </div>
       <div class="t-item red">
         <p class="t-year">1953–1973 — United States and Canada</p>
         <p class="t-title">Project MKUltra</p>
-        <p class="t-desc">The CIA ran mind-control experiments on unwitting Americans and Canadians — LSD, electroshock, sensory deprivation — on prisoners, patients, and members of the public. <strong>At least one death is directly attributed to it.</strong> The CIA director ordered all files destroyed in 1973; 20,000 pages survived a misfiling. <strong>Source:</strong> Senate Church Committee (1975).</p>
+        <p class="t-hit">The CIA director ordered every file burned. We only know about it because 20,000 pages were misfiled.
+          <em>LSD, electroshock, sensory deprivation, on people who never agreed</em>
+          <em>At least one death directly attributed to it</em>
+        </p>
+        <details class="deep-expand t-expand">
+          <summary>What happened</summary>
+          <div class="expand-content">
+            <p>The CIA ran mind-control experiments on unwitting Americans and Canadians — LSD, electroshock, sensory deprivation — on prisoners, patients, and members of the public. <strong>At least one death is directly attributed to it.</strong> The CIA director ordered all files destroyed in 1973; 20,000 pages survived a misfiling. <strong>Source:</strong> Senate Church Committee (1975).</p>
+          </div>
+        </details>
       </div>
       <div class="t-item red">
         <p class="t-year">1950 — San Francisco</p>
         <p class="t-title">Operation Sea-Spray</p>
-        <p class="t-desc">The US Navy sprayed <em>Serratia</em> bacteria over San Francisco — 800,000 people exposed without consent — to test vulnerability to biological attack. Infections spiked; at least one man died. <strong>Similar open-air tests were run over New York's subway, Minneapolis, and St. Louis.</strong> <strong>Source:</strong> Senate Subcommittee on Health (1977); Leonard Cole, <em>Clouds of Secrecy</em> (1988).</p>
+        <p class="t-hit">The US Navy sprayed bacteria over San Francisco to see what would happen
+          <em><b>800,000</b> people exposed. Infections spiked. One man died</em>
+          <em>Then they did it again over New York, Minneapolis and St. Louis</em>
+        </p>
+        <details class="deep-expand t-expand">
+          <summary>What happened</summary>
+          <div class="expand-content">
+            <p>The US Navy sprayed <em>Serratia</em> bacteria over San Francisco — 800,000 people exposed without consent — to test vulnerability to biological attack. Infections spiked; at least one man died. <strong>Similar open-air tests were run over New York's subway, Minneapolis, and St. Louis.</strong> <strong>Source:</strong> Senate Subcommittee on Health (1977); Leonard Cole, <em>Clouds of Secrecy</em> (1988).</p>
+          </div>
+        </details>
       </div>
       <div class="t-item red">
         <p class="t-year">1944–1974 — United States</p>
         <p class="t-title">Radiation Experiments on US Citizens</p>
-        <p class="t-desc">~16,000 Americans were used in radiation experiments: hospital patients injected with plutonium, disabled children fed radioactive oatmeal, prisoners exposed to testicular radiation. Subjects were chosen because they had no power to refuse. Clinton publicly apologized in 1995. <strong>Source:</strong> Advisory Committee on Human Radiation Experiments, Final Report (1995).</p>
+        <p class="t-hit">Disabled children were fed radioactive oatmeal
+          <em><b>~16,000</b> Americans used. Patients injected with plutonium</em>
+          <em>They were picked because they had no power to refuse</em>
+        </p>
+        <details class="deep-expand t-expand">
+          <summary>What happened</summary>
+          <div class="expand-content">
+            <p>~16,000 Americans were used in radiation experiments: hospital patients injected with plutonium, disabled children fed radioactive oatmeal, prisoners exposed to testicular radiation. Subjects were chosen because they had no power to refuse. Clinton publicly apologized in 1995. <strong>Source:</strong> Advisory Committee on Human Radiation Experiments, Final Report (1995).</p>
+          </div>
+        </details>
       </div>
     </div>
 
