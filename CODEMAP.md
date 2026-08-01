@@ -94,7 +94,10 @@ guide at DOMContentLoaded — `enhanceGuide()`:
   get "✓ Read" and a plain link.
 - It reads the engine's top-level bindings (`progressMap`, `diveParent`, `visited`)
   by bare name with `typeof` guards, so per-guide gaps (vc-genocide has no
-  `diveParent`; communist-theory declares it inside `updateNav()`) are tolerated.
+  `diveParent`, since it has no dives) are tolerated. As of 2026-07-31,
+  communist-theory hoists `progressMap`/`diveParent` to top-level constants like
+  every other guide; it previously declared `diveParent` inside `updateNav()`,
+  which this doc used to flag as a deviation.
   A dive is credited to its parent station for the "Station N of M" label.
 - **New guides get all of this for free** — the station list is derived from the
   `.nav-stop[data-passage]` chips, not hardcoded.
@@ -271,8 +274,19 @@ This is the editorial template the guides converge on (most explicit in the rece
    and a closing **"Now What?"** that lays out *options*, not a single prescription.
 6. **Optional deep dives** hang off stations for country/case detail; **the main track
    is always completable without them.**
-7. **Closes with a `final-quote`** + a framing line that the guide gives a *framework,
-   not a verdict*, then `btn-ext` links to the sibling guides.
+7. **Closes with a `final-quote`** + a framing line, then `btn-ext` links to the sibling
+   guides. As of 2026-07-31 the framing line makes a deliberate two-part move rather than
+   handing back an undifferentiated "framework, not a verdict": it says plainly that the
+   *pattern* the guide documented is not still an open question (evidence across the
+   stations resolved it; calling it undecided at the end would be the false balance the
+   series refuses everywhere else), while leaving open which *political tradition* the
+   reader builds from that diagnosis (reform, revolution, prefigurative politics, some
+   mix). Conflating those two questions is what the earlier "framework, not verdict"
+   phrasing did, and it let five guides establish a repeating pattern and then treat "is
+   this a pattern" as unresolved in the closing line. See `communist-theory-interactive.html`
+   Station 8, `mirror-guide.html` Station 4's closing callout, and `palestine-guide.html`'s
+   closing (which names the Palestinian civil-society BDS call rather than declining to
+   name any position) for the corrected pattern.
 
 ---
 
@@ -290,8 +304,12 @@ This is the editorial template the guides converge on (most explicit in the rece
 - **Pre-empt the bad-faith read.** Recurring "What this isn't saying" / "A note on
   balance" paragraphs head off strawmen (e.g. "not saying Western societies are uniquely
   evil," "not denying the Holocaust or the need of Jewish refugees for safety").
-- **Framework, not verdict.** Endings hand the reader analytical tools and a menu of
-  positions (reparations / structural reform / consumer) rather than ordering a conclusion.
+- **Framework for the tradition, not the pattern.** Endings hand the reader a menu of
+  political traditions to build from (reform / revolution / prefigurative politics for
+  Part 1, reparations / structural reform for Part 2) rather than ordering which one to
+  join. That is different from treating *whether the documented pattern is real* as open;
+  it isn't, by the guide's own evidence, and the ending should say so rather than
+  softening it into equal-weight uncertainty. See §4.7.
 - **Concede genuine uncertainty.** "These figures are contested in their exact size …
   what isn't contested is the direction." Distinguishes settled fact from open question.
 
