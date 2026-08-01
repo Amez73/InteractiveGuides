@@ -92,6 +92,14 @@
   .t-title { font-weight: 700; margin-bottom: .3rem; color: var(--text); font-size: .97rem; }
   .t-desc { font-size: .91rem; color: var(--muted); line-height: 1.65; }
   .t-desc strong { color: #908878; }
+  .t-hit { font-family: 'DM Serif Display', serif; font-size: clamp(1.35rem, 4.2vw, 1.75rem); line-height: 1.15; color: var(--olive); margin: .4rem 0 .2rem; font-variant-numeric: tabular-nums; }
+  .t-item.red .t-hit { color: var(--red); }
+  .t-hit em { display: block; font-family: 'DM Sans', sans-serif; font-style: normal; font-size: .72rem; letter-spacing: .13em; text-transform: uppercase; line-height: 1.5; color: var(--muted); margin-top: .45rem; }
+  .t-hit em b { font-weight: 700; color: var(--sand); font-variant-numeric: tabular-nums; }
+  .t-item.red .t-hit em b { color: var(--red); }
+  .t-expand { margin: .85rem 0 0; }
+  .t-expand summary { padding: .55rem 1rem; font-size: .82rem; }
+  .t-expand .expand-content { padding: 0 1rem .95rem; }
 
   .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin: 1.2rem 0; }
   @media (max-width:480px) { .sc-grid { grid-template-columns: 1fr; } }
@@ -393,25 +401,60 @@
       <div class="t-item">
         <p class="t-year">Pre-1880s</p>
         <p class="t-title">Ottoman Palestine</p>
-        <p class="t-desc">Palestine is a province of the Ottoman Empire, home to roughly 500,000 people, predominantly Arab Muslims and Christians, with a small Jewish minority (around 5% of the population) that had lived there continuously for centuries alongside Arab neighbours. The society is agrarian, with established land ownership patterns, trade networks, and a distinct Palestinian Arab cultural identity.</p>
+        <p class="t-hit">The land was not empty. 500,000 people already lived on it.
+          <em>Arab Muslims and Christians, and a Jewish minority of about <b>5%</b></em>
+          <em>Farms, land titles, trade routes, a Palestinian Arab identity</em>
+        </p>
+        <details class="deep-expand t-expand">
+          <summary>What was there</summary>
+          <div class="expand-content">
+            <p>Palestine is a province of the Ottoman Empire, home to roughly 500,000 people, predominantly Arab Muslims and Christians, with a small Jewish minority (around 5% of the population) that had lived there continuously for centuries alongside Arab neighbours. The society is agrarian, with established land ownership patterns, trade networks, and a distinct Palestinian Arab cultural identity.</p>
+          </div>
+        </details>
       </div>
 
       <div class="t-item">
         <p class="t-year">1897–1917</p>
         <p class="t-title">Zionist Settlement Begins</p>
-        <p class="t-desc">The Zionist movement is founded with the goal of a Jewish state. Settlers begin purchasing land in Palestine, displacing Palestinian tenant farmers. By 1914, the Jewish population grows from around 5% to 12%.</p>
+        <p class="t-hit">Land bought over the heads of the families farming it
+          <em>Palestinian tenant farmers displaced by the purchases</em>
+          <em>Jewish population by 1914: <b>5% → 12%</b></em>
+        </p>
+        <details class="deep-expand t-expand">
+          <summary>What happened</summary>
+          <div class="expand-content">
+            <p>The Zionist movement is founded with the goal of a Jewish state. Settlers begin purchasing land in Palestine, displacing Palestinian tenant farmers. By 1914, the Jewish population grows from around 5% to 12%.</p>
+          </div>
+        </details>
       </div>
 
       <div class="t-item">
         <p class="t-year">1917</p>
         <p class="t-title">The Balfour Declaration</p>
-        <p class="t-desc">Britain promises support for a "Jewish national home" in Palestine, on land it doesn't control, about a population it doesn't consult. The 500,000 Arab Palestinians are described as "existing non-Jewish communities."</p>
+        <p class="t-hit">Britain promised away a country it did not own, to people who did not live there, without asking the people who did
+          <em><b>500,000</b> Palestinians, described only as "existing non-Jewish communities"</em>
+        </p>
+        <details class="deep-expand t-expand">
+          <summary>What it said</summary>
+          <div class="expand-content">
+            <p>Britain promises support for a "Jewish national home" in Palestine, on land it doesn't control, about a population it doesn't consult. The 500,000 Arab Palestinians are described as "existing non-Jewish communities."</p>
+          </div>
+        </details>
       </div>
 
       <div class="t-item">
         <p class="t-year">1920–1947</p>
         <p class="t-title">The British Mandate</p>
-        <p class="t-desc">Jewish immigration rises from 60,000 to 630,000, partly driven by the Holocaust. Palestinian revolt is crushed. By 1947, settlers are 33% of the population but own about 7% of the land.</p>
+        <p class="t-hit">Britain crushed the Palestinian revolt and let the settlement build
+          <em>Jewish immigration: <b>60,000 → 630,000</b>, driven partly by the Holocaust</em>
+          <em>By 1947 settlers were <b>33%</b> of the people and owned <b>7%</b> of the land</em>
+        </p>
+        <details class="deep-expand t-expand">
+          <summary>What happened</summary>
+          <div class="expand-content">
+            <p>Jewish immigration rises from 60,000 to 630,000, partly driven by the Holocaust. Palestinian revolt is crushed. By 1947, settlers are 33% of the population but own about 7% of the land.</p>
+          </div>
+        </details>
       </div>
 
       <details class="deep-expand">
@@ -426,13 +469,31 @@
       <div class="t-item">
         <p class="t-year">1947</p>
         <p class="t-title">The UN Partition Plan</p>
-        <p class="t-desc">The UN proposes splitting Palestine: 56% of the land to the Jewish minority (33% of the population), 44% to the Arab majority. The Jewish Agency accepts. Palestinians reject it: 33% of the population getting 56% of the territory, including the most productive land, without the consent of those who own most of it.</p>
+        <p class="t-hit">The UN gave 56% of the land to 33% of the people
+          <em>Including the most productive land in the country</em>
+          <em>Nobody asked the majority who owned most of it</em>
+        </p>
+        <details class="deep-expand t-expand">
+          <summary>What was proposed</summary>
+          <div class="expand-content">
+            <p>The UN proposes splitting Palestine: 56% of the land to the Jewish minority (33% of the population), 44% to the Arab majority. The Jewish Agency accepts. Palestinians reject it: 33% of the population getting 56% of the territory, including the most productive land, without the consent of those who own most of it.</p>
+          </div>
+        </details>
       </div>
 
       <div class="t-item red">
         <p class="t-year">1947–1949</p>
         <p class="t-title">The Nakba: "The Catastrophe"</p>
-        <p class="t-desc"><strong>Over 750,000 Palestinians, more than half the Arab population, are expelled or flee.</strong> More than 400 villages are depopulated and destroyed. Massacres are documented, most notably Deir Yassin (107 killed). Israel declares independence in May 1948, wins the war, expands beyond partition lines. The refugees are never permitted to return.</p>
+        <p class="t-hit">Israel expelled 750,000 Palestinians and destroyed 400 villages
+          <em>More than half the Arab population of the country</em>
+          <em>Not one refugee has ever been allowed to return</em>
+        </p>
+        <details class="deep-expand t-expand">
+          <summary>What happened</summary>
+          <div class="expand-content">
+            <p><strong>Over 750,000 Palestinians, more than half the Arab population, are expelled or flee.</strong> More than 400 villages are depopulated and destroyed. Massacres are documented, most notably Deir Yassin (107 killed). Israel declares independence in May 1948, wins the war, expands beyond partition lines. The refugees are never permitted to return.</p>
+          </div>
+        </details>
       </div>
 
       <details class="deep-expand">
@@ -659,7 +720,16 @@
       <div class="t-item">
         <p class="t-year">1967</p>
         <p class="t-title">The Occupation Begins</p>
-        <p class="t-desc">Israel captures the West Bank and Gaza. First settlements, civilian communities on occupied land, are built immediately. International law prohibits this. Israel rejects that position.</p>
+        <p class="t-hit">Israel started settling the land the moment it captured it
+          <em>Civilian communities built on occupied territory</em>
+          <em>International law prohibits this. Israel rejects that position</em>
+        </p>
+        <details class="deep-expand t-expand">
+          <summary>What happened</summary>
+          <div class="expand-content">
+            <p>Israel captures the West Bank and Gaza. First settlements, civilian communities on occupied land, are built immediately. International law prohibits this. Israel rejects that position.</p>
+          </div>
+        </details>
       </div>
 
       <details class="deep-expand">
@@ -709,13 +779,30 @@
       <div class="t-item">
         <p class="t-year">1987–1993</p>
         <p class="t-title">First Intifada</p>
-        <p class="t-desc">A Palestinian uprising, stone-throwing, strikes, civil disobedience, erupts in Gaza and spreads. Israel responds with military force. Over 1,000 Palestinians killed; 160 Israelis killed.</p>
+        <p class="t-hit">Stones, strikes and civil disobedience, met with military force
+          <em><b>1,000+</b> Palestinians killed</em>
+          <em><b>160</b> Israelis killed</em>
+        </p>
+        <details class="deep-expand t-expand">
+          <summary>What happened</summary>
+          <div class="expand-content">
+            <p>A Palestinian uprising, stone-throwing, strikes, civil disobedience, erupts in Gaza and spreads. Israel responds with military force. Over 1,000 Palestinians killed; 160 Israelis killed.</p>
+          </div>
+        </details>
       </div>
 
       <div class="t-item">
         <p class="t-year">1993</p>
         <p class="t-title">The Oslo Accords</p>
-        <p class="t-desc">Oslo promises a Palestinian state within five years. Thirty years later, no state exists. Settlements more than doubled during and after the "peace process."</p>
+        <p class="t-hit">A state promised in five years. Thirty years on, no state.
+          <em>Settlements <b>more than doubled</b> during the peace process</em>
+        </p>
+        <details class="deep-expand t-expand">
+          <summary>What was signed</summary>
+          <div class="expand-content">
+            <p>Oslo promises a Palestinian state within five years. Thirty years later, no state exists. Settlements more than doubled during and after the "peace process."</p>
+          </div>
+        </details>
       </div>
 
       <details class="deep-expand">
@@ -730,19 +817,46 @@
       <div class="t-item red">
         <p class="t-year">2000–2005</p>
         <p class="t-title">The Second Intifada</p>
-        <p class="t-desc">Far more violent than the first. Palestinian factions carry out suicide bombings targeting Israeli civilians. <strong>Over 1,000 Israeli civilians killed.</strong> Israel responds with targeted assassinations, raids, and a separation wall. <strong>Over 3,000 Palestinians killed.</strong> The wall, ruled illegal by the ICJ, annexes Palestinian land.</p>
+        <p class="t-hit">Palestinian factions bombed Israeli civilians. Israel answered with assassinations, raids and a wall.
+          <em><b>1,000+</b> Israeli civilians killed</em>
+          <em><b>3,000+</b> Palestinians killed. The ICJ ruled the wall illegal</em>
+        </p>
+        <details class="deep-expand t-expand">
+          <summary>What happened</summary>
+          <div class="expand-content">
+            <p>Far more violent than the first. Palestinian factions carry out suicide bombings targeting Israeli civilians. <strong>Over 1,000 Israeli civilians killed.</strong> Israel responds with targeted assassinations, raids, and a separation wall. <strong>Over 3,000 Palestinians killed.</strong> The wall, ruled illegal by the ICJ, annexes Palestinian land.</p>
+          </div>
+        </details>
       </div>
 
       <div class="t-item red">
         <p class="t-year">2007–Present</p>
         <p class="t-title">The Gaza Blockade</p>
-        <p class="t-desc">Hamas takes control of Gaza. Israel imposes a total blockade, controlling all movement of people, goods, food, and medicine. The UN calls it collective punishment. Gaza's 2.3 million people live in what has been described as an "open-air prison." Israel has bombed Gaza four times since 2008 (2008–09, 2012, 2014, and 2021), killing thousands of Palestinian civilians each time.</p>
+        <p class="t-hit">Israel sealed in 2.3 million people and controlled every calorie going through
+          <em>The UN calls it collective punishment</em>
+          <em>Bombed <b>four times</b> before 2023. Thousands of civilians each time</em>
+        </p>
+        <details class="deep-expand t-expand">
+          <summary>What happened</summary>
+          <div class="expand-content">
+            <p>Hamas takes control of Gaza. Israel imposes a total blockade, controlling all movement of people, goods, food, and medicine. The UN calls it collective punishment. Gaza's 2.3 million people live in what has been described as an "open-air prison." Israel has bombed Gaza four times since 2008 (2008–09, 2012, 2014, and 2021), killing thousands of Palestinian civilians each time.</p>
+          </div>
+        </details>
       </div>
 
       <div class="t-item">
         <p class="t-year">2023</p>
         <p class="t-title">Settlements Today</p>
-        <p class="t-desc">Over 700,000 Israeli settlers now live in the West Bank and East Jerusalem. The settlement project has made a contiguous Palestinian state geographically impossible without removing them. Most of the international community considers them illegal.</p>
+        <p class="t-hit">700,000 settlers now live on occupied land
+          <em>A contiguous Palestinian state is no longer geographically possible</em>
+          <em>Most of the world considers every one of them illegal</em>
+        </p>
+        <details class="deep-expand t-expand">
+          <summary>Where it stands</summary>
+          <div class="expand-content">
+            <p>Over 700,000 Israeli settlers now live in the West Bank and East Jerusalem. The settlement project has made a contiguous Palestinian state geographically impossible without removing them. Most of the international community considers them illegal.</p>
+          </div>
+        </details>
       </div>
     </div>
 
