@@ -144,7 +144,8 @@
   .t-desc strong { color: #A0AAB4; }
   .t-hit { font-family: 'DM Serif Display', serif; font-size: clamp(1.35rem, 4.2vw, 1.75rem); line-height: 1.15; color: var(--steel); margin: .4rem 0 .2rem; font-variant-numeric: tabular-nums; }
   .t-item.red .t-hit { color: var(--warn); }
-  .t-hit em { display: block; font-family: 'DM Sans', sans-serif; font-style: normal; font-size: .72rem; letter-spacing: .13em; text-transform: uppercase; line-height: 1.5; color: var(--muted); margin-top: .45rem; }
+  /* lifted off --muted: these lines are small uppercase and carry the tolls, so they need AA contrast */
+  .t-hit em { display: block; font-family: 'DM Sans', sans-serif; font-style: normal; font-size: .72rem; letter-spacing: .13em; text-transform: uppercase; line-height: 1.5; color: #858EA0; margin-top: .45rem; }
   .t-hit em b { font-weight: 700; color: #A0AAB4; font-variant-numeric: tabular-nums; }
   .t-item.red .t-hit em b { color: var(--warn); }
   .t-expand { margin: .85rem 0 0; }
@@ -374,8 +375,7 @@
         <p class="t-year">2002–2003 — Iraq WMDs</p>
         <p class="t-title">The Weapons That Didn't Exist</p>
         <p class="t-hit">There were no weapons. German intelligence had already warned the CIA its source was a fabricator.
-          <em><b>200,000–600,000+</b> Iraqi civilians killed</em>
-          <em><b>4,600</b> US soldiers killed</em>
+          <em><b>200,000–600,000+</b> Iraqi civilians and <b>4,600</b> US soldiers killed</em>
         </p>
         <details class="deep-expand t-expand">
           <summary>What happened</summary>
@@ -506,7 +506,6 @@
         <p class="t-title">US Government Syphilis Experiments</p>
         <p class="t-hit">US researchers deliberately infected 1,300 Guatemalans with syphilis
           <em>Prisoners, soldiers, sex workers, psychiatric patients</em>
-          <em>Nobody found out until a historian dug it up in <b>2010</b></em>
         </p>
         <details class="deep-expand t-expand">
           <summary>What happened</summary>
@@ -519,8 +518,7 @@
         <p class="t-year">1953–1973 — United States and Canada</p>
         <p class="t-title">Project MKUltra</p>
         <p class="t-hit">The CIA director ordered every file burned. We only know about it because 20,000 pages were misfiled.
-          <em>LSD, electroshock, sensory deprivation, on people who never agreed</em>
-          <em>At least one death directly attributed to it</em>
+          <em>LSD and electroshock on people who never agreed. One death attributed to it</em>
         </p>
         <details class="deep-expand t-expand">
           <summary>What happened</summary>

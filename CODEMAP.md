@@ -182,6 +182,8 @@ reading →", and a `.badge-row` (read-time + format). Pure CSS hover lift.
 | `.math-block` / `.math-row` | Ledger-style data block (`.val.pos` green, `.neg` red, `.gap` accent). |
 | `.stat-grid` / `.stat-card` | Big-number cards; `.stat-number` + `.stat-label` + tiny `.stat-source`. |
 | `.timeline` / `.t-item` | Vertical dotted timeline; `.t-item.red` flags atrocity/violence entries. |
+| `.t-hit` (+ nested `<em>`) | The punch line of a timeline entry: large serif, accent-coloured, sits under `.t-title`. Nested `<em>`s are the small uppercase supporting lines (nought, one or two); `<b>` inside one marks a number. Palestine, Imperialism & Deception. |
+| `.t-expand` | `details.deep-expand` variant with tighter padding, holds a timeline entry's full paragraph and its **Source:** line. |
 | `.sc-grid` / `.sc-box.win`/`.loss` + `.sc-lesson` | Win/loss scorecard with a takeaway "lesson" box. |
 | `.frame-box` | Definitional box (e.g. defining "settler colonialism"). |
 | `.track-preview` | "Your route" map shown in the intro listing all stations. |
@@ -243,7 +245,22 @@ This is the editorial template the guides converge on (most explicit in the rece
    compressed into one bold sentence, so a skimmer gets the claim before the evidence.
 3. **Hook on top, then cards/prose below.** Detail is pushed down and/or into deep dives
    and expandables. The reader chooses depth; the main track stays short.
-4. **Stations move in a deliberate arc**, e.g.:
+4. **Lead with the punch, collapse the rest.** The massacre timeline is the reference:
+   the most damning thing about an event is the first and biggest thing on screen, and
+   everything else (the account, the disputed numbers, who was responsible, the source)
+   is one tap away. Someone who taps nothing still leaves with the point. Applied to
+   timelines via `.t-hit` + `.t-expand`.
+
+   **This is an intent, not a template.** What the punch *is* varies entirely by entry:
+   the act and who ordered it ("The CIA overthrew an elected prime minister to keep
+   Iran's oil British"), the lie ("The attack never happened"), the toll ("Israel
+   expelled 750,000 Palestinians"), what it bought ("Six senators cited her voting for
+   war"), or the sheer absurdity ("Disabled children were fed radioactive oatmeal").
+   Supporting lines are optional: use nought, one or two as the entry earns. Some entries
+   want a single sentence and nothing under it. Uneven entries are correct; uniform ones
+   flatten back into wallpaper, which is the thing being fixed. Pick per entry, by what
+   actually lands.
+5. **Stations move in a deliberate arc**, e.g.:
    - Capitalism: Engine → Glitch → Band-Aids → Horizon → Dream → Myths → Now What? → Getting There
    - Imperialism: Thesis → How It Works → The Record → The Propaganda → Now What?
    - Palestine: The Frame → The History → The Occupation → US Role → Gaza Now → The Record → The Silence → The Lies → The Myths
@@ -252,9 +269,9 @@ This is the editorial template the guides converge on (most explicit in the rece
    - Mirror: The Word → The Mirror → The Pattern → The Two Lenses → Now What?
    A recurring late beat is **"The Propaganda / The Silence"** (why you weren't told this)
    and a closing **"Now What?"** that lays out *options*, not a single prescription.
-5. **Optional deep dives** hang off stations for country/case detail; **the main track
+6. **Optional deep dives** hang off stations for country/case detail; **the main track
    is always completable without them.**
-6. **Closes with a `final-quote`** + a framing line that the guide gives a *framework,
+7. **Closes with a `final-quote`** + a framing line that the guide gives a *framework,
    not a verdict*, then `btn-ext` links to the sibling guides.
 
 ---
