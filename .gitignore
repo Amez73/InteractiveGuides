@@ -1,0 +1,15 @@
+# Research scans and working material. Not site assets, never publish.
+# Myths/ holds photographs of copyrighted book pages (Chomsky & Pappe,
+# Gaza in Crisis) used as source material for palestine-guide Station 9.
+Myths/
+
+# Reels/ holds unreferenced video and working documents.
+Reels/
+
+# LibreOffice lock files
+.~lock.*#
+
+# OS cruft
+Thumbs.db
+desktop.ini
+.DS_Store
