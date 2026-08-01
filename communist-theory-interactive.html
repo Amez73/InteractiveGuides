@@ -98,6 +98,16 @@
   p:last-of-type { margin-bottom: 0; }
   strong { color: var(--text); font-weight: 600; }
 
+  /* ── Station hook: the whole argument in one line ── */
+  .page-hook {
+    font-size: clamp(1.1rem, 2.6vw, 1.25rem);
+    line-height: 1.55; color: var(--text);
+    border-left: 3px solid var(--red);
+    padding: .15rem 0 .15rem 1.25rem;
+    margin: 0 0 1.6rem; font-weight: 400;
+  }
+  .page-hook strong { color: var(--amber); font-weight: 600; }
+
   /* ── Math block ── */
   .math-block {
     background: var(--track);
@@ -164,6 +174,38 @@
     color: #BFB89A;
   }
   .callout strong { color: var(--amber); }
+
+  /* ── Term box: names a concept the reader has just been shown ── */
+  .term-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--red);
+    border-radius: 6px;
+    padding: 1.3rem 1.5rem;
+    margin: 1.8rem 0;
+  }
+  .term-box .tb-label {
+    font-size: .68rem; letter-spacing: .14em; text-transform: uppercase;
+    font-weight: 700; color: var(--red); margin-bottom: .9rem;
+  }
+  .term-box dl { margin: 0; }
+  .term-box dt {
+    font-weight: 600; color: var(--text);
+    font-size: .95rem; margin-top: 1rem;
+  }
+  .term-box dt:first-of-type { margin-top: 0; }
+  .term-box dd {
+    margin: .25rem 0 0; font-size: .92rem; color: #B8B2AA;
+  }
+  .term-box dd .seen {
+    display: block; margin-top: .3rem;
+    font-size: .84rem; color: var(--muted); font-style: italic;
+  }
+  .term-box .tb-foot {
+    margin: 1.2rem 0 0; padding-top: .9rem;
+    border-top: 1px solid var(--border);
+    font-size: .88rem; color: #A9A39B;
+  }
 
   /* ── Inline deep dive ── */
   details.deep-expand { background: var(--track); border: 1px solid var(--border); border-left: 3px solid var(--amber); border-radius: 6px; margin: 1.2rem 0 1.8rem; }
@@ -568,6 +610,8 @@
     <p class="eyebrow">Station 1 of 8</p>
     <h2>The Engine</h2>
 
+    <p class="page-hook"><strong>Profit is not a reward for effort, cleverness or risk. It is the gap between what workers produce and what they are paid.</strong> Everything else in this guide follows from that one number.</p>
+
     <p>Two completely different games are played in every economy, and which one you're playing determines everything.</p>
 
     <div class="formula">
@@ -582,12 +626,34 @@
       <span class="vs">You start with money. You end with more money. Growth is the entire point.</span>
     </div>
 
-    <p>Game 2 has no stopping point. There is no "enough" — the goal is always more. Marx called this <strong>infinite accumulation</strong>: not a bug, the fundamental design of the system.</p>
+    <p>Game 2 has no stopping point. There is no "enough". The goal is always more. Marx called this <strong>infinite accumulation</strong>: not a bug, the fundamental design of the system.</p>
 
     <p>Which raises the question the whole theory hangs on: <strong>where does the extra money come from?</strong> You bought the materials and machines at market price. The only variable left is what you paid people.</p>
 
+    <p>To answer it, you need to know who is standing where. Marxism has precise words for this, and they are worth learning, because the everyday words ("rich," "poor," "middle class") describe how much money someone has, while these describe <em>where someone stands in Game 2</em>. Those are different questions, and only the second one predicts anything.</p>
+
+    <div class="term-box">
+      <p class="tb-label">The words, and what they actually mean</p>
+      <dl>
+        <dt>Means of production</dt>
+        <dd>The things you need in order to work: the factory, the machines, the land, the delivery app, the server farm, the building. Not personal possessions. Your house, your car and your toothbrush are not means of production. The coffee machine you cannot make coffee without is.
+          <span class="seen">You'll see this in a moment: Mia can't make a single drink without equipment she doesn't own.</span></dd>
+
+        <dt>Bourgeoisie <span style="color:var(--muted);font-weight:400;">(the ownership class)</span></dt>
+        <dd>People who own means of production and live off what others produce with them. Not a personality type and not a level of wealth. A landlord with three flats and a founder with a factory are in the same position: income arrives because of what they own, not what they do.</dd>
+
+        <dt>Proletariat <span style="color:var(--muted);font-weight:400;">(the working class)</span></dt>
+        <dd>People who own no means of production and therefore must sell their time to someone who does. This is most people. A surgeon on a salary is in this position. So is a barista. Income arrives because of what they do, and it stops when they stop.</dd>
+
+        <dt>Petit-bourgeoisie <span style="color:var(--muted);font-weight:400;">(the small-owner stratum)</span></dt>
+        <dd>People who own their means of production but mostly work them themselves: the self-employed plumber, the corner shop owner, the freelancer with her own kit. They sit between the two positions and, historically, their politics swing between them depending on which way the pressure is coming from.</dd>
+      </dl>
+      <p class="tb-foot"><strong>Why the precision matters:</strong> a surgeon on £300,000 and a cleaner on £22,000 are in the same class position, because both stop eating if they stop working. A landlord with £40,000 of rental income is in a different one, because he doesn't. Income sorts people into brackets. Class sorts them by what happens when they stop showing up. Only the second one tells you whose interests run together.</p>
+    </div>
+
     <div class="btn-group">
       <button class="btn btn-dive" onclick="go('dive_labor')">◆ Deep Dive: Show me the actual math on where profit comes from</button>
+      <button class="btn btn-dive" onclick="go('dive_glossary')">◆ The full glossary: every term this series uses</button>
       <button class="btn btn-primary" onclick="go('station2')">Skip ahead, take me to Station 2</button>
     </div>
   </div>
@@ -615,15 +681,109 @@
 
     <p>Marx called that $240 <strong>surplus value</strong>. It's not stealing in the legal sense; Mia agreed to the wage. But the argument is that the <em>source</em> of profit is always this gap: the difference between what workers actually produce and what they're paid.</p>
 
-    <p>Now scale this up. A coffee chain with 5,000 Mias across the country, each generating $240 in surplus per shift, five days a week. That's $30 million a week flowing upward, not from any magic the owner performed, but structurally, because they own the equipment and the building that Mia can't work without.</p>
+    <p>Now scale this up. A coffee chain with 5,000 Mias across the country, each generating $240 in surplus per shift, five days a week. That's $30 million a week flowing upward, not from any magic the owner performed, but structurally, because they own <strong>the means of production</strong>: the equipment and the building Mia cannot work without. That ownership is the whole mechanism. Take it away and the owner has no claim on the $240.</p>
 
     <div class="callout">
-      <strong>The key insight:</strong> Workers don't sell their products. They sell their <em>time</em>. The owner buys that time at one price, and sells what gets made with it at a higher price. The gap between those two numbers is where every dollar of profit comes from.
+      <strong>The key insight:</strong> Workers don't sell their products. They sell their <em>time</em>. Marx's term for the thing being sold is <strong>labour power</strong>: not your labour, which is what actually gets done, but your <em>capacity</em> to work for a fixed stretch of hours. The owner buys that capacity at one price and sells what gets made with it at a higher price. The gap between those two numbers is where every dollar of profit comes from.
     </div>
 
     <p>This applies to software engineers too, by the way. A developer at a tech company might generate $800,000 in annual recurring revenue for the product they maintain. Their salary might be $130,000. The gap ($670,000 in this case) follows the same logic.</p>
 
     <p>That's surplus value. Now let's see what happens when you run this system at massive scale.</p>
+
+    <div class="btn-group">
+      <button class="btn btn-back" onclick="go('station1')">Back to Station 1</button>
+      <button class="btn btn-dive" onclick="go('dive_glossary')">◆ The full glossary: every term this series uses</button>
+      <button class="btn btn-primary" onclick="go('station2')">Continue to Station 2: The Glitch →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ DEEP DIVE: GLOSSARY ══════════════ -->
+  <div class="passage" id="passage-dive_glossary">
+    <div class="dive-banner">Deep Dive: The Glossary</div>
+    <h2>Every Term This Series Uses, in Plain English</h2>
+
+    <p class="page-hook"><strong>The jargon exists because the everyday words are imprecise, not because anyone wanted to sound clever.</strong> Each term below replaces a vague word with an exact one. You can read the whole series without this page; it's here for when a word stops making sense.</p>
+
+    <div class="term-box">
+      <p class="tb-label">1. The machinery</p>
+      <dl>
+        <dt>Means of production</dt>
+        <dd>Whatever you need in order to work, owned by someone else: the factory, the land, the machines, the app, the servers. Personal possessions are not means of production.</dd>
+
+        <dt>Labour power</dt>
+        <dd>What a worker actually sells. Not the work itself but the <em>capacity</em> to work for a set number of hours. You sell it by the hour; the buyer keeps whatever it produces.</dd>
+
+        <dt>Surplus value</dt>
+        <dd>The difference between the value a worker produces and the wage they're paid. This is the source of profit, and there is no other source in the model.
+          <span class="seen">Station 1's deep dive: Mia produces $360, is paid $120, and the owner keeps $240.</span></dd>
+
+        <dt>Capital</dt>
+        <dd>Money that is used to make more money, rather than money used to buy things you want. The £20 you spend on dinner is not capital. The £20 you spend on stock to sell at £30 is. Capital is a <em>process</em>, not a pile.</dd>
+
+        <dt>Accumulation</dt>
+        <dd>The reinvestment of surplus value to produce more surplus value, on repeat, without limit. This is Game 2 running. It is the reason "enough" is not a concept the system can hold.</dd>
+
+        <dt>Contradiction</dt>
+        <dd>The most misread word in the tradition. It does <strong>not</strong> mean "inconsistency" or "hypocrisy." It means two forces built into the same system that pull against each other and cannot both be satisfied, so the tension has to resolve somewhere.
+          <span class="seen">Station 2: every firm wants to pay its own workers less and wants everyone else's workers paid enough to buy things. Both, at once, permanently.</span></dd>
+
+        <dt>Mode of production</dt>
+        <dd>The whole arrangement of who owns what and who works for whom in a given society. Feudalism was one. Capitalism is another. The claim is that this arrangement, more than ideas or leaders, sets the shape of everything else.</dd>
+      </dl>
+    </div>
+
+    <div class="term-box">
+      <p class="tb-label">2. Where people stand</p>
+      <dl>
+        <dt>Bourgeoisie (ownership class)</dt>
+        <dd>Owns means of production, lives off what others produce with them. A position, not a wealth bracket or a personality.</dd>
+
+        <dt>Proletariat (working class)</dt>
+        <dd>Owns no means of production, must sell time to live. Most people, including well-paid people.</dd>
+
+        <dt>Petit-bourgeoisie</dt>
+        <dd>Owns their means of production but works them personally. Self-employed trades, small shopkeepers, freelancers with their own kit.</dd>
+
+        <dt>Class consciousness</dt>
+        <dd>Recognising your own class position and the interests that come with it. Its absence is the normal condition, and maintaining that absence is what most of Parts 4, 5 and 6 are about.</dd>
+
+        <dt>Labour aristocracy</dt>
+        <dd>The layer of workers in wealthy countries whose conditions are cushioned by wealth extracted from poorer ones, and who therefore have something real to lose from the end of that arrangement.
+          <span class="seen">Part 2 develops this. It is the term that puts the reader inside the picture rather than outside it.</span></dd>
+
+        <dt>Comprador bourgeoisie</dt>
+        <dd>The ownership class <em>within</em> a poorer country whose wealth depends on servicing extraction by richer ones. Not puppets and not victims: partners, with their own interests.
+          <span class="seen">Part 2. It's the half of Walter Rodney's argument that usually gets dropped.</span></dd>
+      </dl>
+    </div>
+
+    <div class="term-box">
+      <p class="tb-label">3. How it spreads and how it holds</p>
+      <dl>
+        <dt>Primitive accumulation</dt>
+        <dd>The violent, one-off seizure that creates the starting conditions for Game 2: fencing off common land, enslavement, colonial conquest, clearing people off territory. Marx's point was that the first pile of capital is never explained by saving and thrift. It's taken.
+          <span class="seen">This is the entire subject of Part 2, and the mechanism behind Part 3.</span></dd>
+
+        <dt>Imperialism</dt>
+        <dd>In this series it has Lenin's specific meaning, not the loose one. A stage of capitalism in which monopolies dominate, banking and industrial capital merge, and <em>capital itself</em> is exported to where labour is cheapest, rather than goods being exported to where buyers are. Empire in the flag-and-territory sense is one expression of it, not the thing itself.</dd>
+
+        <dt>Hegemony</dt>
+        <dd>Antonio Gramsci's term for rule by consent rather than by force. A system is hegemonic when its arrangements feel like plain common sense, so most people uphold them voluntarily and no one needs to be coerced.
+          <span class="seen">Part 6 is a guide about one specific hegemonic reflex: the double standard.</span></dd>
+
+        <dt>Ideology</dt>
+        <dd>Not "a set of political opinions." The background beliefs that make an arrangement look natural and inevitable, usually held by people who would deny having an ideology at all.</dd>
+
+        <dt>Alienation</dt>
+        <dd>The condition of being separated from your own activity: you don't decide what you make, don't own it, don't see who uses it, and spend most of your waking hours on purposes that aren't yours. Marx's actual objection to capitalism was closer to this than to inequality of pay.
+          <span class="seen">Station 5. It's the part almost everyone gets wrong about what he wanted.</span></dd>
+      </dl>
+    </div>
+
+    <div class="callout">
+      <strong>One honest caveat.</strong> These definitions are the mainstream Marxist ones, but almost every term above has a live argument attached to it inside the tradition. Where an argument changes what follows politically, this series flags it rather than smoothing it over.
+    </div>
 
     <div class="btn-group">
       <button class="btn btn-back" onclick="go('station1')">Back to Station 1</button>
@@ -635,6 +795,8 @@
   <div class="passage" id="passage-station2">
     <p class="eyebrow">Station 2 of 8</p>
     <h2>The Glitch</h2>
+
+    <p class="page-hook"><strong>Every business needs its own workers to be cheap and everyone else's workers to be rich.</strong> Both cannot happen. That impossibility is the engine's built-in fault, and it is why crises recur instead of being fixed.</p>
 
     <p>Here's where the engine starts eating itself. Every worker has two identities at once, and they are at war: <strong>to your boss you are a cost</strong> — the lower your wage, the better the margin — and <strong>to every other business you are the customer</strong> they need to survive.</p>
 
@@ -799,6 +961,8 @@
     <p class="eyebrow">Station 3 of 8</p>
     <h2>The Band-Aids</h2>
 
+    <p class="page-hook"><strong>The free market has never existed anywhere.</strong> What exists is a system that would seize up within a decade without credit, state spending and planned supply controls holding it upright, all of it described as interference in a market that could not run without it.</p>
+
     <p>The glitch is real — 1873, 1929, 2008 — yet the system hasn't collapsed for good. Why not? Because it's constantly patched. The "free market" doesn't actually exist anywhere; what exists is capitalism <em>plus a dense layer of stabilisers</em> that capitalism can't provide for itself.</p>
 
     <p><strong>Band-Aid 1: Credit.</strong> Workers borrow tomorrow's wages to buy today's goods — a mortgage is 30 years of future labour spent now. It defers the crisis, with interest. It doesn't cure it.</p>
@@ -860,6 +1024,8 @@
     <p class="eyebrow">Station 4 of 8: The Horizon</p>
     <h2>What Comes After?</h2>
 
+    <p class="page-hook"><strong>Capitalism stops working best at the exact moment it works most efficiently.</strong> Machines don't draw wages and machines don't buy things, so the more of the economy you automate, the fewer people are left who can afford what it produces.</p>
+
     <p>Fast-forward: the engine keeps running, the band-aids keep patching, technology keeps advancing. Where does it go? <strong>Automation.</strong></p>
 
     <p>Profit is the gap between what workers produce and what they're paid. Machines drive that labour cost toward zero — but <strong>machines don't earn wages, and machines don't buy things.</strong> Automate enough of the economy and you reach the boot factory at civilizational scale: cheap, abundant goods and nobody left with wages to buy them. This is the terminal contradiction: capitalism is most efficient exactly when it can least function.</p>
@@ -894,6 +1060,8 @@
   <div class="passage" id="passage-station5">
     <p class="eyebrow">Station 5 of 8</p>
     <h2>The Dream: What Marx Actually Wanted</h2>
+
+    <p class="page-hook"><strong>Marx's goal was never equal pay. It was time.</strong> The complaint is not that the wage is too small, it's that you spend most of your waking life on someone else's purposes and get the leftovers for your own.</p>
 
     <p><strong>Marx was not primarily interested in economics.</strong> The economics were a diagnosis. The dream was that people would be fully, richly <em>alive</em>.</p>
 
@@ -967,6 +1135,8 @@
   <div class="passage" id="passage-station6">
     <p class="eyebrow">Station 6 of 8</p>
     <h2>Myths &amp; Misconceptions</h2>
+
+    <p class="page-hook"><strong>Almost everything most people confidently know about communism describes something Marx never proposed.</strong> Not all of that confusion happened by accident.</p>
 
     <p>Communist theory is one of the most persistently misrepresented bodies of thought in modern life — some of it honest confusion, some of it not. Tap any myth to see what the theory actually says.</p>
 
@@ -1086,6 +1256,8 @@
     <p class="eyebrow">Station 7 of 8: The Present</p>
     <h2>Where Are We Now, and Now What?</h2>
 
+    <p class="page-hook"><strong>Every outcome the framework predicted is now measured and published by the institutions that reject the framework.</strong> Wealth concentrating, pay decoupled from productivity, monopoly, recurring crises. Nobody disputes the numbers. What's disputed is whether they're accidents.</p>
+
     <p>Everything so far has been theory. Now look out the window. The conditions the framework predicted — wealth concentration, wages decoupled from productivity, monopoly, recurring crises, automation displacing labour — are the daily backdrop of life in wealthy countries.</p>
 
     <div class="stat-grid">
@@ -1201,6 +1373,8 @@
   <div class="passage" id="passage-station8">
     <p class="eyebrow">Station 8 of 8</p>
     <h2>Getting There: Capitalism as a Stepping Stone, and the Attempts Beyond It</h2>
+
+    <p class="page-hook"><strong>It has been tried, in wildly different conditions, and the results are neither the triumph nor the uniform catastrophe you've been handed.</strong> Six attempts, each with what it achieved and what it destroyed, sourced the same way this guide sources everything else.</p>
 
     <p>Here's what surprises almost everyone: <strong>Marx didn't think capitalism was simply evil.</strong> He thought it was a necessary stage — because communism requires abundance, and you can't redistribute abundance that doesn't exist. Capitalism, for all its violence, built the first world technically capable of feeding, housing, and healing everyone on the planet. Capable. Not willing.</p>
 
@@ -1548,7 +1722,23 @@
 
 <script>
   const mainTrack = ['start','station1','station2','station3','station4','station5','station6','station7','station8'];
-  const progressMap = { start:0, station1:13, station2:26, station3:39, station4:52, station5:63, station6:74, station7:87, station8:100 };
+  const progressMap = {
+    start:0, station1:13, station2:26, station3:39, station4:52, station5:63, station6:74, station7:87, station8:100,
+    // Dives inherit their parent station's progress so opening one never jumps the bar.
+    dive_labor:13, dive_glossary:13,
+    dive_boots:26, dive_2008:26, dive_gig:26,
+    dive_dairy:39,
+    dive_ussr:100, dive_cuba:100, dive_vietnam:100,
+    dive_china:100, dive_mondragon:100, dive_nordic:100
+  };
+  // Which station a dive belongs to, so the nav highlights the parent while a dive is open.
+  const diveParent = {
+    dive_labor:'station1', dive_glossary:'station1',
+    dive_boots:'station2', dive_2008:'station2', dive_gig:'station2',
+    dive_dairy:'station3',
+    dive_ussr:'station8', dive_cuba:'station8', dive_vietnam:'station8',
+    dive_china:'station8', dive_mondragon:'station8', dive_nordic:'station8'
+  };
   const visited = new Set(['start']);
   let current = 'start';
 
@@ -1574,13 +1764,6 @@
       else if (visited.has(p)) btn.classList.add('visited');
     });
 
-    const diveParent = {
-      dive_labor:'station1',
-      dive_boots:'station2', dive_2008:'station2', dive_gig:'station2',
-      dive_dairy:'station3',
-      dive_ussr:'station8', dive_cuba:'station8', dive_vietnam:'station8',
-      dive_china:'station8', dive_mondragon:'station8', dive_nordic:'station8'
-    };
     if (diveParent[current]) {
       document.querySelectorAll('.nav-stop').forEach(btn => btn.classList.remove('current'));
       const parentBtn = document.querySelector(`.nav-stop[data-passage="${diveParent[current]}"]`);
