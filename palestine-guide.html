@@ -193,6 +193,90 @@
     width: 100%; height: 100%;
     border: none;
   }
+
+  /* ══ Massacre timeline (deep dive s2): all classes namespaced .mt-* ══════ */
+  .mt-legend { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; padding: .9rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 1.8rem 0 0; }
+  .mt-key { display: flex; align-items: center; gap: .5rem; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; color: var(--muted); }
+  .mt-swatch { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+
+  .mt-jump { display: flex; flex-wrap: wrap; gap: .35rem; margin: 1rem 0 .6rem; }
+  .mt-jump button { font-family: 'DM Sans', sans-serif; text-transform: uppercase; letter-spacing: .1em; font-size: .64rem; font-weight: 600; color: var(--muted); background: var(--track); border: 1px solid var(--border); border-radius: 3px; padding: .35rem .6rem; cursor: pointer; transition: color .2s, border-color .2s, background .2s; }
+  .mt-jump button:hover { color: var(--text); border-color: var(--olive-dim); background: rgba(122,154,58,.09); }
+  .mt-hint { font-size: .66rem; letter-spacing: .09em; text-transform: uppercase; color: #4C4E3A; margin: 0 0 .5rem; line-height: 1.6; }
+
+  /* full-bleed out of the 680px column; --mt-sbw is the measured scrollbar width */
+  .mt-bleed { width: calc(100vw - var(--mt-sbw, 0px)); margin-left: calc((100% - 100vw + var(--mt-sbw, 0px)) / 2); }
+  .mt-scroller { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; background: #080905; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .mt-canvas { position: relative; width: 10000px; height: 1700px; }
+  #mt-wires { position: absolute; top: 0; left: 0; z-index: 1; pointer-events: none; }
+
+  .mt-axis { position: absolute; left: 0; right: 0; height: 26px; border-top: 2px solid #3C4029; z-index: 0; }
+  .mt-tick { position: absolute; top: 0; height: 9px; width: 1px; background: var(--muted); }
+  .mt-tick b { position: absolute; top: 12px; left: 0; transform: translateX(-50%); font-weight: 600; font-size: 11px; letter-spacing: .14em; color: var(--muted); }
+
+  .mt-skip { position: absolute; top: 0; bottom: 0; z-index: 0; border-left: 1px dashed var(--border); border-right: 1px dashed var(--border);
+    background: repeating-linear-gradient(-45deg, rgba(228,224,212,.032), rgba(228,224,212,.032) 5px, transparent 5px, transparent 11px); }
+  .mt-skip b { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); font-size: 9px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #55573F; white-space: nowrap; background: #080905; padding: 2px 6px; }
+
+  .mt-chip { position: absolute; z-index: 2; width: 136px; min-height: 74px; padding: 7px 7px 8px; border-radius: 3px; text-align: center;
+    border: 1px solid currentColor; background: var(--surface); cursor: pointer; display: flex; flex-direction: column; justify-content: center; gap: 2px;
+    transition: background .15s, box-shadow .15s; box-sizing: border-box; }
+  .mt-chip .mt-num { display: block; font-family: 'DM Serif Display', serif; font-size: 20px; line-height: 1.05; color: currentColor; font-variant-numeric: tabular-nums; }
+  .mt-chip .mt-tag { display: block; font-size: 10.5px; line-height: 1.3; color: #B4B0A0; margin-top: 4px; }
+  .mt-chip .mt-kids { display: block; font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: currentColor; opacity: .85; margin-top: 5px; padding-top: 4px; border-top: 1px solid var(--border); }
+  .mt-chip .mt-yr { display: block; margin-top: 5px; font-size: 9px; letter-spacing: .18em; color: #56583F; }
+  .mt-chip:hover, .mt-chip:focus-visible { background: var(--mt-tint); box-shadow: 0 0 0 1px currentColor; }
+  .mt-chip:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+  .mt-chip.mt-total { background: var(--mt-tint); border-width: 2px; }
+  .mt-chip.mt-total .mt-tag { color: var(--text); }
+  .mt-chip.mt-pal   { color: #C85A48; --mt-tint: rgba(200,90,72,.16); }
+  .mt-chip.mt-leb   { color: #6FA6C4; --mt-tint: rgba(111,166,196,.16); }
+  .mt-chip.mt-gaza  { color: #C8B882; --mt-tint: rgba(200,184,130,.14); }
+  .mt-chip.mt-named { color: #A692D8; --mt-tint: rgba(166,146,216,.16); }
+
+  /* detail sheet */
+  .mt-sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 120; background: var(--surface); border-top: 2px solid var(--olive-dim);
+    box-shadow: 0 -14px 44px rgba(0,0,0,.65); transform: translateY(102%); transition: transform .28s cubic-bezier(.22,.7,.3,1); max-height: 78vh; overflow-y: auto; }
+  .mt-sheet.mt-open { transform: translateY(0); }
+  .mt-sheet-in { max-width: 680px; margin: 0 auto; padding: 1.3rem 1.25rem 2.2rem; position: relative; }
+  .mt-close { position: absolute; top: 1rem; right: 1.1rem; border: 1px solid var(--border); background: var(--track); border-radius: 3px; width: 32px; height: 32px; font-size: 17px; line-height: 1; cursor: pointer; color: var(--muted); }
+  .mt-close:hover { color: var(--text); border-color: #353820; }
+  .mt-sheet .mt-sdate { display: block; font-size: .66rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+  .mt-sheet h3 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; line-height: 1.2; margin: .35rem 0 .15rem; padding-right: 2.6rem; color: var(--text); }
+  .mt-sheet .mt-sloc { font-size: .82rem; color: var(--muted); margin: 0 0 .9rem; }
+  .mt-tagrow { margin-bottom: .8rem; }
+  .mt-tg { display: inline-block; text-transform: uppercase; letter-spacing: .11em; font-size: .62rem; font-weight: 600; color: var(--muted); border: 1px solid var(--border); border-radius: 2px; padding: .15rem .45rem; margin: 0 .3rem .3rem 0; }
+  .mt-sheet .mt-stoll { font-family: 'DM Serif Display', serif; font-size: 2.6rem; line-height: 1; }
+  .mt-sheet .mt-sunit { text-transform: uppercase; letter-spacing: .16em; font-size: .68rem; font-weight: 600; margin: .35rem 0 .5rem; }
+  .mt-sheet .mt-skids { font-size: .8rem; color: var(--muted); margin: 0 0 .9rem; padding-left: .7rem; border-left: 2px solid var(--border); }
+  .mt-sheet .mt-skids strong { color: #908878; }
+  .mt-sheet .mt-body p { font-size: .9rem; margin: 0 0 .7rem; color: #BCB8A8; }
+  .mt-sheet .mt-resp { border-left: 3px solid var(--olive-dim); padding: .15rem 0 .15rem .8rem; font-size: .86rem; color: var(--muted); margin: 1rem 0 0; }
+  .mt-sheet .mt-resp b { color: var(--sand); font-weight: 600; }
+  .mt-sheet .mt-src { margin: .9rem 0 0; padding-top: .7rem; border-top: 1px solid var(--border); font-size: .7rem; color: #4C4E3A; }
+
+  /* named roster + editorial notes */
+  .mt-roster { margin-top: 2.4rem; padding-top: 1.8rem; border-top: 1px solid var(--border); }
+  .mt-rh { font-family: 'DM Serif Display', serif; font-size: 1.2rem; line-height: 1.3; margin: 0 0 .5rem; color: #A692D8; }
+  .mt-rsub { font-size: .84rem; color: var(--muted); margin: 0 0 1rem; line-height: 1.65; }
+  .mt-rgroup { font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: #A692D8; margin: 1.4rem 0 .6rem; font-family: 'DM Sans', sans-serif; }
+  .mt-rgroup.mt-removed { color: var(--muted); }
+  .mt-rgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .3rem .4rem; }
+  .mt-rperson { font-size: .76rem; line-height: 1.3; color: #BCB8A8; background: var(--track); border-left: 2px solid rgba(166,146,216,.55); padding: .3rem .5rem; border-radius: 2px; }
+  .mt-rremoved { display: flex; flex-direction: column; gap: .3rem; }
+  .mt-rrow { font-size: .74rem; line-height: 1.45; color: var(--muted); padding: .35rem .55rem; background: var(--track); border-left: 2px solid var(--border); border-radius: 2px; }
+  .mt-rrow b { color: #8A8672; font-weight: 600; text-decoration: line-through; text-decoration-color: var(--muted); }
+  .mt-rrow span { display: block; margin-top: .1rem; font-style: italic; }
+
+  .mt-note { margin-top: 1.1rem; padding: .95rem 1.1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; font-size: .85rem; color: var(--muted); line-height: 1.7; }
+  .mt-note strong { color: var(--sand); font-weight: 600; }
+  .mt-note.mt-gap { background: rgba(192,64,48,.05); border-color: rgba(192,64,48,.2); }
+  .mt-note.mt-gap strong { color: #D07060; }
+  .mt-note ul { margin: .6rem 0 0; padding-left: 1.1rem; }
+  .mt-note li { margin-bottom: .35rem; }
+  .mt-sources { margin-top: 1.4rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: .74rem; color: #565844; line-height: 1.8; }
+  .mt-sources b { display: block; font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: .4rem; }
+  @media (prefers-reduced-motion: reduce) { .mt-sheet { transition: none; } }
 </style>
 </head>
 <body>
@@ -364,6 +448,7 @@
 
     <div class="btn-group">
       <button class="btn btn-dive" onclick="go('dive_nakba')">◆ Deep Dive: The Nakba in detail: villages, massacres, the full record</button>
+      <button class="btn btn-dive" onclick="go('dive_massacres')">◆ Deep Dive: Interactive timeline: 80 documented mass killings, 1948 to now</button>
       <button class="btn btn-dive" onclick="go('dive_haavara')">◆ Deep Dive: The Haavara Agreement, the 1933 deal that funded the settlement boom</button>
       <button class="btn btn-primary" onclick="go('s3')">Continue to Station 3: The Occupation →</button>
     </div>
@@ -404,6 +489,7 @@
 
     <div class="btn-group">
       <button class="btn btn-back" onclick="go('s2')">Back to Station 2</button>
+      <button class="btn btn-dive" onclick="go('dive_massacres')">◆ Next: The massacre record, 1948–2026, as an interactive timeline</button>
       <button class="btn btn-dive" onclick="go('dive_haavara')">◆ Next: The Haavara Agreement, 1933</button>
       <button class="btn btn-primary" onclick="go('s3')">Continue to Station 3: The Occupation →</button>
     </div>
@@ -446,7 +532,114 @@
     <div class="btn-group">
       <button class="btn btn-back" onclick="go('s2')">Back to Station 2</button>
       <button class="btn btn-dive" onclick="go('dive_nakba')">◆ Back to: The Nakba in detail</button>
+      <button class="btn btn-dive" onclick="go('dive_massacres')">◆ The massacre record, 1948–2026, as an interactive timeline</button>
       <button class="btn btn-primary" onclick="go('s3')">Continue to Station 3: The Occupation →</button>
+    </div>
+  </div>
+
+  <!-- ══ DEEP DIVE: THE MASSACRE RECORD (interactive timeline) ══ -->
+  <div class="passage" id="passage-dive_massacres">
+    <div class="dive-banner">Deep Dive: The Massacre Record, 1948–2026</div>
+    <h2>Eighty Documented Mass Killings, End to End</h2>
+
+    <p class="page-hook">This record starts <strong>before the state of Israel existed</strong> and runs to this year. Read end to end, it is not a list of unconnected incidents. It is a continuity.</p>
+
+    <p>Station 2 gave you the Nakba as a period: 750,000 expelled, 400+ villages destroyed. This is the same history at the level of the individual event, and then carried forward past 1949, because the pattern did not stop when the war ended.</p>
+
+    <p>Every figure below comes from a UN body, the Red Cross, an Israeli or international human rights organisation, or an academic historian. Where sources conflict, the range is given rather than averaged. Tap any entry for the full account: what happened, who was found responsible, what came of it, and where the number is from.</p>
+
+    <div class="mt-legend">
+      <span class="mt-key"><span class="mt-swatch" style="background:#C85A48"></span>Palestine, Israel &amp; the West Bank</span>
+      <span class="mt-key"><span class="mt-swatch" style="background:#6FA6C4"></span>Lebanon</span>
+      <span class="mt-key"><span class="mt-swatch" style="background:#C8B882"></span>Gaza</span>
+      <span class="mt-key"><span class="mt-swatch" style="background:#A692D8"></span>Named individuals: journalists &amp; activists</span>
+    </div>
+
+    <div class="mt-jump" id="mt-jump"></div>
+    <p class="mt-hint">Scroll sideways · hatched bands are condensed idle years · leader lines mark entries too close together to sit at their exact date →</p>
+
+    <div class="mt-bleed">
+      <div class="mt-scroller" id="mt-scroller">
+        <div class="mt-canvas" id="mt-canvas">
+          <svg id="mt-wires"></svg>
+          <div class="mt-axis" id="mt-axisline"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-roster">
+      <h3 class="mt-rh">The journalists and media workers CPJ has confirmed were murdered, named one by one</h3>
+      <p class="mt-rsub">CPJ classifies a killing as murder when a journalist is deliberately targeted for their work, as distinct from being killed incidentally in crossfire or an area strike. As of 25 June 2026, CPJ names 75 such confirmed cases across Gaza, Lebanon, Iran and Yemen: 59 journalists and 16 other media workers. This list is copied directly from CPJ's own published roster, including the names CPJ itself later removed after further investigation, shown struck through with the reason CPJ gave.</p>
+
+      <p class="mt-rgroup">59 journalists</p>
+      <div class="mt-rgrid" id="mt-rgrid1"></div>
+
+      <p class="mt-rgroup">16 media workers</p>
+      <div class="mt-rgrid" id="mt-rgrid2"></div>
+
+      <p class="mt-rgroup mt-removed">Removed by CPJ after further investigation</p>
+      <p class="mt-rsub">CPJ's own review process. Shown here for transparency, not as confirmed murders.</p>
+      <div class="mt-rremoved" id="mt-rremoved"></div>
+    </div>
+
+    <div class="mt-note">
+      <strong>On named individuals.</strong> The violet entries are a different kind of record from the rest of the timeline: single, named people whose killings drew their own independent investigations, forensic, journalistic or judicial, rather than being counted only inside a larger toll. They are not the only such cases. CPJ alone has documented and named over 260; this timeline includes six of the most extensively investigated, plus the aggregate CPJ count. Choosing which individual killings to include is itself a judgment call, made here on the basis of independent forensic or investigative documentation existing, not on any assessment of whose death mattered more.
+    </div>
+
+    <div class="mt-note mt-gap">
+      <strong>What is still missing.</strong> This is 80 entries against a documented universe orders of magnitude larger. Categories were added in direct response to identified blind spots, protected-site destruction (hospitals, schools), slow-mechanism deaths (infrastructure collapse, detention, starvation), and demographic erasure (entire family lines killed), and each addition surfaced others not yet built out: religious and cultural sites (227 mosques and 3 churches damaged or destroyed, per UN figures, with no individual entries here), and West Bank settler violence, which operates through a different mechanism again and is not represented at all. The hatched bands mark condensed spans of low entry density, not periods without killing:
+      <ul>
+        <li><strong>1947–56.</strong> Salman Abu Sitta's <em>Atlas of Palestine</em> lists 232 sites of atrocity, massacre, destruction or plunder. Badil's survey of UN and Israeli archives counts more than thirty documented massacres in 1948 alone; one Israeli historian's fuller archival review puts it above a hundred, ten of them major. <strong>Sixteen individual entries are here.</strong></li>
+        <li><strong>1957–1967.</strong> A decade of cross-border shootings of Palestinians attempting to return or cross armistice lines, referenced in Israeli and UN records but never aggregated into a reliable toll. Nothing from this decade is on the timeline.</li>
+        <li><strong>1967 and after.</strong> The 1967 war's village demolitions and killings, and the 1971 Gaza campaign, are represented, but a large share of the underlying archive remains sealed by Israel's own state archivist, so the tolls given are ranges and estimates, not counts.</li>
+        <li><strong>1993–2002.</strong> The Oslo years and the run-up to the Second Intifada carry no entries here; B'Tselem's continuous fatality database covers this period in full.</li>
+        <li><strong>2019–2023.</strong> Sporadic escalations, including May 2021 beyond the single al-Wehda Street strike listed, are underrepresented.</li>
+        <li><strong>The current war.</strong> Airwars and ACLED log thousands of separate civilian-harm events in Gaza since October 2023. The New Humanitarian's database alone tracks more than 500 incidents involving aid seekers. <strong>Twenty-one individual entries are here.</strong></li>
+        <li><strong>The West Bank</strong> is still substantially underrepresented outside the aggregate entries. B'Tselem's fatality database records Palestinians killed there continuously from 1987 to now, including 1,105 since October 2023, at least 242 of them children.</li>
+      </ul>
+    </div>
+
+    <div class="mt-note">
+      <strong>On the wording.</strong> The one-line descriptions use plain verbs, shot, shelled, burned, executed, rather than "murdered". Not to soften anything: several entries are contested, and a legal verdict used as a label makes the whole list dismissible on its weakest entry. Where a court, commission or inquiry did reach a finding, it is stated in the detail card, including the UN's 2025 genocide finding.
+    </div>
+
+    <div class="mt-note">
+      <strong>On counting children.</strong> Roughly half these entries carry no child figure because none was ever recorded. That is the record, not a gap in the research. Consistent child counts appear only once UNRWA rolls, health ministry registries and human rights fieldwork exist to produce them, which is to say from the mid-twentieth century onward, and unevenly even then.
+    </div>
+
+    <div class="mt-note">
+      <strong>How this was built.</strong> Incidents with genuinely disputed attribution are excluded: the al-Ahli hospital blast of 17 October 2023, put at 471 dead by Gaza's health ministry, is left off because Israeli and US intelligence attributed it to a misfired Palestinian rocket.
+    </div>
+
+    <div class="mt-note">
+      <strong>Accountability, across 78 years.</strong> One set of convictions, at Kafr Qasim, all commuted within three years, the brigade commander fined ten prutot. One conviction for Hula: a year, unserved, pardoned, the officer later running the Jewish Agency. One resignation, Sharon's after Sabra and Shatila, followed by the premiership. One dismissal of a deputy commander over the medic convoy in 2025. Everything else was investigated internally and closed, investigated externally and rejected, or never investigated at all.
+    </div>
+
+    <div class="mt-sources">
+      <b>Sources</b>
+      Benny Morris, <em>The Birth of the Palestinian Refugee Problem Revisited</em> · Salman Abu Sitta, <em>Atlas of Palestine 1917–1966</em> · Institute for Palestine Studies · Badil · UNRWA special reports and field assessments (1956, 2004, 2014) · UN Security Council Resolution 101 · Kafr Qasim trial transcripts, IDF Archives 2022 · Kahan Commission report · UN General Assembly Resolution 37/123D · ICRC · van Kappen report to the UN Secretary-General, 1996 · Human Rights Watch (<em>Jenin</em> 2002; <em>Fatal Strikes</em> 2006; <em>Why They Died</em> 2007) · Amnesty International &amp; Forensic Architecture, <em>Black Friday</em> · Amnesty International · B'Tselem · Al-Haq · PCHR · Al Mezan · Adalah · Goldstone Report · UN OCHA · UN Board of Inquiry 2015 · UN Independent Commissions of Inquiry 2019 and 2025 · Gaza Ministry of Health · Every Casualty Counts · The New Humanitarian · Forensic Architecture &amp; Earshot · Euro-Med Human Rights Monitor · Gisha · CNN · NBC News · BBC · AP · Al Jazeera · Haaretz · The Intercept
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-back" onclick="go('s2')">Back to Station 2</button>
+      <button class="btn btn-dive" onclick="go('dive_nakba')">◆ Next: The Nakba in detail</button>
+      <button class="btn btn-primary" onclick="go('s3')">Continue to Station 3: The Occupation →</button>
+    </div>
+
+    <div class="mt-sheet" id="mt-sheet" role="dialog" aria-labelledby="mt-sheetTitle" aria-hidden="true">
+      <div class="mt-sheet-in">
+        <button class="mt-close" id="mt-closeBtn" aria-label="Close">×</button>
+        <span class="mt-sdate" id="mt-sDate"></span>
+        <h3 id="mt-sheetTitle"></h3>
+        <p class="mt-sloc" id="mt-sLoc"></p>
+        <div class="mt-tagrow" id="mt-sTags"></div>
+        <div class="mt-stoll" id="mt-sToll"></div>
+        <div class="mt-sunit" id="mt-sUnit"></div>
+        <p class="mt-skids" id="mt-sKids"></p>
+        <div class="mt-body" id="mt-sBody"></div>
+        <p class="mt-resp" id="mt-sResp"></p>
+        <p class="mt-src" id="mt-sSrc"></p>
+      </div>
     </div>
   </div>
 
@@ -1558,11 +1751,11 @@
 <script>
   const progressMap = {
     start:0, s1:11, s2:22, s3:33, s4:44, s5:56, s6:67, s7:78, s8:89, s9:100,
-    dive_nakba:22, dive_haavara:22, dive_settlements:33, dive_apartheid:33,
+    dive_nakba:22, dive_massacres:22, dive_haavara:22, dive_settlements:33, dive_apartheid:33,
     dive_lobby:44, dive_genocide:56, dive_watchlist:67
   };
   const diveParent = {
-    dive_nakba:'s2', dive_haavara:'s2',
+    dive_nakba:'s2', dive_massacres:'s2', dive_haavara:'s2',
     dive_settlements:'s3', dive_apartheid:'s3',
     dive_lobby:'s4',
     dive_genocide:'s5',
@@ -1599,6 +1792,940 @@
 
   updateNav();
 </script>
+<!-- ══ Massacre timeline (deep dive dive_massacres): data + lazy renderer ══ -->
+<script>
+(function(){
+/* ==========================================================================
+   DATA: add an object to EV and the layout, wiring and jump nav rebuild.
+   y  decimal year   c  pal|leb|gaza|named   n  toll on chip   g  one-line tagline
+   k  children line on chip ("" = omit)   kd  children status in detail card
+   total:1  campaign aggregate (filled chip)
+   ========================================================================== */
+const EV = [
+{y:1948.27,c:"pal",n:"~110",g:"Killed house by house, then expelled",k:"",yr:"Apr 1948",
+ kd:"Women and children are recorded among the dead. They were never counted separately.",
+ t:"Deir Yassin",loc:"Village west of Jerusalem",date:"9 April 1948",toll:"~110",unit:"killed, of about 750 residents",
+ tags:["Pre-state militias","Toll revised","Contested"],
+ body:["Irgun and Lehi fighters, with Haganah mortar support, took the village house by house. Families were killed in or beside their homes; men were paraded through Jerusalem and shot in a quarry. Everyone left alive was expelled.","News of it spread within days and accelerated the wider flight of the Palestinian population, its largest historical consequence."],
+ resp:"<b>Then and since.</b> Reported for decades as 254; present scholarship puts it near 110. The Israeli historian Eliezer Tauber disputes the massacre finding altogether. Begin and Shamir, who led the two militias, both became prime minister.",
+ src:"Benny Morris; Britannica; Institute for Palestine Studies"},
+
+{y:1948.37,c:"pal",n:"60–70",g:"Mortared, then stormed",k:"",yr:"May 1948",
+ kd:"Men, women, children and elderly are all recorded among the dead, without a breakdown.",
+ t:"Abu Shusha",loc:"Village southeast of Ramle",date:"13–14 May 1948",toll:"60–70",unit:"killed",
+ tags:["Givati Brigade","Toll disputed"],
+ body:["Mortared and then stormed by two battalions of the Givati Brigade during Operation Barak. Houses were blown up; surviving villagers were expelled a week later. A nearby Arab Legion unit reported killings still under way days afterwards."],
+ resp:"<b>Disputed toll.</b> Givati recorded 30 killed; Arab sources reported more than 70. Morris lists it among the worst cases of the war.",
+ src:"Benny Morris; Israeli State Archives; ICRC correspondence"},
+
+{y:1948.39,c:"pal",n:"200+",g:"Executed after the village surrendered",k:"",yr:"May 1948",
+ kd:"The dead were overwhelmingly men of fighting age.",
+ t:"Tantura",loc:"Coastal village south of Haifa",date:"22–23 May 1948",toll:"200+",unit:"killed, by the higher estimates",
+ tags:["After surrender","Contested"],
+ body:["A week after the declaration of the state, the Alexandroni Brigade's 33rd Battalion took a village of about 1,500. Around twenty died in the brief fighting. The killing of the men came afterwards, once the village had surrendered.","A mass grave 35 metres long lies under what is now a beach car park."],
+ resp:"<b>The historians' dispute.</b> Estimates run from dozens to over 200. Benny Morris rejects the massacre finding for lack of archival documents; Adam Raz and others accept the survivor and veteran testimony gathered by Teddy Katz, whose thesis was withdrawn under legal pressure in 2000.",
+ src:"Institute for Palestine Studies; Akevot Institute; <em>Tantura</em> (2022); Benny Morris"},
+
+{y:1948.53,c:"pal",n:"~250",g:"Shot in the streets, then marched out",k:"",yr:"Jul 1948",
+ kd:"No age breakdown of the dead survives.",
+ t:"Lydda",loc:"Lydda (Lod), central Palestine",date:"11–12 July 1948",toll:"~250",unit:"killed",
+ tags:["Operation Danny","Mass expulsion"],
+ body:["The 89th Battalion drove into the town firing at anything that moved; Morris records perhaps 200 killed in that raid alone and describes a participant's written account as combining elements of a battle and a massacre. More were killed the next day, including at a mosque compound.","Lydda and Ramle were then emptied: some 50,000 people marched out on foot in July heat."],
+ resp:"<b>The order.</b> Rabin's memoir records Ben-Gurion waving his hand at the question of what to do with the population, a gesture Rabin read as: drive them out. The passage was censored from the Hebrew edition.",
+ src:"Benny Morris; Spiro Munayyer, <em>The Fall of Lydda</em>; Rabin memoir"},
+
+{y:1948.6,c:"pal",n:"30–100+",g:"Documented massacres across the 1948 war",k:"",yr:"1947–49",total:1,
+ kd:"Never systematically counted, in any of them.",
+ t:"The 1948 war, in aggregate",loc:"Across Mandatory Palestine",date:"1947 – 1949",toll:"30–100+",unit:"separate massacres documented",
+ tags:["Aggregate","Archives partly sealed"],
+ body:["A survey of UN and Israeli archives counts more than thirty documented massacres by Zionist and Israeli forces during the 1948 war: 24 in the Galilee, five in the centre, five in the south. One Israeli historian's fuller review of the files puts the number above a hundred, including ten major ones.","Abu Sitta's <em>Atlas of Palestine</em> lists 232 sites of atrocity, massacre, destruction or plunder between 1947 and 1956."],
+ resp:"<b>Why the range is so wide.</b> A substantial body of material in the Israeli state archives remains closed to researchers on stated security grounds, and some files previously released have since been re-sealed. Ten of these incidents appear individually on this timeline.",
+ src:"Badil; Salman Abu Sitta, <em>Atlas of Palestine 1917–1966</em>; Akevot Institute; Benny Morris"},
+
+{y:1948.826,c:"pal",n:"50–70",g:"Bound and shot after capture",k:"",yr:"29 Oct 1948",
+ kd:"Not separately recorded.",
+ t:"Safsaf",loc:"Village in the Galilee",date:"29 October 1948",toll:"50–70",unit:"killed",
+ tags:["Operation Hiram","Reports of rape"],
+ body:["The first village to fall in Operation Hiram, the sweep through the Galilee. Men were bound and shot after the village was taken. Contemporary Israeli reports on the operation record rape alongside the killings."],
+ resp:"<b>Pattern.</b> Operation Hiram produced five documented massacres within five days, Safsaf, al-Dawayima, Saliha, Eilabun and Hula, which Morris attributes in part to a deliberate policy of encouraging flight.",
+ src:"Benny Morris; Israeli State Archives"},
+
+{y:1948.827,c:"pal",n:"80–300",g:"Killed in a town that barely resisted",k:"children among the dead",yr:"29 Oct 1948",
+ kd:"An Israeli soldier present described children killed with sticks. No count was kept.",
+ t:"Al-Dawayima",loc:"Village in the Hebron hills",date:"29 October 1948",toll:"80–300",unit:"killed",
+ tags:["89th Commando Battalion","Toll disputed"],
+ body:["The town was taken with almost no resistance. An Israeli soldier present described killings of men, women and children, children killed with sticks, and villagers dying when the houses they sheltered in were deliberately blown up. Survivors were held for days of forced labour, including a mother with a newborn."],
+ resp:"<b>Range.</b> The eyewitness put it at 80–100; Morris estimates hundreds; other sources say 300. Glubb, commanding Jordan's Arab Legion, cited a UN figure of 30 women and children. Motive included revenge for the Kfar Etzion killings.",
+ src:"Benny Morris; Badil; UN report cited by Glubb"},
+
+{y:1948.829,c:"pal",n:"60–70",g:"Gathered into a house, then blown up",k:"",yr:"30 Oct 1948",
+ kd:"Not separately recorded.",
+ t:"Saliha",loc:"Village in the upper Galilee",date:"30 October 1948",toll:"60–70",unit:"killed",
+ tags:["Operation Hiram"],
+ body:["Villagers were gathered into a house, which was then blown up on top of them.","Morris names Saliha alongside Deir Yassin, Lydda and Abu Shusha as the worst cases of the 1948 war, documented from Israeli archival material rather than testimony alone."],
+ resp:"<b>Record.</b> No proceedings were ever brought.",
+ src:"Benny Morris, <em>The Birth of the Palestinian Refugee Problem Revisited</em>"},
+
+{y:1948.832,c:"pal",n:"14",g:"Twelve men picked out and shot",k:"",yr:"30 Oct 1948",
+ kd:"None. The dead were all adult men.",
+ t:"Eilabun",loc:"Christian village in the Galilee",date:"30 October 1948",toll:"14",unit:"killed, 12 of them executed",
+ tags:["After surrender","Golani Brigade"],
+ body:["The Golani Brigade's 12th Battalion entered and the population surrendered. Twelve men were then selected and shot; two more were killed separately. The rest of the village was expelled to Lebanon, though many were later permitted to return."],
+ resp:"<b>Context.</b> Israeli soldiers had been beheaded near the village weeks earlier by Arab Liberation Army troops and their heads paraded through it. The executions followed the surrender, not the fighting.",
+ src:"Benny Morris; Israeli State Archives"},
+
+{y:1948.835,c:"leb",n:"35–58",g:"Men shot in a house, house blown up",k:"",yr:"31 Oct 1948",
+ kd:"None. Women and children were expelled before the killing.",
+ t:"Hula",loc:"Village in southern Lebanon",date:"31 October – 1 November 1948",toll:"35–58",unit:"men executed",
+ tags:["Lebanon","One conviction"],
+ body:["The Carmeli Brigade took the village without resistance. Women and children were expelled; most men between 15 and 60 were shot inside a house, which was then blown up on top of the bodies."],
+ resp:"<b>The only 1948 prosecution.</b> Shmuel Lahis was the sole soldier tried for killing Arabs during the war, after a deputy battalion commander insisted. He pleaded superior orders, was sentenced to a year, served none of it, was pardoned, and later became director-general of the Jewish Agency.",
+ src:"Benny Morris; Journal of Palestine Studies"},
+
+{y:1948.84,c:"pal",n:"14",g:"Shot in reprisal for two soldiers",k:"",yr:"2 Nov 1948",
+ kd:"None. The dead were adult men, mostly of one clan.",
+ t:"Arab al-Mawasi",loc:"Bedouin encampment, Tiberias district",date:"2 November 1948",toll:"14",unit:"killed",
+ tags:["Reprisal"],
+ body:["Two IDF squads captured the encampment. After the bodies of two Israeli soldiers were found on a nearby hilltop, the homes were destroyed and fifteen or sixteen adult men were shot; fourteen died."],
+ resp:"<b>No proceedings.</b> No one was charged.",
+ src:"Israeli military records; Benny Morris"},
+
+{y:1967.42,c:"pal",n:"unknown",g:"Villages emptied and razed in the war",k:"",yr:"Jun 1967",
+ kd:"Not recorded. Killings of civilians and prisoners are documented but no aggregate toll exists.",
+ t:"The 1967 war and its expulsions",loc:"West Bank, Gaza, Golan Heights",date:"5–10 June 1967, and the weeks after",toll:"unknown",unit:"killed; no reliable civilian count exists",
+ tags:["Village demolitions","Sealed archive"],
+ body:["Under orders later traced to Yitzhak Rabin, Israeli forces destroyed the villages of Imwas, Yalu and Beit Nuba in the Latrun salient and expelled their roughly 10,000 residents; the rubble was later forested over. Qalqilya and Tulkarem were partly demolished, and Dayan himself wrote that up to 12,000 people were driven from Qalqilya as punishment. A UN Special Committee documented dozens of destroyed villages across the West Bank, Gaza and Jordan Valley.","Haaretz's investigation into sealed Akevot Institute archives found the expulsions, as in 1948, included the killing of civilians, among them four men in Rafah after the fighting had ended, and prisoners shot by soldiers under Moshe Levy's command."],
+ resp:"<b>Still sealed.</b> As late as 2008 Israel's own state archivist recommended keeping the Rafah file closed, citing damage to foreign relations; it remains sealed in the IDF Archive. No aggregate civilian death toll for the war's Palestinian population has ever been published by any side.",
+ src:"Haaretz &amp; Akevot Institute investigation, 2017; UN Special Committee report A/8389; Badil"},
+
+{y:1971.5,c:"gaza",n:"hundreds",g:"Executed without trial to crush resistance",k:"",yr:"1971",
+ kd:"Not recorded.",
+ t:"The 'pacification' of Gaza",loc:"Gaza Strip, chiefly Rafah camp",date:"1969–1971",toll:"hundreds",unit:"killed, per contemporary accounts",
+ tags:["Ariel Sharon","No trials"],
+ body:["As head of the army's Southern Command, Ariel Sharon ran a campaign to crush Palestinian resistance following the 1967 occupation. Soldiers were ordered to execute without trial anyone suspected of involvement, and accounts from the period describe hundreds killed this way. Around 2,000–2,500 homes in Rafah camp were bulldozed to cut wide roads through the camp for military vehicles, and 12,000–16,000 people were forcibly relocated, some to the Sinai.","An Israeli general who oversaw the occupied territories at the time, Shlomo Gazit, later called it ethnic cleansing and a war crime."],
+ resp:"<b>No proceedings.</b> Sharon was reprimanded within the military for the scale of the demolitions but faced no charges; he became defense minister a decade later and prime minister three decades after that.",
+ src:"Institute for Middle East Understanding; The Funambulist; Palestine Nexus; Shlomo Gazit, cited in CAFE"},
+
+{y:1978.2,c:"leb",n:"1,000–2,000",g:"Killed in a week-long invasion",k:"",yr:"1978",total:1,
+ kd:"Not recorded.",
+ t:"Operation Litani",loc:"Southern Lebanon, up to the Litani River",date:"14–21 March 1978",toll:"1,000–2,000",unit:"Lebanese and Palestinians killed",
+ tags:["Campaign total","First Lebanon invasion"],
+ body:["Twenty thousand Israeli troops invaded southern Lebanon after a Palestinian attack on a bus near Tel Aviv killed 35 Israeli civilians. Villages across the south were shelled and bombed as the army pushed to the Litani River; estimates of the dead range from 1,000 to 2,000, the large majority civilians, with 100,000–250,000 people displaced.","The UN Security Council's Resolution 425 called for immediate withdrawal and created UNIFIL, the same peacekeeping force whose compound would be shelled at Qana eighteen years later."],
+ resp:"<b>Record.</b> Israel withdrew after three months but retained a proxy militia, the South Lebanon Army, along a self-declared buffer zone until 2000. No casualty inquiry was conducted.",
+ src:"Encyclopedia.com; UN Security Council Resolution 425; Geopolitical Monitor"},
+
+{y:1982.45,c:"leb",n:"~15,000–19,000",g:"Killed in the invasion, before the camps",k:"about half were children, per one field estimate",yr:"1982",total:1,
+ kd:"A Canadian physician working in Sidon during the siege estimated half the dead were children under 13; no official breakdown exists.",
+ t:"The 1982 invasion of Lebanon",loc:"Lebanon, from the border to Beirut",date:"June – August 1982",toll:"~15,000–19,000",unit:"killed, per Lebanese and contemporary press estimates",
+ tags:["Campaign total","Precedes Sabra and Shatila"],
+ body:["Israel invaded Lebanon with roughly 100,000 troops to drive out the PLO, besieging Beirut through the summer. Contemporary reporting, including from a Canadian physician working through the siege of Sidon, put the civilian toll by the end of June alone near 15,000; Lebanese authorities later estimated close to 20,000 dead and 30,000 wounded by year's end.","This figure is distinct from, and precedes, the separate massacre at Sabra and Shatila that followed the PLO's withdrawal in September, already on this timeline."],
+ resp:"<b>Note on the count.</b> No single body ever conducted an authoritative casualty count for the invasion itself, as opposed to the Sabra and Shatila massacre; the range here reflects the estimates available at the time and the retrospective count from Lebanese authorities.",
+ src:"Palestine Perspectives, 1983; Gulf News, citing Lebanese authorities; Journal of Palestine Studies"},
+
+{y:1990.0,c:"pal",n:"1,100–1,162",g:"Killed suppressing a mostly unarmed uprising",k:"about 250, per B'Tselem's tally",yr:"1987–93",total:1,
+ kd:"241–250, per B'Tselem. Roughly a fifth of those killed by gunfire were minors. 78 children were killed in 1989 alone.",
+ t:"The First Intifada",loc:"West Bank, Gaza and East Jerusalem",date:"9 December 1987 – 13 September 1993",toll:"1,100–1,162",unit:"Palestinians killed by Israeli forces and settlers",
+ tags:["Campaign total","'Break their bones'"],
+ body:["A popular uprising, largely unarmed and organised through strikes, boycotts and stone-throwing, met a deliberately harsh Israeli response. Defence Minister Yitzhak Rabin ordered a public policy of breaking the arms and legs of protesters; B'Tselem recorded around 300 Palestinians shot dead in the first year alone. Over six years, forces killed 1,100–1,162 Palestinians and injured over 100,000, mostly from gunshots, beatings and tear gas used in enclosed spaces.","Save the Children estimated 50,000–63,000 Palestinian children needed medical treatment for Intifada-related injuries in just the first two years, including at least 6,500 shot by soldiers."],
+ resp:"<b>Record.</b> B'Tselem's own tables, compiled contemporaneously, remain the most cited source. No senior officer was prosecuted for the bone-breaking policy or for the shooting deaths it accompanied.",
+ src:"B'Tselem, Fatalities in the First Intifada; Institute for Middle East Understanding; Save the Children"},
+
+{y:2015.75,c:"pal",n:"200+",g:"Killed in raids and checkpoint shootings",k:"at least 21, per UN weekly reports",yr:"2015–16",total:1,
+ kd:"At least 21 children, per UN OCHA's Protection of Civilians weekly reports through November 2016.",
+ t:"The 'Knife Intifada' period",loc:"West Bank and East Jerusalem",date:"October 2015 – late 2016",toll:"200+",unit:"Palestinians killed by Israeli forces",
+ tags:["Campaign total","Contested shoot-to-kill allegations"],
+ body:["A wave of stabbings, car-rammings and shootings by individual Palestinians, which killed dozens of Israelis, was met by intensified Israeli raids, checkpoint shootings and search operations. UN weekly reports through this period recorded dozens of Palestinians shot dead, including a 17-year-old boy killed at a checkpoint after allegedly raising a knife, and repeatedly flagged concern over what they called possible excessive use of force and extrajudicial killings.","By November 2016, UN OCHA had recorded 73 Palestinians, including 21 children, killed in the course of attacks and alleged attacks since the start of that year alone."],
+ resp:"<b>Pattern flagged, unresolved.</b> UN OCHA's weekly Protection of Civilians reports repeatedly used the phrase 'concern about possible excessive use of force and extra-judicial executions' across dozens of individual incidents in this period. No systemic investigation followed.",
+ src:"UN OCHA, Protection of Civilians weekly reports, 2015–16; Grokipedia; CBC"},
+
+{y:1953.79,c:"pal",n:"69",g:"Blown up inside their own homes",k:"two thirds women and children",yr:"1953",
+ kd:"Two thirds of the dead were women and children; no separate child figure was published.",
+ t:"Qibya",loc:"Village in the Jordanian-held West Bank",date:"14 October 1953",toll:"69",unit:"killed",
+ tags:["Unit 101","UN condemnation"],
+ body:["Unit 101, 130 men under Ariel Sharon, entered a village that appeared deserted. Forty-three houses, a school and a mosque were demolished with dynamite. Many of the dead were inside their homes when the charges went off; others were shot trying to get out. It was a reprisal for the killing of a woman and her two children in Yehud days earlier."],
+ resp:"<b>Aftermath.</b> Ben-Gurion publicly blamed angry civilians rather than the army. The UN Security Council condemned the attack in Resolution 101. Unit 101 was disbanded. Sharon went on to command at Sabra and Shatila and later became prime minister.",
+ src:"UN Security Council Resolution 101; Benny Morris; UN Mixed Armistice Commission records"},
+
+{y:1956.83,c:"pal",n:"49",g:"Shot walking home from the fields",k:"23 children",yr:"1956",
+ kd:"23, aged 8 to 17. Also 6 women and 19 men.",
+ t:"Kafr Qasim",loc:"Village on the Green Line, inside Israel",date:"29 October 1956",toll:"49",unit:"killed, 23 of them children",
+ tags:["Israeli citizens","Convictions","All pardoned"],
+ body:["A curfew was imposed at 3:30pm to begin at 5pm, while most of the village was out working. Border Police were ordered to shoot anyone found outside. Villagers walking home were lined up and shot. They were citizens of Israel, far from any front."],
+ resp:"<b>The one prosecution that stuck, briefly.</b> Officers were convicted and sentenced to 7–17 years; all were pardoned or commuted within about three years. The brigade commander was fined ten prutot. The trial established in Israeli law that a manifestly illegal order must be refused. Peres apologised in 2007; the Knesset rejected a bill recognising state responsibility in 2021. Transcripts declassified in 2022 show commanders knew the villagers were unarmed and unaware.",
+ src:"Kafr Qasim trial transcripts, IDF Archives 2022; Haaretz; Adalah"},
+
+{y:1956.845,c:"gaza",n:"275",g:"Shot in a house-to-house search",k:"",yr:"3 Nov 1956",
+ kd:"The dead were overwhelmingly men. No age breakdown was kept.",
+ t:"Khan Yunis",loc:"Town and refugee camp, Gaza Strip",date:"3 November 1956",toll:"275",unit:"named by UNRWA as killed that day",
+ tags:["Suez occupation","UNRWA list"],
+ body:["During the Israeli occupation of Gaza in the Suez war, troops conducted a house-to-house search for fedayeen. Men were shot in their homes; others were lined up against walls and executed. A curfew kept families from collecting the bodies for days. After the withdrawal a mass grave was found containing forty men shot in the back of the head with their hands tied."],
+ resp:"<b>Two accounts.</b> UNRWA's director compiled a list of 275 names from sources he considered trustworthy. Palestinian sources give 415 killed and 57 disappeared. Israel said its soldiers had run into militants and a battle developed.",
+ src:"UNRWA Special Report to the UN General Assembly, 15 December 1956; Joe Sacco, <em>Footnotes in Gaza</em>"},
+
+{y:1956.865,c:"gaza",n:"~111",g:"Shot during a screening operation",k:"",yr:"12 Nov 1956",
+ kd:"Not separately recorded.",
+ t:"Rafah",loc:"Rafah refugee camp, Gaza Strip",date:"12 November 1956",toll:"~111",unit:"killed",
+ tags:["Suez occupation","After a truce"],
+ body:["Nine days after Khan Yunis, a screening operation in Rafah camp turned into another mass killing. Men were driven from their homes to be sorted, and shot in the process. Israel had announced that the civilian population would be held collectively responsible for any attack on its soldiers."],
+ resp:"<b>Timing.</b> The Rafah killings came well after the UN had mediated a truce. No investigation was held.",
+ src:"UNRWA Special Report, December 1956; Jean-Pierre Filiu; Henry Laurens"},
+
+{y:1956.95,c:"gaza",n:"930–1,200",g:"Killed under four months of occupation",k:"",yr:"1956–57",total:1,
+ kd:"Not separately recorded.",
+ t:"The occupation of Gaza, 1956–57",loc:"Gaza Strip",date:"1 November 1956 – 7 March 1957",toll:"930–1,200",unit:"killed, of a population of 330,000",
+ tags:["Aggregate","Suez occupation"],
+ body:["Across the four months of Israeli rule following the Suez invasion, between 930 and 1,200 Palestinians were killed. Dozens of summary executions of prisoners took place; hundreds died as forces combed through Khan Yunis, Rafah, Gaza City and the central camps.","One study puts the figure at 930 killed, 215 missing and 716 injured."],
+ resp:"<b>Record.</b> No Israeli investigation was ever held into any of it. The scale was largely absent from public accounts until Joe Sacco's oral-history fieldwork in the 2000s.",
+ src:"Henry Laurens; Ghazi al-Sourani, <em>Gaza 1948–1993</em>; UNRWA; Joe Sacco"},
+
+{y:1982.71,c:"leb",n:"2,750",g:"Killed inside camps sealed by Israeli troops",k:"children in large numbers",yr:"1982",
+ kd:"Large numbers, never separately counted. Bayan Nuwayhed al-Hout documented 1,300 victims by name.",
+ t:"Sabra and Shatila",loc:"Refugee camps, west Beirut",date:"16–18 September 1982",toll:"2,750",unit:"bodies counted by the Red Cross",
+ tags:["Allied militia","Kahan Commission","UN: act of genocide"],
+ body:["Israeli forces had encircled the camps and controlled entry and exit. The killing inside was done over three days by the Phalangist militia, which Israel had allowed in after the assassination of Bashir Gemayel. Israeli flares lit the camps at night.","The ICRC count rose from 1,500 to 2,750 over the following week. Estimates including those buried in mass graves or taken away run to 3,500."],
+ resp:"<b>Israel's own inquiry.</b> The Kahan Commission, chaired by the president of the Supreme Court, found Defence Minister Ariel Sharon personally responsible and recommended his dismissal. He resigned, stayed in cabinet, and became prime minister in 2001. The UN General Assembly condemned the massacre as an act of genocide in December 1982.",
+ src:"Kahan Commission report; ICRC; UN General Assembly Resolution 37/123D; Bayan Nuwayhed al-Hout"},
+
+{y:1996.30,c:"leb",n:"106",g:"Shelled inside a marked UN compound",k:"about half were children",yr:"1996",
+ kd:"Around half of the 106 dead.",
+ t:"Qana",loc:"UNIFIL compound, southern Lebanon",date:"18 April 1996",toll:"106",unit:"killed sheltering in a UN base",
+ tags:["UN compound","UN inquiry rejected"],
+ body:["Eight hundred civilians had taken refuge inside a clearly marked UN compound that had served as UNIFIL headquarters for eighteen years. Thirteen artillery shells landed inside it. Four Fijian peacekeepers were seriously wounded. One man lost 31 members of his family."],
+ resp:"<b>The disputed finding.</b> Israel said it had not known civilians were there. Video from a UNIFIL soldier showed a drone and two helicopters overhead. The UN's investigator, Major-General van Kappen, found the impact pattern inconsistent with Israel's account and concluded error was unlikely. Israel rejected the report. Amnesty called the attack intentional. A US lawsuit by survivors was blocked.",
+ src:"van Kappen report to the UN Secretary-General, 1996; Amnesty International; Human Rights Watch"},
+
+{y:2002.27,c:"pal",n:"52",g:"Killed as bulldozers flattened the camp",k:"children among the dead",yr:"2002",
+ kd:"Children were among the 22+ confirmed civilian dead; no separate figure was published.",
+ t:"Jenin refugee camp",loc:"Jenin, occupied West Bank",date:"1–11 April 2002",toll:"52",unit:"killed, at least 22 of them civilians",
+ tags:["Operation Defensive Shield","Claims corrected"],
+ body:["Israeli forces sealed and assaulted a camp of 13,000 refugees on less than half a square kilometre. Bulldozers flattened blocks of housing with people still inside. Ambulances and medical staff were kept out for days. Around 13,000 people were displaced from a camp of displaced people."],
+ resp:"<b>Where the numbers landed.</b> Palestinian officials initially spoke of hundreds killed. Human Rights Watch documented 52 deaths, at least 22 civilians including children, elderly and disabled people, and found unlawful killings and the use of civilians as human shields, while rejecting the claim of a mass grave of hundreds. Israel refused a UN fact-finding team, which was disbanded.",
+ src:"Human Rights Watch, <em>Jenin: IDF Military Operations</em> (2002); UN Secretary-General's report"},
+
+{y:2004.39,c:"gaza",n:"53–55",g:"Killed as homes were razed in Rafah",k:"at least 17 children",yr:"May 2004",
+ kd:"At least 17.",
+ t:"Operation Rainbow",loc:"Rafah, southern Gaza",date:"12–24 May 2004",toll:"53–55",unit:"killed, at least 17 of them children",
+ tags:["Second Intifada","Home demolitions"],
+ body:["An invasion and siege of Rafah to destroy smuggling tunnels and widen the border buffer zone. Some 300 homes were razed; 167 buildings housing 379 families were demolished. Israeli tanks shelled a crowd of protesters marching toward their positions, killing ten."],
+ resp:"<b>Counts.</b> Israel said 41 of the dead were combatants and 12 civilians; Palestinian sources reversed the proportions. Adalah, PCHR and Al-Haq petitioned Israel's Supreme Court in 2007 to compel criminal investigations into this operation and the one that followed. None were opened.",
+ src:"Adalah, PCHR and Al-Haq petition, 2007; B'Tselem; UNRWA"},
+
+{y:2004.78,c:"gaza",n:"107",g:"Killed in 17 days in northern Gaza",k:"27 children",yr:"Oct 2004",
+ kd:"27. A quarter of the dead were 18 or under.",
+ t:"Operation Days of Penitence",loc:"Jabalia, Beit Hanoun and Beit Lahia",date:"29 September – 16 October 2004",toll:"107",unit:"killed, 27 of them children",
+ tags:["Second Intifada","UNRWA count"],
+ body:["The largest Israeli incursion into Gaza since the start of the second intifada. Tanks and bulldozers held northern Gaza for seventeen days. UNRWA recorded 107 killed and 431 injured, with tank shells and helicopter missiles fired into densely populated areas. At least 85 houses were demolished and 4,000 people displaced.","The stated aim was to stop homemade rockets reaching Sderot, which had killed four Israelis in preceding months."],
+ resp:"<b>No investigation.</b> Covered by the same 2007 Supreme Court petition as Operation Rainbow; no criminal investigations followed.",
+ src:"UNRWA Gaza Field assessment, 20 October 2004; B'Tselem; Al Mezan"},
+
+{y:2006.535,c:"leb",n:"23",g:"Killed fleeing after being told to leave",k:"14 children",yr:"Jul 2006",
+ kd:"14 of the 23 dead. Seven were women.",
+ t:"Marwahin",loc:"Border village, southern Lebanon",date:"15 July 2006",toll:"23",unit:"civilians killed, 14 of them children",
+ tags:["Fleeing convoy","HRW investigation"],
+ body:["Israeli forces ordered the village of Marwahin to evacuate. The convoy of families that left was then struck.","Human Rights Watch documented it as one of a series of strikes on civilians fleeing: six killed leaving Aitaroun, three at al-Tiri, seven at Marjayoun, seven in the Bekaa."],
+ resp:"<b>Finding.</b> HRW concluded Israeli forces repeatedly treated civilian vehicles on roads as Hezbollah movements. It also documented Hezbollah storing weapons in civilian buildings in the same village two days earlier, and found that this did not make the fleeing convoy a lawful target.",
+ src:"Human Rights Watch, <em>Why They Died</em> (2007)"},
+
+{y:2006.55,c:"leb",n:"19",g:"Killed in a strike on the village",k:"",yr:"Jul 2006",
+ kd:"Not separately recorded. A family of four killed in the first strike included two children aged 8 and 4.",
+ t:"Srifa",loc:"Village 25km from the border, southern Lebanon",date:"13 and 19 July 2006",toll:"19",unit:"killed across two strikes",
+ tags:["HRW corrected its own count"],
+ body:["A first strike on 13 July killed a family of four Brazilian-Lebanese dual nationals on holiday in the village. A second on 19 July killed nineteen people. Three hundred and forty homes in Srifa were completely destroyed over the war."],
+ resp:"<b>A correction worth noting.</b> Human Rights Watch initially reported 26 civilians killed on 19 July. Its own follow-up established that 17 of the dead were combatants and five were civilians, and it published the correction. It is included here as an example of how casualty figures move when they are checked.",
+ src:"Human Rights Watch, <em>Fatal Strikes</em> (2006) and <em>Why They Died</em> (2007)"},
+
+{y:2006.58,c:"leb",n:"28",g:"Killed asleep in a basement",k:"16 children",yr:"Jul 2006",
+ kd:"16 of the 28. The dead ranged from nine months to seventy-five years old.",
+ t:"Qana, second time",loc:"Al-Khuraybah, near Qana, southern Lebanon",date:"30 July 2006",toll:"28",unit:"killed, 16 of them children",
+ tags:["Toll revised down"],
+ body:["Two missiles hit a three-storey house at about one in the morning. Two extended families were sheltering in the basement. Israel suspended air strikes for 48 hours afterwards."],
+ resp:"<b>On the number.</b> Early reports and Lebanese officials put the toll above fifty. Human Rights Watch, working from hospital records and body identification, established it at 28. Israel said intelligence indicated a Hezbollah position and that rockets had been fired from the area.",
+ src:"Human Rights Watch; Lebanese Red Cross and Tyre hospital records"},
+
+{y:2006.62,c:"leb",n:"1,109",g:"Killed in 34 days of war",k:"",yr:"2006",total:1,
+ kd:"Not separately published in the HRW total. The vast majority of the dead were civilians.",
+ t:"The 2006 Lebanon war",loc:"Lebanon",date:"12 July – 14 August 2006",toll:"1,109",unit:"Lebanese killed, the vast majority civilians",
+ tags:["Campaign total","Cluster munitions"],
+ body:["Human Rights Watch's post-war research established at least 1,109 Lebanese deaths, with 4,399 injured and around a million displaced. Whole villages were flattened: more than 800 homes destroyed in Bint Jbeil, over 750 in Aita al-Shaab, 340 in Srifa.","Israel fired an estimated four million cluster submunitions, most in the final 72 hours as a ceasefire was being agreed. Unexploded bomblets went on killing civilians for years afterwards."],
+ resp:"<b>Findings.</b> HRW concluded Israel had systematically failed to distinguish between combatants and civilians, and separately that Hezbollah's rocket fire at Israeli towns was itself indiscriminate and unlawful. Forty-three Israeli civilians were killed by those rockets.",
+ src:"Human Rights Watch, <em>Why They Died</em> (2007); Every Casualty Counts; UN Mine Action Service"},
+
+{y:2006.85,c:"gaza",n:"19",g:"Shelled asleep in a row of houses",k:"5 children, 2 infants",yr:"2006",
+ kd:"Five children and two infants, one nine months old, from a single family.",
+ t:"Beit Hanoun",loc:"Beit Hanoun, northern Gaza",date:"8 November 2006",toll:"19",unit:"killed, mostly women and children",
+ tags:["Israeli apology"],
+ body:["A barrage of tank shells struck a row of homes just before dawn, as families slept. Seventeen of the dead were from one family, the al-Athamneh. More than forty were wounded."],
+ resp:"<b>Rare admission.</b> Israel apologised and attributed the shelling to a technical malfunction in the targeting system. No one was charged. A UN fact-finding mission led by Desmond Tutu was refused access for two years.",
+ src:"UNRWA press release, 8 November 2006; B'Tselem; UN Human Rights Council mission report"},
+
+{y:2009.01,c:"gaza",n:"29–48",g:"Herded into one house, then shelled",k:"11 children",yr:"Jan 2009",
+ kd:"11, alongside 6 women, among the family dead.",
+ t:"The Samouni family, Zeitoun",loc:"Zeitoun, east of Gaza City",date:"4–7 January 2009",toll:"29–48",unit:"killed from one extended family",
+ tags:["Herded then shelled","Case closed"],
+ body:["Soldiers ordered Attia al-Samouni out of his house with his hands up and shot him in the head and chest on the doorstep, then fired into the house, killing his four-year-old son. Over the following hours more than a hundred members of the extended family were ordered into a single relative's house.","The next morning that house was shelled. Twenty-one people were killed at once. Survivors lay under the rubble for three days without food or water while rescue teams were kept out."],
+ resp:"<b>Outcome.</b> Israel's military investigation concluded three years later that no crime had been committed and that the army bore no responsibility. Counts range from 29 to 48 depending on whether the wider Zeitoun killings are included.",
+ src:"Haaretz; Al-Haq; PCHR; Goldstone Report"},
+
+{y:2009.02,c:"gaza",n:"40+",g:"Shelled beside a UN school shelter",k:"",yr:"Jan 2009",
+ kd:"Not separately recorded in the UN count.",
+ t:"Al-Fakhura school",loc:"UNRWA school, Jabalia camp",date:"6 January 2009",toll:"40+",unit:"killed outside a UN school shelter",
+ tags:["UN school","Accounts conflict"],
+ body:["Artillery shells landed beside a UN-run school being used as a shelter by displaced families. The UN and several NGOs put the dead above forty; more than fifty were wounded."],
+ resp:"<b>Two versions.</b> Israel said it returned fire on militants shooting from the school and put the toll at nine fighters and three civilians, calling higher figures grossly exaggerated. A UN inquiry found no firing from within the school and no explosives inside it, but could not rule out fire from the vicinity.",
+ src:"UN Board of Inquiry; UNRWA; Defence for Children International"},
+
+{y:2009.05,c:"gaza",n:"1,385",g:"Killed in 22 days",k:"318 children",yr:"2008–09",total:1,
+ kd:"318 minors under 18, of 762 dead who took no part in the hostilities.",
+ t:"Operation Cast Lead",loc:"Gaza Strip",date:"27 December 2008 – 18 January 2009",toll:"1,385",unit:"killed in 22 days",
+ tags:["Campaign total","White phosphorus: 12 confirmed burn deaths"],
+ body:["B'Tselem, the Israeli human rights organisation, recorded 1,385 Palestinians killed, of whom 762 took no part in the hostilities. More than 5,300 were wounded. Thirteen Israelis died, four by friendly fire.","Israeli forces fired roughly 200 ground-launched white phosphorus shells into populated parts of Gaza, including onto the UNRWA compound in Gaza City, burning $3.7m of medical supplies. Human Rights Watch's forensic investigation into six of these attacks, a fraction of the total, documented 12 civilians burned to death by phosphorus shells, wedges or the resulting fires: three women and seven children, one a fifteen-month-old baby. HRW was explicit that the true number is unknowable, since Gaza's hospitals lacked the diagnostic tools to confirm phosphorus as cause of death and records from the time are incomplete."],
+ resp:"<b>Findings and refusals.</b> The UN fact-finding mission led by Richard Goldstone found evidence of war crimes and possible crimes against humanity by both Israel and Palestinian armed groups. Israel rejected it and refused an independent domestic investigation, saying the phosphorus shells were used only to create smokescreens, a claim HRW's site investigations contradicted, finding phosphorus wedges had ignited buildings, a market, and a UN warehouse. The military's own count was 1,166 killed, of whom it called 295 civilians.",
+ src:"B'Tselem; Goldstone Report; Human Rights Watch, 'Rain of Fire,' March 2009; PCHR; UN OCHA"},
+
+{y:2012.88,c:"gaza",n:"171",g:"Killed in eight days",k:"",yr:"2012",total:1,
+ kd:"Not separately published. More than 100 of the dead were civilians.",
+ t:"Operation Pillar of Defense",loc:"Gaza Strip",date:"14–21 November 2012",toll:"171",unit:"killed, more than 100 of them civilians",
+ tags:["Campaign total"],
+ body:["Eight days of air strikes following the targeted killing of Hamas military chief Ahmed Jabari. Six Israelis died, four of them civilians."],
+ resp:"<b>Record.</b> Human rights organisations documented strikes on family homes and on media facilities. No prosecutions followed.",
+ src:"Al Jazeera; B'Tselem; PCHR; UN OCHA"},
+
+{y:2014.56,c:"gaza",n:"12+",g:"Shelled in a UN shelter",k:"6 children",yr:"24 Jul 2014",
+ kd:"6 of at least 12 dead.",
+ t:"UNRWA school, Beit Hanoun",loc:"Beit Hanoun, northern Gaza",date:"24 July 2014",toll:"12+",unit:"killed, 6 of them children",
+ tags:["UN shelter","Coordinates given 12 times"],
+ body:["Fifteen hundred displaced people were sheltering in the school compound when explosive projectiles struck it in the afternoon. Nearly a hundred were wounded. UNRWA had spent the day trying to negotiate a pause to evacuate them; approval never came."],
+ resp:"<b>What the UN said.</b> The school's coordinates had been formally passed to the Israeli authorities twelve times, most recently four hours before the strike. UNRWA's commissioner-general called it callous shelling.",
+ src:"UNRWA statement, 24 July 2014; UN Board of Inquiry, 2015"},
+
+{y:2014.575,c:"gaza",n:"20+",g:"Killed sleeping on classroom floors",k:"mostly women and children",yr:"30 Jul 2014",
+ kd:"Most of the dead were women and children; no exact figure was published.",
+ t:"UNRWA school, Jabalia",loc:"Jabalia Elementary Girls School",date:"30 July 2014",toll:"20+",unit:"killed, mostly women and children",
+ tags:["UN shelter","Coordinates given 17 times"],
+ body:["Artillery struck a school where 3,300 people had taken refuge, in the middle of the night. Children were killed sleeping on classroom floors beside their parents. UNRWA staff examined the craters and fragments and assessed Israeli artillery as the cause, with at least three impacts.","These were people the Israeli army had itself instructed to leave their homes."],
+ resp:"<b>The record of notice.</b> The location and the fact that thousands were sheltering there had been given to the Israeli army seventeen times, the last less than twelve hours before. Ban Ki-moon called it atrocious and said nothing is more shameful than attacking sleeping children. It was the sixth UN school struck that month.",
+ src:"UNRWA statement, 30 July 2014; UN Board of Inquiry, 2015"},
+
+{y:2014.588,c:"gaza",n:"130–150",g:"Killed under the Hannibal Directive",k:"",yr:"Aug 2014",
+ kd:"Not separately recorded.",
+ t:"Rafah, 'Black Friday'",loc:"Rafah, southern Gaza",date:"1–4 August 2014",toll:"130–150",unit:"killed, mostly civilians",
+ tags:["Hannibal Directive","Case closed"],
+ body:["After a soldier was captured, later declared dead, the army invoked the Hannibal Directive, which authorises overwhelming force to prevent a soldier being taken, and saturated Rafah with artillery and air strikes for hours.","Amnesty International's forensic reconstruction with Forensic Architecture found strikes on ambulances, on people fleeing, and around the hospital."],
+ resp:"<b>Investigation.</b> Amnesty and Forensic Architecture concluded the assault amounted to war crimes. Israel's Military Advocate General closed the file without charges.",
+ src:"Amnesty International &amp; Forensic Architecture, <em>Black Friday</em>"},
+
+{y:2014.60,c:"gaza",n:"15",g:"Struck at the gates of a UN shelter",k:"",yr:"3 Aug 2014",
+ kd:"Not separately recorded.",
+ t:"UNRWA school, Rafah",loc:"Rafah, southern Gaza",date:"3 August 2014",toll:"15",unit:"killed outside a designated shelter",
+ tags:["UN shelter","Case closed"],
+ body:["Between 2,700 and 2,900 people were sheltering in the school, designated an emergency shelter two weeks earlier. A precision-guided missile struck the road immediately outside as the gates stood open. Around thirty were wounded."],
+ resp:"<b>Closed.</b> Israel's Military Advocate General closed the criminal investigation in 2016. UNRWA said it had never been shown the evidence and so could not comment on how the case was conducted.",
+ src:"UN Board of Inquiry, 2015; UNRWA statement, 26 August 2016"},
+
+{y:2014.65,c:"gaza",n:"2,104",g:"Killed in seven weeks",k:"495 children",yr:"2014",total:1,
+ kd:"495 children and 253 women, of 1,462 civilian dead.",
+ t:"Operation Protective Edge",loc:"Gaza Strip",date:"8 July – 26 August 2014",toll:"2,104",unit:"killed, 1,462 of them civilians",
+ tags:["Campaign total"],
+ body:["The UN recorded at least 2,104 Palestinians killed. Sixty-six Israeli soldiers and seven civilians in Israel were killed.","B'Tselem documented 72 separate incidents of homes bombed with families inside, killing 547 people, among them 250 children."],
+ resp:"<b>Two accounts.</b> An Israeli official told the BBC the army had killed a thousand fighters. B'Tselem declined to refer its findings to Israel's investigative mechanisms at all, judging the military law enforcement system a complete failure.",
+ src:"UN OCHA; B'Tselem; BBC; UN Board of Inquiry, 2015"},
+
+{y:2018.5,c:"gaza",n:"189",g:"Shot by snipers at weekly protests",k:"35 children",yr:"2018",total:1,
+ kd:"35 children, plus three marked paramedics and two marked journalists.",
+ t:"The Great March of Return",loc:"Gaza separation fence",date:"30 March – 31 December 2018",toll:"189",unit:"killed at weekly protests",
+ tags:["UN: unlawful","6,106 shot and survived"],
+ body:["Snipers were positioned along the fence to police weekly demonstrations. Over nine months they killed 189 people, 183 of them with live ammunition.","A further 6,106 people were shot with live rounds and survived, many with permanent disability. Four Israeli soldiers were injured across the entire period."],
+ resp:"<b>The finding.</b> The UN Commission of Inquiry investigated every killing at the protest sites and found reasonable grounds to believe the use of live fire was unlawful in all but two cases, and that it may amount to war crimes. Israel did not cooperate and rejected the report.",
+ src:"UN Independent Commission of Inquiry, A/HRC/40/CRP.2; UN OCHA"},
+
+{y:2021.37,c:"gaza",n:"44",g:"Killed as three buildings collapsed",k:"children among the dead",yr:"2021",
+ kd:"Entire families died together; no separate child figure was published for this strike.",
+ t:"Al-Wehda Street",loc:"Gaza City",date:"16 May 2021",toll:"44",unit:"civilians killed",
+ tags:["Deadliest strike of that war"],
+ body:["Air strikes brought down three residential buildings on al-Wehda Street in the early hours, killing 44 civilians and injuring around fifty. It was the single deadliest incident of the eleven-day war, which left 2,500 people homeless. Rescue crews dug for days."],
+ resp:"<b>Justification.</b> Israel said it was striking a tunnel network beneath the street and that the collapse of the buildings was unintended. Human rights organisations documented no warning given to residents.",
+ src:"B'Tselem; Human Rights Watch; UN OCHA; Al Jazeera"},
+
+{y:2023.83,c:"gaza",n:"50–120",g:"Killed as blocks collapsed into craters",k:"mostly women and children",yr:"Oct 2023",
+ kd:"The Indonesia Hospital reported that most casualties it received were women and children. No exact figure.",
+ t:"Jabalia refugee camp",loc:"Northern Gaza",date:"31 October 2023",toll:"50–120",unit:"killed",
+ tags:["Large munitions","Widely condemned"],
+ body:["Large munitions struck one of Gaza's most densely populated refugee camps, collapsing whole apartment blocks and leaving craters where streets had been. More than a hundred people were trapped beneath the rubble; over 770 were wounded."],
+ resp:"<b>Justification.</b> Israel said it had killed a Hamas battalion commander in the strike. UN human rights officials said the scale of civilian death raised the question of disproportionate attacks amounting to war crimes.",
+ src:"Gaza Ministry of Health; OHCHR; BBC"},
+
+{y:2023.87,c:"gaza",n:"65+",g:"Struck twice in a UN school shelter",k:"",yr:"Nov 2023",
+ kd:"Not separately recorded.",
+ t:"Al-Fakhoora school",loc:"UNRWA school, Jabalia camp",date:"4 and 18 November 2023",toll:"65+",unit:"killed across two strikes",
+ tags:["UN shelter"],
+ body:["Thousands of displaced people were living in the school when a missile hit on 4 November, killing at least fifteen and wounding seventy. A second strike on 18 November killed dozens more. It is the same school compound that was shelled in 2009."],
+ resp:"<b>Pattern.</b> By the end of 2023 UNRWA had recorded dozens of its installations hit despite having supplied their coordinates to the Israeli military.",
+ src:"UNRWA; Gaza Ministry of Health; Al Jazeera"},
+
+{y:2023.96,c:"gaza",n:"110",g:"Killed in a single day",k:"children among the dead",yr:"Dec 2023",
+ kd:"Video showed the bodies of small children laid out in rows at a medical centre. No count was published for the day.",
+ t:"Jabalia, in a single day",loc:"Northern Gaza",date:"17 December 2023",toll:"110",unit:"killed in 24 hours",
+ tags:["Residential strikes"],
+ body:["Fifty people were killed when three homes in the camp were hit, with dozens more trapped beneath the rubble; the day's total across the Jabalia area reached 110."],
+ resp:"<b>Context.</b> Israel said it was operating against Hamas infrastructure in Jabalia. By this point the war's recorded toll had passed 19,400, around 70 per cent of them women and children.",
+ src:"Gaza Ministry of Health; BBC"},
+
+{y:2024.16,c:"gaza",n:"118",g:"Shot while waiting for flour trucks",k:"",yr:"Feb 2024",
+ kd:"The dead were not recorded by age.",
+ t:"The Flour Massacre",loc:"Al-Nabulsi roundabout, al-Rashid Street, Gaza City",date:"29 February 2024",toll:"118",unit:"killed, 760 wounded",
+ tags:["Aid seekers","Israel disputes cause"],
+ body:["Thousands had waited through a freezing night on the coastal road for aid trucks to reach the starving north. At about 4:10am, as the trucks arrived, tanks and snipers opened fire on the crowd. The shooting continued for roughly an hour and a half; ambulances could not get through.","Many of the wounded were hit by 5.56mm NATO rounds. Israeli forces then moved into the crowd, detaining men and forcing others south."],
+ resp:"<b>Contested account.</b> Israel said troops fired only warning shots at suspects and that most deaths came from a stampede and from people being run over by the trucks. UN staff who visited al-Shifa found a large number of gunshot wounds among the injured. UN special rapporteurs called it a massacre and noted more than fourteen similar incidents in the preceding six weeks.",
+ src:"OHCHR; UN special rapporteurs; PCHR, Al Mezan and Al-Haq; Euro-Med Monitor"},
+
+{y:2025.05,c:"gaza",n:"1,238–2,700+",g:"Entire families erased from the civil registry, no survivors",k:"~2,200 under age 2",yr:"2023–26",total:1,
+ kd:"Nearly a quarter of the official death toll were 12 or younger; over 2,200 were under two years old, per Reuters' analysis of Health Ministry data.",
+ t:"Families erased entirely",loc:"Gaza Strip",date:"7 October 2023 onward",toll:"1,238–2,700+",unit:"families with every member killed, no survivors; count depends on definition used",
+ tags:["Aggregate","Methodology varies","Reuters data analysis"],
+ body:["A Reuters analysis of Gaza Health Ministry records, defining a family as a married couple and any children, found at least 1,238 families completely erased, with no one left alive to identify the dead or bury them. Families of five to nine members made up roughly a third of those wiped out; in at least one case, every one of fourteen members of a single family was killed. Ministry officials separately reported over 1,400 families erased using their own registry definition, and at least 3,400 more left with exactly one survivor.","A later investigation using a broader definition, three generations of a single household registry, put the figure at more than 2,700 erased families by January 2026, accounting for over 8,000 of the dead, with more than 6,000 families reduced to one survivor apiece. The youngest recorded victim in an erased family was one year old; the oldest, 101. The range reflects a real difference in method, not a resolved dispute; this entry gives both rather than picking the larger number."],
+ resp:"<b>What the numbers describe.</b> Amnesty International's Secretary-General told TIME in the war's first months that entire bloodlines were disappearing from Gaza's civil records, and that the true number was likely higher than reported. This is a demographic finding, not a legal one. No body has issued a ruling specifically on the practice of family-line erasure as such, but the scale is independently corroborated across Reuters' data journalism, Health Ministry registry figures, and later investigative reporting, despite their different definitions producing different totals.",
+ src:"Reuters data analysis, March 2025; Gaza Ministry of Health; Al Jazeera investigation, January 2026; Amnesty International, cited in TIME"},
+
+{y:2024.22,c:"gaza",n:"90–381+",g:"Killed during two hospital sieges; bodies found in mass graves after",k:"",yr:"Mar–Apr 2024",
+ kd:"Not recorded. Israel described all the dead as militants; Palestinian officials said many were patients, staff and displaced civilians.",
+ t:"The al-Shifa hospital sieges",loc:"Gaza City",date:"November 2023; 18 March – 1 April 2024",toll:"90–381+",unit:"killed; lower figure is Israel's day-three count, higher is bodies later recovered",
+ tags:["Hospital","Wide-area weapons","Mass graves","Casualty status disputed"],
+ body:["Israeli forces besieged and raided Gaza's largest hospital complex twice. During the first siege, in November 2023, hospital staff buried at least 179 patients and displaced people in a makeshift mass grave in the courtyard after fuel for generators ran out; the hospital lost power for incubators, dialysis machines and morgue refrigeration.","A second, two-week raid in March–April 2024 left the complex, in the words of a UN humanitarian official, 'literally a graveyard.' After Israeli forces withdrew on 1 April, Gaza's Civil Defence recovered at least 381 bodies from mass graves in and around the complex, a figure that did not include those still buried within the hospital grounds itself. Officials said some bodies were crushed by tanks and left unidentifiable."],
+ resp:"<b>Disputed status of the dead.</b> Israel said it killed roughly 200 militants across the raids and detained around 500 more; it has not published evidence establishing that scale of combatant presence. Palestinian officials and residents said many of the dead were patients unable to evacuate, medical staff, and displaced civilians sheltering in the complex. Because the two accounts cannot be reconciled from open sources, both figures are given here rather than one being treated as settled.",
+ src:"CNN, April 2024; NPR; Al Jazeera; Gaza Civil Defence; UN OCHA statement"},
+
+{y:2024.03,c:"gaza",n:"12",g:"An MK 83 bomb struck the hospital forecourt",k:"",yr:"10 Jan 2024",
+ kd:"Not separately recorded; several internally displaced people among the dead.",
+ t:"Al-Aqsa Martyrs Hospital",loc:"Deir al-Balah, central Gaza",date:"10 January 2024",toll:"12",unit:"killed, 35 wounded",
+ tags:["Hospital","Wide-area weapon","UN documented"],
+ body:["A large air-dropped bomb, which a UN human rights investigation identified as an MK 83, a 1,000-pound wide-area-effect munition, struck the forecourt of Al-Aqsa Martyrs Hospital, an active facility treating patients and sheltering displaced families. Twelve people were killed, including a journalist and several internally displaced people caught in the open, and 35 were wounded.","This was one of at least 136 documented strikes on hospitals and medical facilities across the war's first nine months."],
+ resp:"<b>UN finding.</b> The Office of the UN High Commissioner for Human Rights concluded the use of a munition with wide-area effects in a crowded hospital forecourt raised serious concerns of an indiscriminate attack, one that cannot distinguish between combatants and civilians once deployed in a populated space, regardless of the intended target.",
+ src:"OHCHR report, December 2024; UN News; UN Country Team in Palestine"},
+
+{y:2024.46,c:"gaza",n:"136 strikes",g:"Hospitals struck across nine months of war",k:"",yr:"Oct 2023–Jun 2024",total:1,
+ kd:"Not published in aggregate across the full pattern.",
+ t:"The pattern of hospital strikes",loc:"Gaza Strip",date:"12 October 2023 – 30 June 2024",toll:"136 strikes",unit:"on at least 27 hospitals and 12 other medical facilities",
+ tags:["Aggregate","UN pattern finding","War crimes concern"],
+ body:["A UN human rights investigation, working from satellite imagery, weapons remnant analysis and witness testimony, documented at least 136 separate strikes on 27 hospitals and 12 further medical facilities in the war's first nine months, causing significant casualties among doctors, nurses, medics and patients and, in many cases, destroying the facilities outright.","The investigation found Israeli forces likely used both heavy weapons and air-dropped wide-area munitions in hospital compounds on multiple occasions, weapons whose blast and shrapnel radius makes precision targeting within a crowded building effectively impossible, regardless of what specific target is being aimed at."],
+ resp:"<b>The legal question raised.</b> International law strips a hospital of its special protection only if it is being used, outside its humanitarian function, for acts harmful to the enemy, and even then any strike must still meet the tests of distinction, proportionality and precaution. The UN report found the pattern and choice of weaponry across these strikes raised serious concerns of violations amounting to war crimes, irrespective of whether individual hospitals had, in specific instances, lost their protected status.",
+ src:"OHCHR, 'Attacks on Health Care in the Gaza Strip,' December 2024"},
+
+{y:2025.64,c:"named",n:"22",g:"Struck twice, 9 minutes apart, as rescuers arrived",k:"",yr:"25 Aug 2025",
+ kd:"Not applicable. Those named were adults; overall toll included medical staff and rescue workers.",
+ t:"The Nasser Hospital double-tap",loc:"Khan Younis, southern Gaza",date:"25 August 2025",toll:"22",unit:"killed, including 5 journalists, in two strikes 9 minutes apart",
+ tags:["Named individuals","Double-tap strike","Netanyahu: 'tragic mishap'"],
+ body:["<b>What 'double-tap' means:</b> a first strike hits a target, and once medics, rescuers or bystanders have gathered to help the wounded, a second strike hits the same spot. The gap is long enough that people have time to arrive and start working, which is what makes it different from an unlucky follow-up hit. It specifically catches the people whose job is to respond to casualties, which is the opposite of what the laws of war are meant to protect.","Here, a first strike hit a hospital balcony used by journalists for an elevated view of the city, killing a Reuters cameraman among others. As journalists, medics and rescue workers rushed to the scene in marked vests to help the wounded, a second and third near-simultaneous strike hit the same stairwell nine minutes later. Five journalists died: Mohammed Salama, Hussam Al-Masri, Mariam Abu Dagga, Ahmed Abu Aziz and Moaz Abu Taha, all named on CPJ's confirmed roster below. A Civil Defence crew member and hospital medical staff were also killed.","CNN's video analysis confirmed the second 'tap' was in fact two near-simultaneous strikes, not one."],
+ resp:"<b>Israel's account, and its gaps.</b> The IDF said it was targeting a camera it believed was being used for surveillance, called the deaths a mistake, and said six of those killed were 'terrorists,' a claim Gaza's deputy health minister disputed, saying Israel appeared to have pulled unrelated names from that day's morgue records rather than identifying people actually killed in the strike. Netanyahu called it a 'tragic mishap.' A security source told CNN none of the journalists killed had been the intended target. Nasser was not the first double-tap strike documented in Gaza; it drew particular attention because journalists were among those caught in the second strike, with cameras already rolling.",
+ src:"CNN video investigation, August 2025; Al Jazeera; NBC News; Haaretz"},
+
+{y:2024.40,c:"gaza",n:"45–50",g:"Burned alive in their tents",k:"",yr:"May 2024",
+ kd:"Not separately recorded. Bodies were badly burned, complicating identification.",
+ t:"Tel al-Sultan tent camp",loc:"Kuwaiti Peace Camp, Rafah",date:"26 May 2024",toll:"45–50",unit:"killed, 200+ wounded",
+ tags:["Displacement camp","Fire"],
+ body:["An air strike on a camp for displaced families set the tents alight. Survivors described people burning alive; video verified by NBC News showed families screaming inside tents engulfed in flames. People had been told to move to Rafah for safety."],
+ resp:"<b>Response.</b> Israel said it had struck two senior Hamas figures and that the fire may have been caused by secondary explosions. Netanyahu called the civilian deaths a tragic mishap. An investigation was announced; no findings were published.",
+ src:"Palestine Red Crescent Society; NBC News verification; Gaza Ministry of Health"},
+
+{y:2024.44,c:"gaza",n:"274",g:"Killed during a hostage rescue",k:"64 children",yr:"Jun 2024",
+ kd:"64 children and 57 women, of 274 dead.",
+ t:"The Nuseirat rescue operation",loc:"Nuseirat refugee camp, central Gaza",date:"8 June 2024",toll:"274",unit:"killed, 64 children and 57 women",
+ tags:["Hostage rescue","Among the deadliest days of the war"],
+ body:["Israeli special forces, disguised and moving in undercover vehicles, entered Nuseirat in daylight to recover four hostages from two apartment buildings. The extraction was covered by an intense air, naval and ground bombardment of the surrounding camp: homes, a market, and alleyways full of people.","Gaza's health ministry recorded 274 killed and more than 690 injured; 89 inhabited homes or residential buildings were bombed. Four hostages were rescued alive; one Israeli officer died."],
+ resp:"<b>Two framings.</b> Israel rejected accusations of war crimes and put the Palestinian death toll at around 100. Its foreign minister said the operation was self-defence. The scale of civilian death made it, by most counts, among the largest single-day tolls of the war.",
+ src:"Gaza Ministry of Health; The Intercept; Middle East Eye; AP; Israeli government statements"},
+
+{y:2024.53,c:"gaza",n:"90",g:"Struck inside a declared safe zone",k:"",yr:"Jul 2024",
+ kd:"Not separately recorded.",
+ t:"Al-Mawasi humanitarian zone",loc:"Khan Younis coast",date:"13 July 2024",toll:"90",unit:"killed, 300 wounded",
+ tags:["Declared safe zone"],
+ body:["Israel struck the coastal strip it had itself designated a humanitarian zone and repeatedly told civilians to evacuate to. Tens of thousands were living there in tents. It was one of the deadliest single strikes of the war to that point."],
+ resp:"<b>Justification.</b> Israel said the target was Mohammed Deif, commander of Hamas's military wing; Netanyahu said he could not confirm the strike had killed him. Hamas rejected the premise. The UN special rapporteur said striking inside a declared humanitarian zone likely violated international law.",
+ src:"Gaza Ministry of Health; OHCHR; Al Jazeera"},
+
+{y:2024.69,c:"gaza",n:"19+",g:"Buried in sand in their tents",k:"",yr:"Sep 2024",
+ kd:"Not separately recorded. Dozens remained missing.",
+ t:"Al-Mawasi tent camp",loc:"Khan Younis coast",date:"10 September 2024",toll:"19+",unit:"killed in their tents",
+ tags:["Declared safe zone"],
+ body:["Missiles hit a tent camp in the early hours. Rescuers found craters up to nine metres deep and dug with their hands for people buried in the sand. Witnesses described bodies recovered in pieces."],
+ resp:"<b>Justification.</b> Israel said it struck a Hamas command centre embedded in the camp. Hamas called that a fabrication. The UN Secretary-General condemned the strike.",
+ src:"Gaza Ministry of Health; Gaza Civil Defence; AP"},
+
+{y:2024.88,c:"leb",n:"3,961",g:"Killed in the 2024 Lebanon war",k:"",yr:"2023–24",total:1,
+ kd:"Not separately published in the aggregate. Most of the dead were civilians.",
+ t:"The 2024 Lebanon war",loc:"Lebanon",date:"October 2023 – November 2024",toll:"3,961",unit:"killed, mostly civilians",
+ tags:["Campaign total","Pager attacks"],
+ body:["Cross-border exchanges that began in October 2023 escalated into a full air campaign and ground incursion in September 2024. At least 3,961 people were killed and around a million displaced.","The campaign included the simultaneous detonation of thousands of booby-trapped pagers and radios in September 2024, which killed dozens and wounded thousands in shops, streets and homes."],
+ resp:"<b>Assessment.</b> UN human rights officials said the pager attacks violated international humanitarian law by using devices that could not distinguish between combatants and civilians at the moment of detonation. A ceasefire took effect in November 2024; strikes have continued since.",
+ src:"Every Casualty Counts; Lebanese Ministry of Public Health; OHCHR; UN OCHA"},
+
+{y:2024.95,c:"gaza",n:"33",g:"Killed in a shelter and the homes around it",k:"",yr:"Dec 2024",
+ kd:"Not separately recorded among the dead; children made up the majority of the roughly fifty wounded.",
+ t:"Nuseirat refugee camp",loc:"Deir al-Balah governorate",date:"12 December 2024",toll:"33",unit:"killed",
+ tags:["Civilian shelter"],
+ body:["An air strike hit a former postal facility being used as a shelter and the residential buildings around it. Most of the dead were from one extended family, the al-Sheikh Ali."],
+ resp:"<b>Context.</b> The war's recorded toll had passed 44,800 by this point.",
+ src:"Gaza Ministry of Health; Gaza Civil Defence"},
+
+{y:2023.885,c:"gaza",n:"8+4",g:"Premature babies died when incubators lost power",k:"12 (documented across two hospitals)",yr:"Nov 2023",
+ kd:"12 named infants across two incidents; Israel's cutting of electricity and fuel to Gaza's only power plant is the documented proximate cause in both.",
+ t:"Newborns, al-Shifa and al-Nasr",loc:"Gaza City",date:"9–28 November 2023",toll:"8 + 4",unit:"premature babies died when incubators and ventilators lost power",
+ tags:["Infrastructure","Direct documented deaths","Not a strike"],
+ body:["Israel cut the electricity it supplied to Gaza and the fuel for Gaza's only power plant on 7 October 2023; the plant ran out of fuel and shut down within days. At al-Shifa Hospital's neonatal intensive care unit, doctors reported losing babies one and two at a time as generators failed. The hospital director said 39 premature infants had to be moved out of incubators onto ordinary beds, wrapped in fabric for warmth, sharing bottles and risking cross-infection. Eight premature babies were confirmed dead by the time survivors were evacuated on 19 November.","Nine kilometres away, an Israeli airstrike on 9 November hit al-Nasr Medical Center and cut off its neonatal unit's oxygen supply; staff were forced to evacuate the next day, leaving babies who could not be moved alone in the unit. When doctors returned during the November ceasefire on 28 November, they found four babies dead in the abandoned ward."],
+ resp:"<b>What makes this different from a strike.</b> No munition killed these twelve infants directly. The mechanism was the interruption of electricity to equipment that keeps a premature baby alive, which stops working within seconds of losing power. Human Rights Watch and the WHO both class this as a direct, causally clear consequence of the blockade and the bombardment of the facility supplying their power, not a side effect too diffuse to attribute.",
+ src:"Human Rights Watch, 'Birth and Death Intertwined in Gaza Strip,' December 2023; Al Jazeera; NBC News; UN News; WHO"},
+
+{y:2025.98,c:"gaza",n:"12",g:"Infants froze to death as displacement camps flooded",k:"12",yr:"Nov 2025 – Jan 2026",
+ kd:"12 named infants who died of hypothermia, per Gaza's Ministry of Health, in the first two winters since the war began.",
+ t:"Babies who froze to death",loc:"Displacement camps and hospitals across Gaza",date:"Winter 2023–24 and winter 2025–26",toll:"12",unit:"infants died of hypothermia",
+ tags:["Infrastructure","Direct documented deaths","Tents, not homes"],
+ body:["With most of Gaza's housing destroyed and its power and heating infrastructure gone, displaced families sheltering in flooded tents through two winters of the war have been unable to keep newborns and infants warm. Gaza's Ministry of Health recorded twelve infant deaths from hypothermia by January 2026, including four in a five-week span from November 2025 to January 2026 alone, among them two-month-old Mohammed Abu Harbid, who died of severe hypothermia at al-Rantisi Children's Hospital.","Neonatal units meant to receive premature infants are themselves affected: incubators arriving through the blockade have in some cases lacked batteries, according to hospital staff, meaning they fail the instant a generator cuts out, which occurred more than five times in under an hour during one Al Jazeera hospital visit."],
+ resp:"<b>Cause.</b> Health Ministry officials attribute these deaths directly to hypothermia brought on by the absence of adequate shelter, heating and functioning medical equipment, a chain running from destroyed housing and blocked reconstruction materials to specific, named infant deaths, rather than a diffuse humanitarian statistic.",
+ src:"Al Jazeera, January 2026, citing Gaza Ministry of Health; Zaher al-Wahidi, Ministry of Health director of health information"},
+
+{y:2024.75,c:"gaza",n:"94%",g:"Of water and sanitation infrastructure destroyed or damaged",k:"",yr:"2023–26",total:1,
+ kd:"Not published as a discrete toll; UN and academic public-health assessments link the collapse to specific disease outbreaks including polio, hepatitis A, and mass paediatric diarrhoea, rather than to a single counted death figure.",
+ t:"Water and sanitation collapse",loc:"Gaza Strip",date:"October 2023 onward",toll:"88–94%",unit:"of wells, desalination plants and sewage systems destroyed or damaged",
+ tags:["Infrastructure","Aggregate","Disease outbreaks documented"],
+ body:["Within a year, 88% of Gaza's water wells and all of its desalination plants were destroyed or non-functional, cutting the water volume reaching the population by 94% compared to before the war. Average water availability per person fell as low as 2–9 litres a day for all uses (drinking, cooking and sanitation combined) against a UN emergency minimum of 15 litres and a prewar baseline of 83 litres. Up to 70% of the population resorted to drinking salinated or contaminated water.","All six of Gaza's major wastewater treatment plants and 85% of its sewage pumping stations were destroyed, sending untreated sewage into streets, the sea, and the aquifer the population's remaining wells draw from. A UN Environment Programme assessment warned this had likely caused severe contamination of the groundwater supply itself, not just surface conditions."],
+ resp:"<b>The documented health consequence.</b> A peer-reviewed public health study recorded 136,400 cases of diarrhoea in children under five in just the first three months of the war, against roughly 918 cases recorded across Gaza and the West Bank combined in a comparable two-week period before the war, a rate increase of a different order of magnitude. Hepatitis A began spreading in January 2024. The first case of vaccine-derived polio in 25 years was confirmed in August 2024, after poliovirus was detected in Gaza's wastewater. No single, discrete death toll attributable specifically to water contamination has been published, unlike the incubator deaths above. The causal chain here runs through disease incidence rather than an immediate mechanism.",
+ src:"Oxfam; CSIS, 'The Siege of Gaza's Water'; UN Environment Programme; American Journal of Public Health, Vol. 115 Issue 7; WHO"},
+
+{y:2025.87,c:"gaza",n:"94+",g:"Died in Israeli military and prison custody",k:"",yr:"2023–25",total:1,
+ kd:"Not separately published; PHRI's report includes cases involving children among the roughly 11,000 held.",
+ t:"Deaths in Israeli detention",loc:"Sde Teiman, Ofer, Anatot and other facilities",date:"7 October 2023 – August 2025",toll:"94+",unit:"Palestinians died in Israeli custody",
+ tags:["Detention","Torture and neglect documented","No prosecutions"],
+ body:["Physicians for Human Rights – Israel, working from freedom of information requests, autopsy reports, medical files and testimony from former detainees and prison staff, documented at least 94 deaths in Israeli military and prison custody between October 2023 and August 2025, a figure that had risen to at least 98 by November 2025, and which PHRI says likely undercounts the true toll given Israel's practice of holding people from Gaza without disclosing their status. Fewer than 30 Palestinians had died in Israeli custody in the ten years before the war combined.","At Sde Teiman, a military base in the Negev repurposed as a detention centre, 29 detained Palestinians from Gaza died in Israeli military custody alone by August 2025. Autopsy findings cited in the report included head injuries, internal bleeding, fractured ribs, severe malnutrition, and the denial of medication for treatable conditions including cancer. A former nurse who worked at the facility described prisoners restrained in chains tight enough to require limb amputation."],
+ resp:"<b>Israel's response, and the record.</b> The Israeli military has said it is aware some detainees have died, including people with pre-existing illness or combat injuries, and that abuse allegations are assessed and violators sometimes face criminal investigation. PHRI states that, as of its report, not a single soldier, prison guard or Israel Prison Service doctor has been prosecuted for any of these deaths, even in cases with documented evidence of violence or medical neglect. Israel stopped publicly releasing detention death data after May 2024 (military) and September 2024 (Prison Service).",
+ src:"Physicians for Human Rights – Israel, 'Death Sentence for Palestinians in Custody,' November 2025; CNN; NBC News; Times of Israel; UN human rights experts, 5 August 2024"},
+
+{y:2025.65,c:"gaza",n:"420+",g:"Died of hunger under a man-made famine",k:"145+ children",yr:"2023–26",total:1,
+ kd:"145 children, per Gaza's Ministry of Health, as of September 2025; risen since.",
+ t:"Starvation deaths and the Gaza famine",loc:"Gaza Strip, chiefly Gaza City, Deir al-Balah, Khan Younis",date:"October 2023 onward; famine declared 22 August 2025",toll:"420+",unit:"deaths from malnutrition, counted by Gaza's Ministry of Health",
+ tags:["Famine declared","First in Middle East","Contested methodology"],
+ body:["On 22 August 2025, the UN-backed Integrated Food Security Phase Classification formally declared famine in Gaza City and the surrounding area, the first famine ever declared in the Middle East, and only the third anywhere since the IPC's creation two decades ago, alongside Sudan and, previously, parts of Somalia. The declaration covered roughly 514,000 people, about a quarter of Gaza's population; it found nearly one in four children screened in July 2025 severely acutely malnourished, the deadliest form of undernutrition, and projected the toll would keep rising.","Gaza's Ministry of Health has tracked the deaths as they accumulate: 101 by late July 2025, 271 including 112 children by the day famine was declared, 420 including 145 children by mid-September. Health officials and UN agencies describe the deaths as concentrated among young children and the elderly, whose bodies fail fastest without food, and note that many trucks of food aid have sat at border crossings only miles from where people were dying."],
+ resp:"<b>Sharply disputed.</b> Israel's foreign ministry rejected the IPC finding outright, calling it 'based on Hamas lies laundered through organisations with vested interests' and stating 'there is no famine in Gaza.' Separately, a critique published by the Foundation for Defense of Democracies challenged the IPC's own methodology, noting an unremarked change to the malnutrition threshold and questioning the neutrality of one Famine Review Committee member. On the other side, an academic paper cited by the World Peace Foundation used statistical inference from IPC hunger-phase data to estimate a far higher starvation-related death toll, between roughly 78,600 and 123,000, an order of magnitude above the Health Ministry's directly counted figure. This entry uses the counted figure, the same standard applied throughout this timeline, and notes rather than resolves the dispute over both the higher modelled estimate and Israel's rejection of the famine finding altogether.",
+ src:"IPC Famine Review Committee, 22 August 2025; WHO; UNICEF; Gaza Ministry of Health; Foundation for Defense of Democracies; World Peace Foundation, citing Orbach et al.; Israeli Ministry of Foreign Affairs statement"},
+
+{y:2025.22,c:"gaza",n:"15",g:"Shot in marked ambulances, then buried",k:"",yr:"Mar 2025",
+ kd:"None. All the dead were emergency workers on duty.",
+ t:"The medic convoy at Tel al-Sultan",loc:"Rafah",date:"23 March 2025",toll:"15",unit:"paramedics and rescue workers killed",
+ tags:["Marked vehicles","Mass grave","One dismissal"],
+ body:["A convoy of clearly marked ambulances and fire trucks, responding to wounded, was fired on by Israeli forces in full control of the area. Eight Red Crescent paramedics, six Civil Defence workers and a UN staff member were killed.","The bodies were found nine days later in a mass grave. A forensic audio investigation counted more than 900 rounds fired; some victims were shot from within a metre."],
+ resp:"<b>Changing account.</b> Israel first said the vehicles were advancing suspiciously without lights. Recovered phone video from one of the dead paramedics showed the ambulances lit and marked. The military then said its initial account was mistaken and dismissed a deputy commander, the only disciplinary action on this timeline in the last forty years.",
+ src:"Forensic Architecture &amp; Earshot; Amnesty International; Palestine Red Crescent Society"},
+
+{y:2025.42,c:"gaza",n:"31",g:"Shot on the approved route to food",k:"",yr:"1 Jun 2025",
+ kd:"Not separately recorded.",
+ t:"The route to the aid site",loc:"Tel al-Sultan, Rafah",date:"1 June 2025",toll:"31",unit:"killed walking to collect food",
+ tags:["Aid seekers"],
+ body:["Thousands had gathered before dawn at a roundabout on the approved walking route to a Gaza Humanitarian Foundation distribution site. Gunfire came in volleys through the early morning. CNN geolocated multiple videos to the roundabout, about 800 metres from the site, in an area under Israeli military control."],
+ resp:"<b>Account.</b> Israel said it fired warning shots at people deviating from the designated access route in a manner that threatened troops. GHF denied any incident at its own site. More than a dozen eyewitnesses described sustained fire into the crowd.",
+ src:"CNN Investigations; Gaza Ministry of Health; ICRC"},
+
+{y:2025.44,c:"gaza",n:"66",g:"Shot at aid queues, two days running",k:"",yr:"Jun 2025",
+ kd:"Not separately recorded.",
+ t:"Two days at the aid sites",loc:"Central and southern Gaza",date:"10–11 June 2025",toll:"66",unit:"killed in 48 hours",
+ tags:["Aid seekers"],
+ body:["Shootings near distribution points on consecutive days, the second producing the highest single-day toll since the GHF sites opened. More than a hundred were wounded in one incident alone."],
+ resp:"<b>Account.</b> Israel said it fired warning shots at people advancing in a way that posed a threat. By this date at least 224 people had been killed trying to reach GHF sites.",
+ src:"Gaza Ministry of Health; local hospitals; ICRC"},
+
+{y:2025.46,c:"gaza",n:"50+",g:"Shot waiting for the gates to open",k:"",yr:"17 Jun 2025",
+ kd:"Not separately recorded.",
+ t:"Western Rafah",loc:"Near the Tel al-Sultan distribution site",date:"17 June 2025",toll:"50+",unit:"killed, 200+ wounded",
+ tags:["Aid seekers","War crimes probe opened"],
+ body:["Heavy fire on crowds who had arrived for a distribution that had already closed. Witnesses described being caught between shut gates and Israeli positions, with shooting resuming each time people edged back toward the route. One survivor said it felt like people were being hunted."],
+ resp:"<b>What followed.</b> Days later Haaretz published soldiers' testimony that they had been ordered to fire at unarmed crowds near the sites, calling the area a killing field. The Military Advocate General opened a war crimes investigation; the prime minister called the report a blood libel. Senior officers separately acknowledged civilians killed by inaccurate and uncalculated artillery fire.",
+ src:"Mada Masr; Haaretz; Times of Israel; Reuters; Human Rights Watch"},
+
+{y:2025.64,c:"gaza",n:"15",g:"Struck inside a declared safe zone",k:"11 children",yr:"Aug 2025",
+ kd:"11 of the 15 dead. One was a woman.",
+ t:"Al-Mawasi",loc:"Khan Younis coast",date:"23 August 2025",toll:"15",unit:"killed, 11 of them children",
+ tags:["Declared safe zone"],
+ body:["An attack inside the same declared humanitarian zone killed eleven children and one woman among the fifteen dead."],
+ resp:"<b>Assessment.</b> Euro-Med Monitor documented repeated attacks inside the zone, including on people gathered to collect aid or water, and argued that the designation of al-Mawasi as safe had itself become a means of concentrating and then attacking civilians.",
+ src:"Euro-Med Human Rights Monitor; Gaza Ministry of Health"},
+
+{y:2025.74,c:"gaza",n:"2,957",g:"Killed trying to collect aid",k:"",yr:"2023–25",total:1,
+ kd:"Not separately recorded across the dataset.",
+ t:"Aid seekers, in aggregate",loc:"Gaza Strip",date:"October 2023 – late 2025",toll:"2,957",unit:"killed while trying to get food",
+ tags:["Aggregate","19,866 wounded"],
+ body:["The New Humanitarian's open-source investigation documented nearly 3,000 people killed and almost 20,000 wounded while trying to obtain aid, tracking more than 500 incidents and including only those reported by multiple independent sources or the UN.","The UN recorded 859 killed at Gaza Humanitarian Foundation sites in the ten weeks from late May 2025 alone. The ICRC described a scale and frequency of mass-casualty events without precedent."],
+ resp:"<b>Finding.</b> Human Rights Watch concluded the killings at the GHF sites amounted to war crimes. Israeli soldiers told Haaretz they had been ordered to fire on unarmed crowds; the military denied issuing such orders while acknowledging civilians had been killed by uncalculated fire.",
+ src:"The New Humanitarian; OHCHR; Human Rights Watch; ICRC; Haaretz"},
+
+{y:2025.90,c:"gaza",n:"77",g:"Shot at an unmarked ceasefire line",k:"children among the dead",yr:"2025–26",
+ kd:"Teenagers and young children were among them, including a family travelling in a van. No total was published.",
+ t:"The 'yellow line'",loc:"Across the Gaza Strip",date:"October 2025 onward",toll:"77",unit:"killed near the ceasefire line, first three months",
+ tags:["During ceasefire","Line unmarked in places"],
+ body:["The October 2025 ceasefire drew a line dividing Israeli-held Gaza from the rest. It is unmarked along much of its length. People sheltering nearby describe near-daily fire at anyone who crosses or lingers.","Of 447 Palestinians killed in the first weeks of the ceasefire, at least 77 died from gunfire near the line, 62 after crossing it."],
+ resp:"<b>Account.</b> Israel says it fires in response to violations and that most of those killed were militants. An Israeli military official acknowledged incidents in which civilians were killed, including young children. Palestinian officials have recorded over 1,100 deaths since the ceasefire began.",
+ src:"Associated Press; Gaza Ministry of Health; Gisha; Human Rights Watch"},
+
+{y:2024.29,c:"gaza",n:"87%",g:"Of all schools in Gaza hit or destroyed by month six",k:"5,479 students, 261 teachers",yr:"Apr 2024",total:1,
+ kd:"5,479 students and 261 teachers killed in the war's first six months, per UN human rights experts; rising continuously since.",
+ t:"'Scholasticide': the pattern of school destruction",loc:"Gaza Strip",date:"October 2023 onward",toll:"87%",unit:"of Gaza's schools hit or destroyed within a year",
+ tags:["UN term: 'scholasticide'","Aggregate","Every university destroyed"],
+ body:["Six months into the war, UN human rights experts stated that with more than 80% of Gaza's schools already damaged or destroyed, it was reasonable to ask whether there was an intentional effort to comprehensively destroy the Palestinian education system, a pattern they named 'scholasticide': the systemic obliteration of education through killing or detaining teachers and students and destroying the buildings themselves. By April 2024 the toll stood at 5,479 students, 261 teachers and 95 university professors killed, with 625,000 students locked out of any education.","By May 2025, UN satellite analysis found 95.4% of Gaza's 564 schools had sustained damage, with 501 needing full reconstruction or major rehabilitation. All twelve of Gaza's universities were destroyed or damaged. Israa University, the last to remain functional, was detonated with 315 mines on 17 January 2024 after Israeli forces had occupied it for 70 days as a base; its 3,000-artifact museum, spanning the Roman period, was looted first, university authorities said."],
+ resp:"<b>What the term claims, and what it doesn't.</b> 'Scholasticide' is the UN experts' own word, not a legal finding. They posed it as a question the scale of destruction made reasonable to ask, not a determination they had made. Whether individual schools lost protection under the laws of war by sheltering combatants is assessed case by case; the experts' point was that the aggregate pattern (nearly every school in the territory, every university, sequential rather than incidental) was itself the thing requiring explanation.",
+ src:"OHCHR, UN experts statement, 18 April 2024; UN News; UNOSAT satellite analysis, May 2025; Euro-Med Human Rights Monitor"},
+
+{y:2025.40,c:"gaza",n:"36",g:"Killed asleep in a school shelter, bodies burned",k:"18 children",yr:"25 May 2025",
+ kd:"18, per the Wikipedia-aggregated casualty record citing multiple outlets; six women also killed.",
+ t:"Fahmi al-Jarjawi School",loc:"Al-Daraj, Gaza City",date:"25 May 2025",toll:"36+",unit:"killed, 55+ wounded",
+ tags:["School shelter","Three strikes, one night"],
+ body:["Hundreds of displaced families from northern Gaza were sheltering in the school when Israeli aircraft struck it three times in one night. Most of the dead were women and children; verified video showed a young girl trying to escape a fire that had engulfed part of the building, and most bodies recovered afterward were badly burned.","Euro-Med Monitor documented Israeli strikes the same night on a family home in Jabalia al-Nazla that killed 20 more people, describing both as part of a pattern of strikes on shelters intended to deny civilians any place of safety."],
+ resp:"<b>Context.</b> The strike came during a period Israel's own prime minister had signalled as an intensified offensive. No specific military target inside the school was identified in Israeli public statements reviewed for this entry.",
+ src:"Euro-Med Human Rights Monitor; Al Jazeera; El País; Wikipedia, citing multiple outlets"},
+
+{y:2024.51,c:"gaza",n:"16",g:"Struck the day after a nearby school was hit",k:"",yr:"7 Jul 2024",
+ kd:"Not separately recorded for this strike.",
+ t:"Al-Jaouni school",loc:"Nuseirat area, central Gaza",date:"7 July 2024",toll:"16",unit:"killed, 50 wounded",
+ tags:["School shelter","'Almost daily'"],
+ body:["An Israeli strike hit the Al-Jaouni school, killing 16 and wounding 50. The following day a second strike hit the Holy Family school in Gaza City, which the Latin Patriarchate of Jerusalem said was sheltering hundreds of civilians. UNRWA's spokesperson said by this point attacks on schools sheltering displaced people had become 'almost a daily occurrence.'"],
+ resp:"<b>Pattern, by UNRWA's own account.</b> UNRWA, the agency running most of the schools being hit, stated publicly that the frequency of these strikes had shifted from periodic to near-daily by mid-2024, a characterisation Israel did not directly dispute.",
+ src:"Palestinian Ministry of Health; UNRWA spokesperson Juliette Touma; Wikipedia, 'Attacks on schools during the Israeli invasion of Gaza'"},
+
+{y:2003.205,c:"named",n:"1",g:"Crushed by a bulldozer, protecting a home",k:"",yr:"Mar 2003",
+ kd:"Not applicable. An adult American activist.",
+ t:"Rachel Corrie",loc:"Rafah, Gaza Strip",date:"16 March 2003",toll:"1",unit:"American activist killed",
+ tags:["Named individual","International Solidarity Movement","No US investigation"],
+ body:["A 23-year-old American activist with the International Solidarity Movement, Corrie stood in front of an armoured Israeli bulldozer to block the demolition of a Palestinian home, wearing a fluorescent vest clearly marking her as a civilian observer. The bulldozer crushed her.","Israel's military ruled it an accident, a finding a 2012 Israeli civil court upheld and which rights groups and the Corrie family have rejected. Three weeks later, British ISM activist Tom Hurndall was shot in the head by an Israeli soldier in Rafah; he died nine months later. The soldier who shot Hurndall served roughly six years of an 11.5-year sentence, the only conviction among these cases."],
+ resp:"<b>No US investigation.</b> Despite congressional calls, the US government never opened its own investigation into Corrie's death, an American citizen killed by a US-allied military. A civil suit against Israel's Ministry of Defense was dismissed by an Israeli court in 2012.",
+ src:"Courthouse News Service; The Intercept; Mondoweiss; Israeli District Court ruling, 2012"},
+
+{y:2010.41,c:"named",n:"10",g:"Shot boarding an aid ship in international waters",k:"",yr:"May 2010",
+ kd:"Not applicable. Adult activists.",
+ t:"The Mavi Marmara raid",loc:"International waters, Mediterranean",date:"31 May 2010",toll:"10",unit:"activists killed",
+ tags:["Named individuals","Freedom Flotilla","UN: extrajudicial"],
+ body:["Israeli naval commandos boarded the Mavi Marmara, a Turkish ship in a flotilla of six carrying humanitarian aid toward Gaza, by fast rope from helicopters in international waters. Passengers on deck resisted with sticks and metal bars; nine were killed in the raid itself, eight Turkish nationals and one Turkish American, and a tenth died in 2014 after four years in a coma from his wounds.","A UN Human Rights Council fact-finding mission found all the deaths were caused by gunshot, and that the circumstances of at least six of the killings were consistent with summary execution."],
+ resp:"<b>Findings and fallout.</b> The UN mission's report found the conduct of the raid unlawful. Israel apologised to Turkey in 2013 for what it called operational mistakes; a compensation agreement followed, though several Israeli commanders remain the subject of a war crimes trial in absentia in Turkish courts.",
+ src:"UN Human Rights Council fact-finding mission report, 2010; Al Jazeera; Wikipedia, citing UN HRC"},
+
+{y:2022.36,c:"named",n:"1",g:"Shot in the head, wearing a marked press vest",k:"",yr:"May 2022",
+ kd:"Not applicable. An adult journalist.",
+ t:"Shireen Abu Akleh",loc:"Jenin refugee camp, occupied West Bank",date:"11 May 2022",toll:"1",unit:"journalist killed",
+ tags:["Named individual","Al Jazeera","US citizen","No prosecution"],
+ body:["A veteran Al Jazeera correspondent who had covered the conflict for 25 years, Abu Akleh was shot in the head while reporting on an Israeli raid on Jenin refugee camp, wearing a helmet and vest clearly marked PRESS and standing with a group of other clearly marked journalists. Fellow journalist Ali al-Samoudi was shot in the back beside her.","Israel initially circulated footage blaming Palestinian gunmen; B'Tselem and Al Jazeera's own verification unit traced the clip to a location 300 metres away with no line of sight to where she was shot. A Washington Post forensic investigation and a CNN investigation both concluded an Israeli soldier fired the fatal shot, finding no evidence of an exchange of fire in the preceding minutes."],
+ resp:"<b>Outcome.</b> Israel eventually acknowledged a high probability its soldier killed her but ruled out a criminal investigation. The US State Department found no reason to believe it was intentional; a 2025 New York Times investigation reported a senior US official involved in that review believed the administration had softened its findings to appease Israel. No one has been charged.",
+ src:"Washington Post forensic investigation, 2022; CNN investigation; B'Tselem; Al Jazeera Sanad unit; The New York Times, 2025"},
+
+{y:2024.08,c:"named",n:"1",g:"Trapped in a car for hours, pleading by phone",k:"1 (Hind herself, age 5–6)",yr:"29 Jan 2024",
+ kd:"One: Hind Rajab, reported as 6 at the time; The Guardian later corrected this to 5.",
+ t:"Hind Rajab",loc:"Tel al-Hawa, Gaza City",date:"29 January 2024",toll:"1 + 6 relatives + 2 paramedics",unit:"killed, including two Red Crescent responders",
+ tags:["Named individual","335 bullets","ICC referral"],
+ body:["Hind and six relatives were fleeing Tel al-Hawa in a car when it came under fire; the adults in the car were killed instantly, and Hind and her 15-year-old cousin Layan Hamadeh survived, trapped among the bodies. Layan called the Red Crescent, and dispatchers stayed on the line as she described their location and injuries before gunfire cut the call short. Hind was heard reciting the Quran, frightened, in recordings that were later released.","A Red Crescent ambulance dispatched to reach them, after hours spent seeking Israeli military coordination to enter the area, was itself struck; both paramedics aboard were killed. Hind's body was found twelve days later, when Israeli forces withdrew from the area, still in the car beside her family."],
+ resp:"<b>Forensic findings.</b> Forensic Architecture, Al Jazeera's Fault Lines and the NGO Earshot reconstructed the attack from satellite imagery, audio and interviews, finding the vehicle was struck by roughly 335–355 bullets, most from the right side, fired from an Israeli tank positioned 13–23 metres away. That was too close, investigators concluded, for the children inside not to have been visible. The Hind Rajab Foundation filed an ICC complaint in 2025 naming specific commanders of the 401st Armoured Brigade. UN human rights experts called it a potential war crime and part of a broader pattern of killing civilians fleeing under Israeli evacuation orders.",
+ src:"Forensic Architecture, Al Jazeera Fault Lines &amp; Earshot investigation, June 2024; OHCHR press release, July 2024; Middle East Eye; Hind Rajab Foundation"},
+
+{y:2025.61,c:"named",n:"5",g:"Struck in a tent marked PRESS, after a smear campaign",k:"",yr:"10 Aug 2025",
+ kd:"Not applicable. Adult journalists.",
+ t:"Anas al-Sharif and colleagues",loc:"Outside al-Shifa Hospital, Gaza City",date:"10 August 2025",toll:"5",unit:"Al Jazeera journalists killed, 7 total including others present",
+ tags:["Named individuals","Al Jazeera","CPJ: warned in advance"],
+ body:["One of Gaza's most recognised journalists, al-Sharif had reported from northern Gaza throughout the war to a following of millions and had broken down on air describing starvation there. He was killed with four Al Jazeera colleagues, Mohammed Qreiqeh, Ibrahim Zaher, Mohammed Noufal and Moamen Aliwa, in a strike on the tent housing journalists outside al-Shifa Hospital, marked with a visible press sign. Seven died in total, including his nephew.","A month earlier, the Committee to Protect Journalists and the UN special rapporteur on freedom of expression had publicly warned for his safety, after the Israeli military accused him without published evidence of leading a Hamas cell, an allegation al-Sharif and Al Jazeera denied. His father had already been killed in a separate strike in December 2023, after, his family said, Israeli officers had threatened him to stop reporting."],
+ resp:"<b>Israel's account.</b> The military said it targeted al-Sharif specifically, alleging he led a Hamas cell involved in rocket attacks, without releasing the evidence publicly. CPJ said it had documented no such activity and called the killing part of a pattern of targeting prominent Gaza journalists shortly after they became internationally known.",
+ src:"Al Jazeera Media Network statement; CPJ; ABC News; CNN; Wikipedia"},
+
+{y:2026.15,c:"named",n:"263",g:"Journalists and media workers killed by Israel",k:"",yr:"2023–26",total:1,
+ kd:"Not published in aggregate.",
+ t:"Journalists killed, in aggregate",loc:"Gaza, Lebanon, West Bank, Yemen, Iran",date:"7 October 2023 – 11 June 2026",toll:"263",unit:"journalists and media workers killed by Israel",
+ tags:["Aggregate","Deadliest conflict on record for press","75 confirmed murders, named below"],
+ body:["The Committee to Protect Journalists' running count makes this the deadliest conflict for journalists it has recorded since it began keeping data in 1992: more than the US Civil War-era total, more than Vietnam, more than Iraq. Of the 263, CPJ classifies 75 as confirmed murders, deliberately targeted for their work rather than killed incidentally, and has named every one individually. That full roster of 59 journalists and 16 media workers appears below the timeline, sourced directly from CPJ's own published list.","CPJ is, as of this writing, mid-review of its wider Gaza dataset after Hamas and Palestinian Islamic Jihad published obituaries identifying eight people on CPJ's list as combatants; CPJ removed those eight, plus several more found not to have been journalists, and lists every removal with its stated reason."],
+ resp:"<b>Israel's position.</b> The Israeli military denies deliberately targeting journalists and says remaining in an active combat zone carries inherent risk. CPJ has said Israel's own inquiries into these killings have been slow and lacking in transparency, and has called for independent international investigation.",
+ src:"Committee to Protect Journalists, running casualty count and named roster, updated 25 June 2026; CBS News; Axios"},
+
+{y:2026.35,c:"gaza",n:"73,293",g:"Killed since October 2023",k:"21,500 children",yr:"2023–26",total:1,
+ kd:"21,500, per Gaza's Ministry of Health, to 23 July 2026.",
+ t:"The war on Gaza",loc:"Gaza Strip",date:"7 October 2023 – 23 July 2026",toll:"73,293",unit:"killed",
+ tags:["Campaign total","UN: genocide"],
+ body:["The cumulative recorded toll through 23 July 2026. Researchers publishing in medical journals have argued the true figure is substantially higher, given the collapse of the recording system and the bodies still under rubble.","Within it: nearly 3,000 people killed trying to collect aid, and at least 197 journalists."],
+ resp:"<b>Legal findings.</b> In September 2025 the UN Commission of Inquiry concluded that Israel is committing genocide in Gaza, finding genocidal intent the only reasonable inference from the pattern of conduct. Israel rejects the finding. Proceedings continue at the International Court of Justice and the International Criminal Court.",
+ src:"Gaza Ministry of Health; UN Independent Commission of Inquiry, September 2025; Committee to Protect Journalists"}
+];
+/* ---------- layout constants (verified: 0 chip overlaps, 4 lanes/side) ------ */
+const T0=1948.0, T1=2026.6, PAD=1.6, W=10000, H=1700, AY=850, AXB=AY+26;
+const CHIPW=136, GAPX=12, FAN=38, LANES=4;
+const SVGNS="http://www.w3.org/2000/svg";
+const COL={pal:"#C85A48",leb:"#6FA6C4",gaza:"#C8B882",named:"#A692D8"};
+const BG="#080905";
+
+/* ---- compressed scale: long idle gaps are capped so they don't eat width ---
+   every gap between consecutive event-years (and from T0/to T1) counts for
+   at most CAP "effective years" toward total width, regardless of how many
+   real years it spans. Dense periods keep their true relative spacing. */
+const CAP = 3.0;
+const eventYears = [...new Set(EV.map(e=>e.y))].sort((a,b)=>a-b);
+const pts = [T0, ...eventYears, T1];
+const eff = [0];
+for(let i=1;i<pts.length;i++) eff.push(eff[i-1] + Math.min(pts[i]-pts[i-1], CAP));
+const totalEff = eff[eff.length-1];
+
+function frac(y){
+  for(let i=1;i<pts.length;i++){
+    if(y <= pts[i] + 1e-9){
+      const span = pts[i]-pts[i-1];
+      if(span <= 1e-9) return eff[i-1]/totalEff;
+      const t = (y-pts[i-1])/span;
+      return (eff[i-1] + t*Math.min(span,CAP))/totalEff;
+    }
+  }
+  return 1;
+}
+const xpx = y => (PAD + frac(y)*(100-2*PAD))/100*W;
+
+/* ---------- detail sheet ---------- */
+const sheet=document.getElementById('mt-sheet');
+function openSheet(e){
+  document.getElementById('mt-sDate').textContent=e.date;
+  document.getElementById('mt-sheetTitle').textContent=e.t;
+  document.getElementById('mt-sLoc').textContent=e.loc;
+  document.getElementById('mt-sTags').innerHTML=(e.tags||[]).map(t=>'<span class="mt-tg">'+t+'</span>').join('');
+  const tl=document.getElementById('mt-sToll'); tl.textContent=e.toll; tl.style.color=COL[e.c];
+  const un=document.getElementById('mt-sUnit'); un.textContent=e.unit; un.style.color=COL[e.c];
+  document.getElementById('mt-sKids').innerHTML='<strong>Children among the dead:</strong> '+e.kd;
+  document.getElementById('mt-sBody').innerHTML=e.body.map(p=>'<p>'+p+'</p>').join('');
+  document.getElementById('mt-sResp').innerHTML=e.resp;
+  document.getElementById('mt-sSrc').innerHTML='Sources: '+e.src;
+  sheet.classList.add('mt-open'); sheet.setAttribute('aria-hidden','false'); sheet.scrollTop=0;
+}
+function closeSheet(){ sheet.classList.remove('mt-open'); sheet.setAttribute('aria-hidden','true'); }
+document.getElementById('mt-closeBtn').addEventListener('click',closeSheet);
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeSheet(); });
+/* leaving the deep dive (guides.js writes the passage id to location.hash) */
+window.addEventListener('hashchange',closeSheet);
+
+/* ---------- full-bleed row: subtract the real scrollbar width ---------- */
+function setSbw(){
+  document.documentElement.style.setProperty('--mt-sbw',
+    (window.innerWidth - document.documentElement.clientWidth) + 'px');
+}
+setSbw(); window.addEventListener('resize',setSbw);
+
+/* ---------- jump nav ---------- */
+const scroller=document.getElementById('mt-scroller');
+const jump=document.getElementById('mt-jump');
+[["1948",1948.2],["1953–56",1953.6],["1982",1982.5],["1996",1996.1],
+ ["2002–06",2002.1],["2009–14",2008.9],["2018–21",2018.3],["2023→",2023.7]]
+.forEach(([label,yr])=>{
+  const b=document.createElement('button'); b.type='button'; b.textContent=label;
+  b.onclick=()=>{ build(); scroller.scrollTo({left:xpx(yr)-140,behavior:'smooth'}); };
+  jump.appendChild(b);
+});
+
+/* ==========================================================================
+   BUILD: deferred until the passage is actually on screen. Chip heights are
+   measured from real layout, and a passage that is display:none measures 0,
+   so this cannot run at parse time the way it did in the standalone file.
+   ========================================================================== */
+let built=false;
+function build(){
+  if(built) return; built=true;
+
+  const canvas=document.getElementById('mt-canvas');
+  const wires=document.getElementById('mt-wires');
+  wires.setAttribute('viewBox','0 0 '+W+' '+H);
+  wires.setAttribute('width',W); wires.setAttribute('height',H);
+
+  /* axis ticks at real calendar years, positioned on the compressed scale */
+  const axisEl=document.getElementById('mt-axisline');
+  axisEl.style.top=AY+'px';
+  for(let d=1948; d<=2026; d++){
+    if(d%5!==0 && !eventYears.some(y=>Math.round(y)===d)) continue;
+    const t=document.createElement('div'); t.className='mt-tick';
+    t.style.left=(xpx(d)/W*100)+'%';
+    if(d%5===0) t.innerHTML='<b>'+d+'</b>';
+    axisEl.appendChild(t);
+  }
+
+  /* hatched bands over every compressed (capped) gap, so the missing time
+     is shown as skipped rather than silently vanishing */
+  for(let i=1;i<pts.length;i++){
+    const span = pts[i]-pts[i-1];
+    if(span <= CAP + 0.05) continue;
+    const x1=xpx(pts[i-1]), x2=xpx(pts[i]);
+    const band=document.createElement('div');
+    band.className='mt-skip';
+    band.style.left=x1+'px'; band.style.width=(x2-x1)+'px';
+    band.innerHTML='<b>'+Math.round(pts[i-1])+' → '+Math.round(pts[i])+' · '+Math.round(span)+' yrs condensed</b>';
+    canvas.appendChild(band);
+  }
+
+  /* lane packing: heights are measured from real rendered chips, since
+     chip height varies with tagline length rather than being fixed */
+  const lanes=[];
+  for(let k=0;k<LANES*2;k++)
+    lanes.push({side:k%2?'down':'up', idx:Math.floor(k/2), last:-1e9});
+
+  const sortedEV=[...EV].sort((a,b)=>a.y-b.y);
+
+  function chipHTML(e){
+    return '<span class="mt-num">'+e.n+'</span><span class="mt-tag">'+e.g+'</span>'+
+      (e.k?'<span class="mt-kids">'+e.k+'</span>':'')+
+      '<span class="mt-yr">'+e.yr+'</span>';
+  }
+
+  /* pass 1: build every chip off-screen (visibility hidden, not display:none,
+     so the browser still lays it out and reports a real height) and measure it */
+  const measured = sortedEV.map(e=>{
+    const chip=document.createElement('div');
+    chip.className='mt-chip mt-'+e.c+(e.total?' mt-total':'');
+    chip.style.position='absolute';
+    chip.style.left='-9999px';
+    chip.style.visibility='hidden';
+    chip.innerHTML=chipHTML(e);
+    canvas.appendChild(chip);
+    const h=chip.getBoundingClientRect().height;
+    canvas.removeChild(chip);
+    return {e, h:h||82};
+  });
+
+  /* pass 2: pack lanes using each chip's real measured height. A lane's
+     "depth" is the tallest chip placed in it so far at that ring, so the
+     next ring out always clears every box beneath it, not just a nominal one */
+  measured.forEach(({e,h})=>{
+    const tx=xpx(e.y);
+    let best=null, bestDisp=Infinity;
+    for(const L of lanes){
+      const disp=Math.max(tx, L.last+CHIPW+GAPX)-tx;
+      if(disp<bestDisp-0.001){best=L;bestDisp=disp;}
+      if(disp<=0.001) break;
+    }
+    const cx=Math.max(tx, best.last+CHIPW+GAPX);
+    best.last=cx;
+
+    const up = best.side==='up';
+    /* ring offset: sum of the tallest chip heights in every shallower ring
+       on this side, so rings never collide vertically regardless of content */
+    let ringOffset=FAN;
+    for(let i=0;i<best.idx;i++){
+      const sibling=lanes.find(l=>l.side===best.side && l.idx===i);
+      ringOffset += (sibling && sibling.maxH ? sibling.maxH : 74) + 18;
+    }
+    best.maxH = Math.max(best.maxH||0, h);
+    ringOffset += 20;
+
+    const chipNear = up ? AY-ringOffset : AXB+ringOffset;
+    const chipTop  = up ? chipNear-h : chipNear;
+    const jog      = up ? AY-(10+best.idx*7) : AXB+(10+best.idx*7);
+
+    /* orthogonal leader: riser at true date, jog across, riser into chip */
+    const poly=document.createElementNS(SVGNS,'polyline');
+    poly.setAttribute('points',
+      tx+','+(up?AY:AXB)+' '+tx+','+jog+' '+cx+','+jog+' '+cx+','+chipNear);
+    poly.setAttribute('fill','none');
+    poly.setAttribute('stroke',COL[e.c]);
+    poly.setAttribute('stroke-width','1.4');
+    poly.setAttribute('stroke-opacity','.42');
+    wires.appendChild(poly);
+
+    const dot=document.createElementNS(SVGNS,'circle');
+    dot.setAttribute('cx',tx); dot.setAttribute('cy',up?AY:AXB);
+    dot.setAttribute('r','4.5'); dot.setAttribute('fill',COL[e.c]);
+    dot.setAttribute('stroke',BG); dot.setAttribute('stroke-width','3');
+    wires.appendChild(dot);
+
+    const chip=document.createElement('div');
+    chip.className='mt-chip mt-'+e.c+(e.total?' mt-total':'');
+    chip.style.left=(cx-CHIPW/2)+'px';
+    chip.style.top=chipTop+'px';
+    chip.tabIndex=0; chip.setAttribute('role','button');
+    chip.setAttribute('aria-label',e.t+', '+e.toll+' '+e.unit);
+    chip.innerHTML=chipHTML(e);
+    chip.addEventListener('click',()=>openSheet(e));
+    chip.addEventListener('keydown',ev=>{
+      if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();openSheet(e);}});
+    canvas.appendChild(chip);
+  });
+
+  /* crop the canvas to the rows actually used. The standalone file sat on a
+     fixed 1700px stage, which inside the guide reads as a wall of empty black.
+     Shift the whole stage up to the topmost chip and size the box to the
+     bottommost one; the scroller's overflow-y:hidden clips the rest. */
+  let minTop=Infinity, maxBottom=-Infinity;
+  canvas.querySelectorAll('.mt-chip').forEach(c=>{
+    const top=parseFloat(c.style.top);
+    const bottom=top+c.getBoundingClientRect().height;
+    if(top<minTop) minTop=top;
+    if(bottom>maxBottom) maxBottom=bottom;
+  });
+  if(isFinite(minTop) && isFinite(maxBottom)){
+    const shift=Math.max(0,Math.round(minTop-26));
+    if(shift>0) canvas.style.transform='translateY(-'+shift+'px)';
+    canvas.style.height=Math.ceil(maxBottom+26-shift)+'px';
+  }
+  scroller.scrollLeft=0;
+}
+
+/* the deep dive is display:none until the reader opens it, so wait for it to
+   actually intersect the viewport before measuring anything */
+if('IntersectionObserver' in window){
+  const io=new IntersectionObserver(entries=>{
+    if(entries.some(en=>en.isIntersecting)){ io.disconnect(); build(); }
+  },{rootMargin:'600px 0px'});
+  io.observe(scroller);
+}else{
+  window.addEventListener('load',build);
+}
+
+/* ==========================================================================
+   NAMED ROSTER: copied directly from CPJ's own confirmed-murder list,
+   "Journalist casualties in the Israel-Gaza war," updated 25 June 2026.
+   https://cpj.org/2023/10/journalist-casualties-in-the-israel-gaza-war/
+   ========================================================================== */
+const JOURNALISTS = ["Amna Hamid","Mohammed al-Bardaweel","Murad Halboub al-Faqih","Mohamed Qeshta",
+"Mahmoud Wadi","Anas Ghnaim","Abed Shaat","Ahmad Qalaja","Ahmed Mansour","Anas al-Sharif",
+"Ayman Al Gedi","Fadi Hassouna","Faisal Abu Al Qumsan","Ghassan Najjar","Hamza al-Dahdouh",
+"Hilmi al-Faqaawi","Hossam Shabat","Ibrahim Zaher","Ismail al-Ghoul","Ismail Baddah",
+"Issam Abdallah","Mahmoud Islim Al-Basos","Moamen Aliwa","Mohammad al-Khaldi","Mohammed Al-Ladaa",
+"Mohammed Noufal","Mohammed Qreiqeh","Mustafa Thuraya","Nima Rajabpour","Rami Al Refee",
+"Suleiman Hajjaj","Wissam Kassem","Abdulaziz al-Sheikh","Abbas al-Dailami","Youssef Shams al-Din al-Bahri",
+"Mohammed al-Omeisi","Abdullah al-Harazi","Jamal al-Adhi","Bashir Hussein Ahsan Dablan",
+"Abdulqawi Mohammed Saleh al-Asfour","Abdo Taher Musleh al-Saadi","Lutf Ahmed Nasser Hadiyan",
+"Qais Abdo Ahmed al-Naqeeb","Mohammed Ali Hamoud al-Dawi","Faris Abdo Ali al-Rumaisa",
+"Abdulrahman Mohammed Mohammed Jaman","Amal Mohammed Ghaleb al-Manakhi","Abdullah Mahdi Abdullah al-Bahri",
+"Sami Mohammed Hussein al-Zaidi","Mariam Abu Dagga","Hussam Al-Masri","Mohammed Salama",
+"Ahmed Abu Aziz","Moaz Abu Taha","Fatima Ftouni","Mohamad Ftouni","Ali Shoaib","Mohammed Washah","Amal Khalil"];
+
+const MEDIA_WORKERS = ["Ibrahim Sheikh Ali","Masoumeh Azimi","Mohammed Reda","Ali Naji al-Shara'i",
+"Ali Mohammed Ahmed al-Faqih","Arif Ali Abdo al-Samhi","Mohammed Hamoud Ahmed al-Matari",
+"Abdul Wali Abdo Hussein al-Najjar","Abdul Aziz Saleh Ahmed Shas","Mohammed Ahmed Mohammed al-Zakri",
+"Zuhair Ahmed Mohammed al-Zakri","Essam Ahmed Murshid al-Hashidi","Salim Abdullah Abdo Ahmed al-Watiri",
+"Mohammed Abdo Yahya al-Sanfi","Mohammed al-Azzi Ghaleb al-Harazi","Ali Mohammed al-Aqel"];
+
+const REMOVED = [
+ ["Mohamed Manhal Abu Armanah","CPJ investigation found he participated in combat"],
+ ["Mohamed Naser Abu Huwaidi","CPJ investigation found he participated in combat"],
+ ["Yacoup al-Borsh","CPJ investigation found he participated in combat"],
+ ["Rizq Abu Shakian","CPJ investigation found he participated in combat"],
+ ["Maisara Ahmed Salah","CPJ investigation found he participated in combat"],
+ ["Mahdi al-Mamluk","CPJ investigation found he participated in combat"],
+ ["Mustafa Bahr","CPJ investigation found he participated in combat"],
+ ["Abdullah Darwish","CPJ investigation found he participated in combat"],
+ ["Mohamed Khaireddine","confirmed not a journalist or media worker"],
+ ["Bahaa Okasha","confirmed not a journalist or media worker"],
+ ["Salma Mkhaimar","confirmed not a journalist or media worker"],
+ ["Ahmed Fatima","confirmed not a journalist or media worker"],
+ ["Mohamed al-Jaja","confirmed not a journalist or media worker"],
+ ["Assaad Shamallakh","confirmed not a journalist or media worker"],
+ ["Mohamed Fayez Abu Matar","confirmed not a journalist or media worker"],
+ ["Shai Regev","confirmed not on assignment at the time of death"],
+ ["Oded Lifschitz","confirmed not on assignment at the time of death"],
+ ["Ayelet Arnin","confirmed not on assignment at the time of death"],
+ ["Alaa Taher al-Hassanat","found to have survived the attack thought to have killed her"],
+ ["Mansour Shouman","found alive 6 Feb 2024 after being reported missing"]
+];
+
+const g1=document.getElementById('mt-rgrid1'), g2=document.getElementById('mt-rgrid2'), gr=document.getElementById('mt-rremoved');
+JOURNALISTS.forEach(n=>{const d=document.createElement('div');d.className='mt-rperson';d.textContent=n;g1.appendChild(d);});
+MEDIA_WORKERS.forEach(n=>{const d=document.createElement('div');d.className='mt-rperson';d.textContent=n;g2.appendChild(d);});
+REMOVED.forEach(([n,reason])=>{
+  const d=document.createElement('div');d.className='mt-rrow';
+  d.innerHTML='<b>'+n+'</b><span>'+reason+'</span>';
+  gr.appendChild(d);
+});
+})();
+</script>
+
 <script src="guides.js" data-guide-nav></script>
 </body>
 </html>

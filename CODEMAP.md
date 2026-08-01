@@ -17,7 +17,7 @@ This document is the map: **what is where**, **how the pieces are built**, and t
 | [index.html](index.html) | Landing page. One linked card per guide (rendered from `GUIDES` in guides.js). Static — no passage engine. | ~100 lines |
 | [communist-theory-interactive.html](communist-theory-interactive.html) | **Part 1 · The Engine** — how capitalism works. 8 stations + deep dives + myth cards. | ~1650 lines |
 | [imperialism-guide.html](imperialism-guide.html) | **Part 2 · The Global Picture** — where the wealth went. 5 stations + deep dives. | ~635 lines |
-| [palestine-guide.html](palestine-guide.html) | **Part 3 · The Case Study** — Palestine & Israel. 9 stations + deep dives + claim cards + video embeds. | ~1560 lines |
+| [palestine-guide.html](palestine-guide.html) | **Part 3 · The Case Study** — Palestine & Israel. 9 stations + deep dives + claim cards + video embeds + the interactive massacre timeline (§3k). | ~2730 lines |
 | [deception-guide.html](deception-guide.html) | **Part 4 · The Deception** — what Western governments hid from their own people. 7 stations + deep dives + claim cards. | ~965 lines |
 | [vc-genocide-guide.html](vc-genocide-guide.html) | **Part 5 · The Money** — venture capital, surveillance, and the genocide. 5 stations, claim cards + inline expandables only (no full deep-dive passages). | ~640 lines |
 | [mirror-guide.html](mirror-guide.html) | **Part 6 · The Mirror** — the capstone: unlearning the double standard. 5 stations + 1 deep dive (the 1955 CIA file, dossier-styled) + "Who did it?" quiz cards + liberal/leftist lens matrix. | ~665 lines |
@@ -188,6 +188,42 @@ reading →", and a `.badge-row` (read-time + format). Pure CSS hover lift.
 | `.video-wrap` (palestine) | 16:9 responsive YouTube iframe + fallback "Watch on YouTube" link. |
 | `.final-quote` | Centered closing blockquote + cite. |
 | `.companion-badge` | "Companion Guide · Part N" badge in the intro. |
+
+### k. Interactive massacre timeline (`.mt-*`) — palestine `dive_massacres` only
+The one JS-heavy component in the series: a horizontally scrolling stage of 80
+documented mass killings, 1948–2026, rendered from an `EV` data array into a
+10,000px canvas, with a bottom detail sheet per entry and the CPJ named roster
+below it. All of it lives in one IIFE at the end of palestine-guide.html and every
+class is namespaced `mt-` so nothing collides with the guide's own components.
+
+- **Data.** One object per entry in `EV`: `y` decimal year · `c` category
+  (`pal|leb|gaza|named`, which picks the colour) · `n` toll shown on the chip ·
+  `g` one-line tagline · `k`/`kd` children counts · `total:1` for campaign
+  aggregates (filled chip) · plus `t/loc/date/toll/unit/tags/body[]/resp/src` for
+  the detail sheet. Adding an object rebuilds layout, wiring and axis automatically.
+- **Compressed scale.** Every gap between consecutive event-years counts for at
+  most `CAP` (3.0) effective years of width, so dense periods keep true relative
+  spacing and idle decades don't eat the canvas. Skipped spans are drawn as
+  hatched `.mt-skip` bands labelled "N yrs condensed" — the time is shown as
+  removed, never silently dropped.
+- **Lane packing.** 4 rings above and 4 below the axis. Chip heights are
+  *measured from real rendered chips* (pass 1 builds each off-screen at
+  `visibility:hidden` and reads its height), then pass 2 packs lanes using those
+  real heights, so a longer tagline can't cause an overlap. Chips displaced from
+  their true date get an orthogonal SVG leader line back to a dot on the axis.
+- **Lazy build.** A `display:none` passage measures 0, so the renderer cannot run
+  at parse time. An `IntersectionObserver` on `#mt-scroller` fires `build()` the
+  first time the dive is actually on screen. **Any future change that measures
+  layout must stay inside `build()`.**
+- **Crop.** After layout the stage is cropped to the rows actually used
+  (`translateY` up to the topmost chip, canvas height set to the bottommost) so
+  the guide doesn't get a wall of empty black.
+- **Full bleed.** `.mt-bleed` breaks out of the 680px column to viewport width
+  using a measured `--mt-sbw` scrollbar width, so the page never gains a
+  horizontal scrollbar of its own.
+- Provenance: ported from a standalone light-themed prototype; the palette,
+  fonts and chrome were remapped to the palestine tokens, category colours
+  lightened for the dark background.
 
 ### Button vocabulary
 `btn-primary` (advance, → arrow) · `btn-dive` (open deep dive, ↳◆) ·
