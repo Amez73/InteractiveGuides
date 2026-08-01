@@ -60,6 +60,8 @@
 
   /* ── Typography ── */
   .eyebrow { font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--gold); margin-bottom: .9rem; }
+  .page-hook { font-size: clamp(1.1rem, 2.6vw, 1.25rem); line-height: 1.55; color: var(--text); border-left: 3px solid var(--rust); padding: .15rem 0 .15rem 1.25rem; margin: 0 0 1.6rem; font-weight: 400; }
+  .page-hook strong { color: var(--gold); font-weight: 600; }
   h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; margin-bottom: 1.5rem; color: var(--text); }
   h1 em { font-style: italic; color: var(--gold); }
   h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.5rem, 4vw, 2rem); line-height: 1.2; margin-bottom: 1.2rem; }
@@ -266,6 +268,8 @@
     <p class="eyebrow">Station 1 of 5</p>
     <h2>There Are No Poor Nations</h2>
 
+    <p class="page-hook"><strong>Roughly $150 trillion has been extracted from the Global South since colonialism began, and more leaves every year than arrives.</strong> Africa is a net lender to the rich world. Poverty there is not a starting condition anyone failed to escape. It is a running total.</p>
+
     <p>The thesis in one sentence: <strong>the countries we call "poor" aren't poor because wealth never existed there. They're poor because the wealth was taken.</strong> Not as metaphor — extracted over 300 years of colonialism, and still leaving today through debt repayments, profit transfers, and rigged trade rules.</p>
 
     <div class="pull">
@@ -297,10 +301,94 @@
       </div>
     </div>
 
-    <p>The exact figures are contested; historical accounting is hard. The direction isn't contested. The wealth moved. So how does the extraction actually work?</p>
+    <p>The exact figures are contested; historical accounting is hard. The direction isn't contested. The wealth moved.</p>
+
+    <div class="callout">
+      <strong>One correction before we go further.</strong> "Rich nations took from poor nations" is a useful first approximation and a bad final answer. Nations don't own things; classes within them do. The wealth did not arrive in Britain and get shared out among Britons, and it did not leave Nigeria without Nigerians handling it on the way. Both ends of that sentence have a class structure, and the two dives below are about who is actually standing at each end. This matters because it decides what any of it means for you.
+    </div>
 
     <div class="btn-group">
+      <button class="btn btn-dive" onclick="go('dive_comprador')">◆ Deep Dive: Who took the cut at the other end</button>
+      <button class="btn btn-dive" onclick="go('dive_aristocracy')">◆ Deep Dive: Who benefits at this end, including you</button>
       <button class="btn btn-primary" onclick="go('s2')">Station 2: How the extraction actually works →</button>
+    </div>
+  </div>
+
+  <!-- ══ DEEP DIVE: COMPRADOR ══ -->
+  <div class="passage" id="passage-dive_comprador">
+    <div class="dive-banner">Deep Dive: The Partners</div>
+    <h2>Extraction Always Had Local Shareholders</h2>
+
+    <p class="page-hook"><strong>No empire has ever had the manpower to hold a continent by force alone.</strong> Every extraction system in history ran on a local class that did well out of it, and pretending otherwise makes the last sixty years impossible to explain.</p>
+
+    <p>The story where colonisers arrive, take everything, and leave a purely victimised population behind is emotionally clean and historically false. British India was administered by a few thousand British officials over hundreds of millions of people. That is not a ratio you achieve with soldiers. You achieve it with local princes, landlords, tax farmers, merchants and soldiers who were paid, promoted and protected for their part in it.</p>
+
+    <p>Marxists call this class the <strong>comprador bourgeoisie</strong>: the ownership class inside a poorer country whose own wealth depends on servicing extraction by a richer one. The word is borrowed from Portuguese traders in Macau and it means, roughly, "buyer". Not puppets, which implies no agency. Not victims, which implies no benefit. <em>Partners</em>, with interests of their own that happen to align.</p>
+
+    <div class="callout">
+      <strong>This is the half of Walter Rodney that usually gets cut.</strong> This guide closes with his line about nations whose wealth was stolen, and that line is true. But Rodney was a Marxist, not a nationalist, and <em>How Europe Underdeveloped Africa</em> is explicit that African ruling groups participated in and profited from the trade in human beings and from colonial administration. He was killed in 1980 by a bomb in Guyana, at the hands of a government led by Africans, while organising against it. He was not confused about whether an African government could be an enemy of African workers.
+    </div>
+
+    <p>The classic statement is Frantz Fanon's, in the chapter of <em>The Wretched of the Earth</em> (1961) called "The Pitfalls of National Consciousness". Fanon predicted, while the independence flags were still being sewn, that the national bourgeoisie of the newly free colonies would not build anything. It would inherit the colonial apparatus, keep the extraction running, take a commission on it, and use nationalism to keep its own workers quiet. He was describing 1960. He was also describing 1985, and 2026.</p>
+
+    <details class="deep-expand">
+      <summary>What this explains that "rich nations vs poor nations" cannot</summary>
+      <div class="expand-content">
+        <p><strong>Why decolonisation produced national bourgeoisies instead of socialism.</strong> In most cases the colonial state was not dismantled at independence. It changed personnel. The mines, ports, plantations and marketing boards kept operating, and the people now running them had every reason to keep the arrangement rather than break it.</p>
+        <p><strong>Why some of the world's richest people live in some of the world's poorest countries.</strong> Nigerian oil wealth, Gulf petro-monarchies and Indian billionaires are not anomalies in the extraction story. They are positions in it. A framework that only counts wealth crossing borders cannot see them at all.</p>
+        <p><strong>Why the coups in Station 2's deep dive targeted who they targeted.</strong> Look at the list again: Mossadegh, Arbenz, Lumumba, Allende, Sankara. What each of them threatened was not "the West" in the abstract. It was a specific arrangement between foreign capital and a domestic class that was doing well out of the status quo, which is why in almost every case the coup had enthusiastic local partners. Somebody at home always opened the door.</p>
+        <p><strong>Why aid and reparations are harder than they look.</strong> A transfer between states is a transfer to whoever controls that state. If the extraction ran partly through a domestic ownership class, then money handed to that class is not obviously a repair. This is not an argument against reparations. It is the reason the question "who receives" is a serious one rather than a stalling tactic, and it is why Caricom's claim is framed around development programmes, health systems and debt cancellation rather than a cheque.</p>
+      </div>
+    </details>
+
+    <div class="callout">
+      <strong>What this is not saying.</strong> It is not "they did it to themselves," which is the oldest excuse in the file and the exact move Station 4 is about. The initiative, the guns, the capital and the overwhelming majority of the proceeds were foreign. Local partners took a commission on a business someone else was running. Naming them adds a class to the picture; it does not move the responsibility.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-back" onclick="go('s1')">Back to Station 1</button>
+      <button class="btn btn-dive" onclick="go('dive_aristocracy')">◆ Next: who benefits at this end, including you</button>
+      <button class="btn btn-primary" onclick="go('s2')">Continue to Station 2 →</button>
+    </div>
+  </div>
+
+  <!-- ══ DEEP DIVE: LABOUR ARISTOCRACY ══ -->
+  <div class="passage" id="passage-dive_aristocracy">
+    <div class="dive-banner">Deep Dive: Your Position</div>
+    <h2>Why the Workers of Rich Countries Rarely Opposed Any of This</h2>
+
+    <p class="page-hook"><strong>You are not standing outside this looking in.</strong> If you live in a wealthy country, some part of what you consider a normal standard of living is the far end of the pipe described in Station 1, and that is the single most uncomfortable sentence in this guide.</p>
+
+    <p>Here is a question the "rich nations robbed poor nations" framing cannot answer. Over 300 years of colonialism, and 70 more of debt and coups, the working class of Britain, France and the United States was for the most part not opposed. Sometimes it was actively enthusiastic. If empire only enriched a handful of owners, why did the people who owned nothing keep voting for it, enlisting for it, and cheering it?</p>
+
+    <p>Lenin's answer, in <em>Imperialism, the Highest Stage of Capitalism</em> (1916), is the piece of his argument that popular explainers usually leave out, including the earlier version of this guide. Empire generates <strong>superprofits</strong>, returns far above what is available at home. A portion of those returns gets spent domestically: on higher wages in some sectors, on concessions to organised labour, and eventually on pensions, housing and health services. The effect is to create what he called a <strong>labour aristocracy</strong>, a layer of workers in the imperial core whose conditions are cushioned by the arrangement and who therefore have something real to lose if it ends.</p>
+
+    <p>He was blunt about the consequence: this is why the socialist parties of Europe voted for war credits in 1914 instead of the general strike they had promised. Their base had been partly bought, with money taken somewhere else.</p>
+
+    <div class="callout">
+      <strong>What this looks like in your actual life.</strong> Not a cheque with "empire" written on it. Ordinary things. The price of a phone containing Congolese cobalt dug by people earning a few dollars a day. Clothes priced by wages a structural-adjustment programme drove down. A pension fund that holds the arms manufacturers in Part 5 and the extractive miners in this one, and pays out to you when they perform well. A currency strong enough to import food cheaply because it is the one debts are denominated in. Public services in Britain and France built, in part, during the period the drain in Station 1 was at its peak.
+    </div>
+
+    <p>This is why the honest version of Station 5's "Now What?" cannot be a list of things other people should stop doing. The reader of this guide is in the picture, and in a specific position within it: not an owner, and not a beneficiary in the way the owners are, but not a neutral bystander either.</p>
+
+    <details class="deep-expand">
+      <summary>The serious objection to everything you just read</summary>
+      <div class="expand-content">
+        <p>The labour aristocracy thesis is contested inside Marxism, hard, and this guide's practice is to say so rather than teach one side quietly.</p>
+        <p><strong>The critique.</strong> Charles Post, "Exploring Working-Class Consciousness: A Critique of the Theory of the 'Labour-Aristocracy'", <em>Historical Materialism</em> 18(4), 2010, argues the mechanism cannot be demonstrated empirically. Foreign direct investment is a small share of total world investment and most of it flows between rich countries, not from poor to rich. And the history runs the wrong way: the best-paid, most "aristocratic" sectors of Western labour, miners, dockers, car workers, have repeatedly been the <em>most</em> militant, not the most bought off. If superprofits pacify workers, the best-paid should be the quietest, and they were not.</p>
+        <p><strong>Why it matters politically.</strong> Pushed to its limit, the labour aristocracy thesis says the working class of rich countries is a lost cause and revolutionary hope lies only in the Global South. That position has a name, third-worldism, and its practical result is to write off the only large group of people the reader of this guide can actually organise alongside.</p>
+        <p><strong>Where that leaves it.</strong> The strong version, that Western workers are simply beneficiaries and therefore enemies, is not supported. The weak version is hard to dispute: cheap imports, strong currencies and public services in the core have historically been financed in part by conditions imposed elsewhere, so the material interests of workers in rich countries are genuinely <em>contradictory</em> rather than simply aligned with the Global South. Contradictory is not the same as opposed. It means the alignment has to be built politically, because it does not arrive automatically from a payslip.</p>
+      </div>
+    </details>
+
+    <div class="callout">
+      <strong>The point of saying this.</strong> Not guilt, which changes nothing and is mostly a way of feeling finished. Position. Guilt asks what kind of person you are. Class analysis asks where you are standing and what you can reach from there. Only the second one leads anywhere.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-back" onclick="go('s1')">Back to Station 1</button>
+      <button class="btn btn-dive" onclick="go('dive_comprador')">◆ Next: who took the cut at the other end</button>
+      <button class="btn btn-primary" onclick="go('s2')">Continue to Station 2 →</button>
     </div>
   </div>
 
@@ -308,6 +396,8 @@
   <div class="passage" id="passage-s2">
     <p class="eyebrow">Station 2 of 5</p>
     <h2>How It Works: The Modern Mechanics</h2>
+
+    <p class="page-hook"><strong>Extraction did not stop when the flags came down. It stopped needing soldiers.</strong> Debt repayments, loan conditions, trade rules and transfer pricing now move more wealth out of poor countries than colonial administrations ever did, and none of it requires an occupation.</p>
 
     <p>Formal colonialism — flags, governors, gunboats — mostly ended by the 1970s. What replaced it is subtler and more durable: debt, trade rules, and the threat of force.</p>
 
@@ -523,6 +613,8 @@
     <p class="eyebrow">Station 3 of 5</p>
     <h2>The Record: What Western Powers Actually Did</h2>
 
+    <p class="page-hook"><strong>Britain paid compensation for the abolition of slavery to the slaveholders, and British taxpayers finished paying off that loan in 2015.</strong> Not one penny went to a single enslaved person or their descendants. That is the register this record is written in.</p>
+
     <p>A representative sample, chosen to calibrate scale. These are not allegations — they are documented history, most of it from Western sources.</p>
 
     <div class="timeline">
@@ -611,6 +703,8 @@
     <p class="eyebrow">Station 4 of 5</p>
     <h2>The Propaganda: How This History Gets Hidden</h2>
 
+    <p class="page-hook"><strong>None of this is classified. All of it is documented, most of it by the people who did it.</strong> It stays unknown not because it is hidden but because nothing in a national curriculum, a newsroom or a political vocabulary is built to carry it.</p>
+
     <p>If all of this is documented and publicly available, why don't most people in wealthy countries know it? Not stupidity. Not a shadowy conspiracy. Structure.</p>
 
     <p><strong>The curriculum</strong> teaches history from inside the national story: the founding fathers, not the 1953 Iran coup or the Bengal Famine as policy. <strong>The language</strong> does political work invisibly: "development aid" sounds like generosity, "free trade" sounds neutral, "failed states" locates the failure inside the country. <strong>The incentives</strong>: media owned by wealth and funded by corporate advertising doesn't aggressively platform structural critiques of wealth. <strong>The "communist" label</strong>: a century of applying it to any government that threatened Western corporate access trained people to hear every critique of capital as Soviet apologia.</p>
@@ -657,19 +751,22 @@
     <p class="eyebrow">Station 5 of 5</p>
     <h2>Now What?</h2>
 
+    <p class="page-hook"><strong>The uncomfortable part is not that this was done. It's that you are standing inside the result.</strong> If you live in a wealthy country, the extraction did not happen somewhere else to someone else. It ended up here, in the prices you pay and the services you use.</p>
+
     <p>A clear view of this history doesn't point to one political conclusion. The live positions:</p>
 
-    <p><strong>Reparations:</strong> the extraction was large enough, recent enough, and calculable enough that direct transfers are owed. Caricom has pursued a formal claim against European powers since 2013. The objections — who pays, who receives, how much — are real.</p>
+    <p><strong>Reparations:</strong> the extraction was large enough, recent enough, and calculable enough that direct transfers are owed. Caricom has pursued a formal claim against European powers since 2013, framed around debt cancellation, health systems and development programmes rather than a lump sum, which is a direct response to the objection that matters most. The objections about who pays and how much are real. So is the one the deep dive off Station 1 raises: a transfer to a state is a transfer to whoever runs that state, and extraction had partners at both ends.</p>
 
     <p><strong>Structural reform:</strong> forget adjudicating history; fix the current mechanisms. Close tax havens, restructure IMF conditionality, cancel odious debt, let developing countries protect emerging industries the way rich countries did when they were developing.</p>
 
-    <p><strong>Supply chains:</strong> the extraction ends in your pocket — Congolese minerals in your phone, structural-adjustment wages in your clothes. Consumer choices can't fix structural problems, but the connection is real.</p>
+    <p><strong>Solidarity rather than shopping:</strong> the extraction ends in your pocket. Congolese cobalt in your phone, structural-adjustment wages in your clothes. The earlier version of this guide listed consumer choice here, which was a mistake, and one this series had already refuted: Part 1's whole argument is that structural problems do not have consumer solutions, and no purchasing decision has ever reached the IMF. What has moved these mechanisms is organised pressure in the countries doing the extracting. The Jubilee 2000 coalition, campaigning inside creditor countries, forced the HIPC and MDRI debt-relief programmes, which have since cancelled over $100 billion of debt across 37 countries, 31 of them in Africa (<strong>Source:</strong> World Bank, HIPC Initiative). The arms trade gets disrupted by dockworkers refusing to load ships, not by shoppers. The leverage a person in a wealthy country actually holds runs through their workplace, their union and their government, not their basket.</p>
 
-    <p><strong>The hardest part:</strong> none of it produces clean moral categories. Nobody alive chose this history — not in the countries built on extracted wealth, not in the countries it was extracted from. What justice looks like across that gap is one of the hard questions of the century, and it can't be answered without first knowing what happened.</p>
+    <p><strong>The hardest part:</strong> none of it produces clean moral categories. Nobody alive chose this history, not in the countries built on extracted wealth and not in the countries it was extracted from. But not choosing it is different from not standing in it. What justice looks like across that gap is one of the hard questions of the century, and it can't be answered without first knowing what happened.</p>
 
     <div class="final-quote">
       <blockquote>"There are no poor nations. There are only nations whose wealth has been stolen, and nations doing the stealing."</blockquote>
       <cite>Paraphrasing Walter Rodney, <em>How Europe Underdeveloped Africa</em>, 1972</cite>
+      <p style="font-size:.85rem; color:var(--muted); margin-top:1rem; font-style:normal;">Rodney's own book is more precise than this paraphrase, and the difference matters. He wrote about classes, not only nations: European capital did the taking, and African ruling groups took a commission on it. He was assassinated in Guyana in 1980, aged 38, organising against a government of Black Guyanese. Read the sentence above as a summary of where the wealth went, not of who was standing where.</p>
     </div>
 
     <p>That's the guide. What you have is a framework, not a verdict. Where you take it is yours to decide.</p>
@@ -695,9 +792,11 @@
 <script>
   const progressMap = {
     start:0, s1:20, s2:40, s3:60, s4:80, s5:100,
+    dive_comprador:20, dive_aristocracy:20,
     dive_cia:40, dive_debt:40, dive_congo:40, dive_media:80
   };
   const diveParent = {
+    dive_comprador:'s1', dive_aristocracy:'s1',
     dive_cia:'s2', dive_debt:'s2', dive_congo:'s2', dive_media:'s4'
   };
   const visited = new Set(['start']);
