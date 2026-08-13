@@ -202,6 +202,12 @@
     width: 100%; height: 100%;
     border: none;
   }
+  .video-wrap video {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
 
   /* ══ Massacre timeline (deep dive s2): all classes namespaced .mt-* ══════ */
   .mt-legend { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; padding: .9rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 1.8rem 0 0; }
@@ -2015,6 +2021,13 @@
     <div class="sc-lesson">
       <strong>The function of mythology:</strong> These ten myths are not innocent misunderstandings. They are the intellectual infrastructure of a settler-colonial project, each one designed to neutralise a specific moral objection. "The land was empty" neutralises the objection that someone already lived there. "They left voluntarily" neutralises the objection that they were expelled. "We offered peace" neutralises the objection that we took their land by force. "It's terrorism" neutralises the objection that they have a right to resist. Stack them together and they form a closed system: every fact that challenges the project is pre-answered by a myth that makes the fact disappear. That is why dismantling them matters, not as an academic exercise, but because a peace built on mythology is no peace at all.
     </div>
+
+    <div class="video-wrap">
+      <video controls playsinline>
+        <source src="media/gaza-children-swing.mp4" type="video/mp4">
+      </video>
+    </div>
+    <p style="font-size:.85rem; margin-top:.5rem; color:var(--muted);">Children swinging amid the rubble in Gaza. Life persisting under what the previous nine stations describe.</p>
 
     <div class="final-quote">
       <blockquote>"To be Palestinian is to be human. To deny Palestinian humanity is to participate in the logic that makes all atrocities possible."</blockquote>
