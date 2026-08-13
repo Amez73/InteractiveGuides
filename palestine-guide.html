@@ -202,11 +202,18 @@
     width: 100%; height: 100%;
     border: none;
   }
-  .video-wrap video {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
+  .video-wrap-auto {
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    margin: 1.2rem 0;
+    background: #000;
+    overflow: hidden;
+    line-height: 0;
+  }
+  .video-wrap-auto video {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 
   /* ══ Massacre timeline (deep dive s2): all classes namespaced .mt-* ══════ */
@@ -2022,8 +2029,8 @@
       <strong>The function of mythology:</strong> These ten myths are not innocent misunderstandings. They are the intellectual infrastructure of a settler-colonial project, each one designed to neutralise a specific moral objection. "The land was empty" neutralises the objection that someone already lived there. "They left voluntarily" neutralises the objection that they were expelled. "We offered peace" neutralises the objection that we took their land by force. "It's terrorism" neutralises the objection that they have a right to resist. Stack them together and they form a closed system: every fact that challenges the project is pre-answered by a myth that makes the fact disappear. That is why dismantling them matters, not as an academic exercise, but because a peace built on mythology is no peace at all.
     </div>
 
-    <div class="video-wrap">
-      <video controls playsinline>
+    <div class="video-wrap-auto">
+      <video controls playsinline autoplay loop muted>
         <source src="media/gaza-children-swing.mp4" type="video/mp4">
       </video>
     </div>
