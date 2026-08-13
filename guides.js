@@ -41,7 +41,7 @@ const GUIDES = [
     part:  'Part 4 · The Deception',
     title: 'What Western Governments Hid From Their Own People',
     short: 'The Deception',
-    desc:  "Fabricated wars, secret experiments on citizens, mass surveillance denied under oath — all confirmed by declassified files and the governments' own admissions.",
+    desc:  "Fabricated wars, secret experiments on citizens, mass surveillance denied under oath, all confirmed by declassified files and the governments' own admissions.",
     badges: [{ text: '~20 min read' }, { text: 'Interactive', format: true }],
   },
   {
@@ -57,7 +57,7 @@ const GUIDES = [
     part:  'Part 6 · The Mirror',
     title: 'Unlearning the Double Standard',
     short: 'The Mirror',
-    desc:  'The capstone. Every charge levelled at "authoritarian" states — surveillance, crushed dissent, forced labor, rigged politics — with the flag stripped off. A declassified CIA file, a quiz that answers itself, and two lenses for reading everything you just learned.',
+    desc:  'The capstone. Every charge levelled at "authoritarian" states, surveillance, crushed dissent, forced labor, rigged politics, with the flag stripped off. A declassified CIA file, a quiz that answers itself, and two lenses for reading everything you just learned.',
     badges: [{ text: '~15 min read' }, { text: 'Interactive Quiz', format: true }],
   },
 ];
