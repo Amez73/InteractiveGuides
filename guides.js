@@ -333,6 +333,254 @@ function dismissResume() {
   if (el) el.remove();
 }
 
+/* ── Annotate mode: leave feedback notes directly on a guide page ─────────
+   Opt-in and invisible to normal readers. Visit any guide once with
+   ?annotate=1 to turn it on (persists via localStorage across all guides).
+   While armed, clicking a paragraph/line opens a small note box; notes are
+   saved locally and exported as JSON to hand to Claude in one batch. */
+const ANNOT_FLAG = 'ig:annotate';
+const ANNOT_STORE = 'ig:feedback:v1';
+
+function annotateEnabled() {
+  try { return localStorage.getItem(ANNOT_FLAG) === '1'; } catch (_) { return false; }
+}
+
+function readNotes() {
+  try { return JSON.parse(localStorage.getItem(ANNOT_STORE)) || []; } catch (_) { return []; }
+}
+
+function writeNotes(notes) {
+  try { localStorage.setItem(ANNOT_STORE, JSON.stringify(notes)); } catch (_) {}
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  }[c]));
+}
+
+function initAnnotate() {
+  try {
+    if (new URLSearchParams(location.search).has('annotate')) {
+      localStorage.setItem(ANNOT_FLAG, '1');
+    }
+  } catch (_) {}
+  if (!annotateEnabled()) return;
+
+  let armed = false;
+
+  const style = document.createElement('style');
+  style.textContent = `
+    #ig-annot { position: fixed; bottom: 18px; right: 14px; z-index: 103;
+      font-family: 'DM Sans', sans-serif; }
+    #ig-annot .ia-btn { display: inline-flex; align-items: center; gap: .4rem; cursor: pointer;
+      background: rgba(18,18,14,.95); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(200,184,130,.3); border-radius: 2rem; color: #C8B882;
+      font-size: .72rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+      padding: .45rem .9rem; line-height: 1; transition: border-color .2s, color .2s; }
+    #ig-annot .ia-btn:hover { border-color: rgba(200,184,130,.6); color: #E4DCC4; }
+    #ig-annot.open .ia-btn { border-color: rgba(200,184,130,.6); color: #E4DCC4; }
+    #ig-annot .ia-panel { position: absolute; bottom: calc(100% + 8px); right: 0;
+      width: min(88vw, 340px); max-height: 70vh; overflow-y: auto;
+      background: rgba(18,18,14,.97); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(200,184,130,.22); border-radius: 8px; padding: .6rem;
+      box-shadow: 0 12px 40px rgba(0,0,0,.55); display: none; }
+    #ig-annot.open .ia-panel { display: block; }
+    #ig-annot .ia-row { display: flex; align-items: center; justify-content: space-between;
+      gap: .5rem; padding: .3rem .2rem; }
+    #ig-annot .ia-arm { cursor: pointer; border: 1px solid rgba(200,184,130,.4);
+      background: rgba(200,184,130,.08); color: #C0B8A8; border-radius: 2rem;
+      font-family: inherit; font-size: .68rem; font-weight: 600; letter-spacing: .05em;
+      text-transform: uppercase; padding: .35rem .7rem; line-height: 1; }
+    #ig-annot .ia-arm.on { background: rgba(200,184,130,.25); color: #E4DCC4;
+      border-color: rgba(200,184,130,.7); }
+    #ig-annot .ia-sep { height: 1px; background: rgba(200,184,130,.14); margin: .4rem .1rem; }
+    #ig-annot .ia-note { padding: .5rem; border-radius: 5px; margin-bottom: .3rem;
+      background: rgba(200,184,130,.05); position: relative; }
+    #ig-annot .ia-note .ia-page { font-size: .58rem; letter-spacing: .08em; text-transform: uppercase;
+      color: #8A8268; font-weight: 700; }
+    #ig-annot .ia-note .ia-snip { font-size: .7rem; color: #8A8268; font-style: italic;
+      margin: .2rem 0; line-height: 1.3; }
+    #ig-annot .ia-note .ia-text { font-size: .8rem; color: #E4DCC4; line-height: 1.35; }
+    #ig-annot .ia-note .ia-del { position: absolute; top: .3rem; right: .3rem; cursor: pointer;
+      border: none; background: none; color: #8A8268; font-size: .8rem; padding: .1rem .3rem; }
+    #ig-annot .ia-note .ia-del:hover { color: #E4DCC4; }
+    #ig-annot .ia-empty { font-size: .75rem; color: #8A8268; padding: .5rem .2rem; }
+    #ig-annot .ia-actions { display: flex; gap: .4rem; margin-top: .3rem; }
+    #ig-annot .ia-actions button { flex: 1; cursor: pointer; border: 1px solid rgba(200,184,130,.3);
+      background: none; color: #C0B8A8; border-radius: 5px; font-family: inherit;
+      font-size: .65rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+      padding: .4rem .3rem; }
+    #ig-annot .ia-actions button:hover { border-color: rgba(200,184,130,.6); color: #E4DCC4; }
+    #ig-annot-modal { position: fixed; inset: 0; z-index: 104; display: flex;
+      align-items: center; justify-content: center; background: rgba(0,0,0,.6); }
+    #ig-annot-modal .ia-box { width: min(90vw, 420px); background: #16160F;
+      border: 1px solid rgba(200,184,130,.3); border-radius: 10px; padding: 1rem 1.1rem;
+      font-family: 'DM Sans', sans-serif; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+    #ig-annot-modal .ia-quote { font-size: .78rem; color: #8A8268; font-style: italic;
+      line-height: 1.4; margin-bottom: .7rem; max-height: 4.5em; overflow: hidden; }
+    #ig-annot-modal textarea { width: 100%; min-height: 80px; resize: vertical;
+      background: rgba(255,255,255,.04); border: 1px solid rgba(200,184,130,.25);
+      border-radius: 6px; color: #E4DCC4; font-family: inherit; font-size: .85rem;
+      padding: .5rem; box-sizing: border-box; }
+    #ig-annot-modal textarea:focus { outline: none; border-color: rgba(200,184,130,.6); }
+    #ig-annot-modal .ia-modal-actions { display: flex; gap: .5rem; margin-top: .7rem;
+      justify-content: flex-end; }
+    #ig-annot-modal .ia-modal-actions button { cursor: pointer; border-radius: 2rem;
+      font-family: inherit; font-size: .72rem; font-weight: 600; letter-spacing: .05em;
+      text-transform: uppercase; padding: .4rem .9rem; line-height: 1; }
+    #ig-annot-modal .ia-cancel { border: 1px solid rgba(200,184,130,.25); background: none;
+      color: #8A8268; }
+    #ig-annot-modal .ia-save { border: 1px solid rgba(200,184,130,.6);
+      background: rgba(200,184,130,.15); color: #C8B882; }
+    #ig-annot-modal .ia-save:hover { color: #E4DCC4; }
+    .ig-annot-armed { cursor: crosshair !important; }
+  `;
+  document.head.appendChild(style);
+
+  const wrap = document.createElement('div');
+  wrap.id = 'ig-annot';
+  document.body.appendChild(wrap);
+
+  function setArmed(v) {
+    armed = v;
+    document.body.classList.toggle('ig-annot-armed', armed);
+    render();
+  }
+
+  function flashBtn(btn, msg) {
+    const orig = btn.textContent;
+    btn.textContent = msg;
+    setTimeout(() => { btn.textContent = orig; }, 1200);
+  }
+
+  function render() {
+    const notes = readNotes();
+    wrap.innerHTML = `
+      <button class="ia-btn" type="button">📝 Feedback${notes.length ? ' · ' + notes.length : ''}</button>
+      <div class="ia-panel">
+        <div class="ia-row">
+          <span style="font-size:.72rem;color:#C0B8A8;">Click text to leave feedback</span>
+          <button class="ia-arm${armed ? ' on' : ''}" type="button">${armed ? 'ON' : 'OFF'}</button>
+        </div>
+        <div class="ia-sep"></div>
+        ${notes.length
+          ? notes.map((n, i) => `
+            <div class="ia-note" data-i="${i}">
+              <button class="ia-del" type="button" aria-label="Delete">✕</button>
+              <div class="ia-page">${escapeHtml(n.page)}</div>
+              <div class="ia-snip">&ldquo;${escapeHtml(n.snippet)}&rdquo;</div>
+              <div class="ia-text">${escapeHtml(n.note)}</div>
+            </div>`).join('')
+          : '<div class="ia-empty">No notes yet. Turn feedback ON, then click any paragraph.</div>'}
+        <div class="ia-actions">
+          <button type="button" class="ia-copy">Copy JSON</button>
+          <button type="button" class="ia-clear">Clear All</button>
+          <button type="button" class="ia-off">Turn Off</button>
+        </div>
+      </div>`;
+
+    wrap.querySelector('.ia-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      wrap.classList.toggle('open');
+    });
+    wrap.querySelector('.ia-arm').addEventListener('click', (e) => {
+      e.stopPropagation();
+      setArmed(!armed);
+    });
+    wrap.querySelectorAll('.ia-del').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const i = Number(btn.closest('.ia-note').dataset.i);
+        const list = readNotes();
+        list.splice(i, 1);
+        writeNotes(list);
+        render();
+      });
+    });
+    wrap.querySelector('.ia-copy').addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const text = JSON.stringify(readNotes(), null, 2);
+      try {
+        await navigator.clipboard.writeText(text);
+        flashBtn(wrap.querySelector('.ia-copy'), 'Copied!');
+      } catch (_) {
+        window.prompt('Copy the feedback JSON:', text);
+      }
+    });
+    wrap.querySelector('.ia-clear').addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!window.confirm('Clear all saved feedback notes?')) return;
+      writeNotes([]);
+      render();
+    });
+    wrap.querySelector('.ia-off').addEventListener('click', (e) => {
+      e.stopPropagation();
+      try { localStorage.removeItem(ANNOT_FLAG); } catch (_) {}
+      setArmed(false);
+      document.removeEventListener('click', onDocClick, true);
+      wrap.remove();
+    });
+  }
+
+  document.addEventListener('click', (e) => {
+    if (!wrap.contains(e.target)) wrap.classList.remove('open');
+  });
+
+  const BLOCK_SEL = 'p, li, h1, h2, h3, h4, h5, h6, blockquote, td, th, dt, dd, figcaption';
+  const SKIP_SEL = 'button, a, input, textarea, select, [onclick], #ig-annot, #ig-annot-modal';
+
+  function onDocClick(e) {
+    if (!armed) return;
+    if (e.target.closest(SKIP_SEL)) return;
+    const block = e.target.closest(BLOCK_SEL) || e.target;
+    const text = (block.innerText || block.textContent || '').trim();
+    if (!text) return;
+    e.preventDefault();
+    e.stopPropagation();
+    openModal(text);
+  }
+  document.addEventListener('click', onDocClick, true);
+
+  function openModal(text) {
+    const snippet = text.slice(0, 100);
+    const modal = document.createElement('div');
+    modal.id = 'ig-annot-modal';
+    modal.innerHTML = `
+      <div class="ia-box">
+        <div class="ia-quote">&ldquo;${escapeHtml(snippet)}${text.length > 100 ? '…' : ''}&rdquo;</div>
+        <textarea placeholder="What's the feedback?"></textarea>
+        <div class="ia-modal-actions">
+          <button type="button" class="ia-cancel">Cancel</button>
+          <button type="button" class="ia-save">Save</button>
+        </div>
+      </div>`;
+    document.body.appendChild(modal);
+    const ta = modal.querySelector('textarea');
+    ta.focus();
+
+    function onEsc(e) { if (e.key === 'Escape') close(); }
+    function close() {
+      modal.remove();
+      document.removeEventListener('keydown', onEsc);
+    }
+    modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
+    modal.querySelector('.ia-cancel').addEventListener('click', close);
+    modal.querySelector('.ia-save').addEventListener('click', () => {
+      const note = ta.value.trim();
+      if (!note) { close(); return; }
+      const list = readNotes();
+      list.push({ page: currentFile(), snippet, note, ts: Date.now() });
+      writeNotes(list);
+      close();
+      render();
+    });
+    document.addEventListener('keydown', onEsc);
+  }
+
+  render();
+}
+
 /* ── Dispatch based on the flag on this script's own tag ─────────────────── */
 (function () {
   const mode = document.currentScript.dataset;
@@ -344,6 +592,7 @@ function dismissResume() {
       injectNav();
       enhanceGuide();
     }
+    initAnnotate();
   };
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', run);
