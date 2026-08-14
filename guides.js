@@ -528,7 +528,8 @@ function initAnnotate() {
   });
 
   const BLOCK_SEL = 'p, li, h1, h2, h3, h4, h5, h6, blockquote, td, th, dt, dd, figcaption';
-  const SKIP_SEL = 'button, a, input, textarea, select, [onclick], #ig-annot, #ig-annot-modal';
+  const SKIP_SEL = 'button, a, input, textarea, select, summary, [onclick], [role="button"], ' +
+    '#ig-annot, #ig-annot-modal';
 
   function onDocClick(e) {
     if (!armed) return;
