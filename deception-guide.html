@@ -162,6 +162,21 @@
   .claim-card .claim-body p { margin-bottom: .8rem; }
   .claim-blurb { font-size: .82rem; color: var(--muted); font-weight: 400; margin-left: .3rem; }
 
+  /* ── Video embed (local) ── */
+  .video-wrap-auto {
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    margin: 1.2rem 0;
+    background: #000;
+    overflow: hidden;
+    line-height: 0;
+  }
+  .video-wrap-auto video {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
   /* ── Dive banner ── */
   .dive-banner { display: flex; align-items: center; gap: .8rem; background: rgba(90,138,170,.08); border: 1px solid rgba(90,138,170,.2); border-radius: 6px; padding: .7rem 1.1rem; margin-bottom: 2rem; font-size: .82rem; color: var(--steel); font-weight: 500; letter-spacing: .04em; }
   .dive-banner::before { content: '◆'; font-size: .65rem; }
@@ -379,7 +394,7 @@
     </details>
 
     <div class="callout frame">
-      <strong>Why this matters for Station 7.</strong> This guide ends by recommending structural reform: oversight with teeth, prosecution for perjury, protection for whistleblowers. Both mechanisms say those are winnable, and the second one tells you how far. Electing different people moves real things, which is why the Church Committee produced genuine disclosure rather than a whitewash. What it did not do, and structurally could not, was dismantle a capability the apparatus depends on, which is why the surveillance was larger by 2001 and larger again by 2013. The reforms are worth fighting for. Expect them to hold at the level of what is disclosed and prosecuted, and to be rebuilt at the level of what the machinery is for.
+      <strong>How this impacts the discussion of revolution vs. reform.</strong> This guide ends by recommending structural reform: oversight with teeth, prosecution for perjury, protection for whistleblowers. Both mechanisms say those are winnable, and the second one tells you how far. Electing different people moves real things, which is why the Church Committee produced genuine disclosure rather than a whitewash. What it did not do, and structurally could not, was dismantle a capability the apparatus depends on, which is why the surveillance was larger by 2001 and larger again by 2013. The reforms are worth fighting for. Expect them to hold at the level of what is disclosed and prosecuted, and to be rebuilt at the level of what the machinery is for.
     </div>
 
     <div class="btn-group">
@@ -400,24 +415,26 @@
     <div class="timeline">
       <div class="t-item red">
         <p class="t-year">1964, Gulf of Tonkin</p>
-        <p class="t-title">The Incident That Didn't Happen</p>
+        <p class="t-title">The US Faked an Attack to Sell the Vietnam War</p>
         <p class="t-hit">The attack never happened
           <em><b>58,000</b> Americans and <b>2–3 million</b> Vietnamese died for it</em>
           <em>The NSA's own history admits the intercepts were altered</em>
         </p>
         <details class="deep-expand t-expand">
-          <summary>What happened</summary>
+          <summary>What happened, and why the US wanted this war</summary>
           <div class="expand-content">
-            <p>The Johnson administration told Congress North Vietnamese boats had attacked the USS Maddox a second time. <strong>The attack did not happen.</strong> The NSA's own declassified history (2005) confirmed intercepts were cherry-picked and altered to support the story. The resolution it produced led to a war that killed 58,000 Americans and 2–3 million Vietnamese. <strong>Source:</strong> Robert Hanyok, NSA declassified report (2005).</p>
+            <p>The Johnson administration told Congress North Vietnamese boats had attacked the USS Maddox a second time. <strong>The attack did not happen.</strong> The NSA's own declassified history (2005) confirmed intercepts were cherry-picked and altered to support the story. The resolution it produced led to a war that killed 58,000 Americans and 2–3 million Vietnamese.</p>
+            <p><strong>Why Vietnam.</strong> Publicly, the war was sold as stopping communism from spreading domino-by-domino across Asia. Internally, officials were more specific about the stakes. In 1953, defending US funding for France's war to hold Indochina, President Eisenhower told the Governors' Conference that losing the region would mean the Malayan peninsula "would be scarcely defensible, and tin and tungsten that we so greatly value from that area would cease coming," and that the aid was "the cheapest way that we can" to protect America's "ability to get certain things we need from the riches of the Indonesian territory, and from southeast Asia." That is containment doctrine in its material form: not primarily a defense of Vietnamese self-determination, but a defense of Southeast Asia's markets, labor, and raw materials staying open to Western-aligned capital rather than exiting into an independent or socialist economy. Historian Gabriel Kolko's <em>Anatomy of a War</em> (1985) traces the same logic through the two decades that followed direct US intervention: a peasant-based national liberation movement defeating a capitalist power and taking its economy out of the system Washington was built to protect was the precedent that could not be allowed to stand, whatever the domino-theory rhetoric said out loud.</p>
+            <p><strong>Source:</strong> Robert Hanyok, NSA declassified report (2005); Dwight D. Eisenhower, "Remarks at the Governors' Conference, Seattle, Washington" (Aug. 4, 1953), The American Presidency Project; Gabriel Kolko, <em>Anatomy of a War: Vietnam, the United States, and the Modern Historical Experience</em> (1985).</p>
           </div>
         </details>
       </div>
       <div class="t-item red">
         <p class="t-year">1990, The Nayirah Testimony</p>
         <p class="t-title">The Girl Who Wasn't a Witness</p>
-        <p class="t-hit">A PR firm wrote the witness
+        <p class="t-hit">A PR firm invented a witness to sell the Gulf War
           <em>The Kuwaiti ambassador's daughter, coached on a <b>$10.8M</b> contract</em>
-          <em><b>Six senators</b> cited her voting for war. Bush repeated it ten times</em>
+          <em><b>Six senators</b> cited her testimony voting for war. Bush repeated it ten times</em>
         </p>
         <details class="deep-expand t-expand">
           <summary>What happened</summary>
@@ -429,7 +446,7 @@
       <div class="t-item red">
         <p class="t-year">2002–2003, Iraq WMDs</p>
         <p class="t-title">The Weapons That Didn't Exist</p>
-        <p class="t-hit">There were no weapons. German intelligence had already warned the CIA its source was a fabricator.
+        <p class="t-hit">The US sold the invasion of Iraq on weapons that didn't exist. German intelligence had already warned the CIA its source was a fabricator.
           <em><b>200,000–600,000+</b> Iraqi civilians and <b>4,600</b> US soldiers killed</em>
         </p>
         <details class="deep-expand t-expand">
@@ -441,9 +458,9 @@
       </div>
       <div class="t-item red">
         <p class="t-year">2011, Libya</p>
-        <p class="t-title">The Humanitarian War That Wasn't</p>
-        <p class="t-hit">The massacre they went in to prevent was never going to happen
-          <em>Amnesty, HRW and a UN commission found no evidence for it</em>
+        <p class="t-title">NATO's Libya War, Sold as a Rescue</p>
+        <p class="t-hit">NATO bombed Libya to overthrow Gaddafi, selling it as stopping a Benghazi massacre that was never going to happen
+          <em>Amnesty, HRW and a UN commission found no evidence for the massacre claims</em>
           <em>The war left open-air slave markets, filmed by CNN in 2017</em>
         </p>
         <details class="deep-expand t-expand">
@@ -490,6 +507,13 @@
     <div class="callout dark">
       <strong>The cost of these lies is not abstract.</strong> The soldiers sent to fight these wars were told they were defending their country against real threats. The populations who backed them were shown evidence they had no way to verify. The wars killed, conservatively, several million people. No one who fabricated the evidence was ever charged.
     </div>
+
+    <div class="video-wrap-auto">
+      <video controls playsinline>
+        <source src="media/warIsARacket.mp4" type="video/mp4">
+      </video>
+    </div>
+    <p style="font-size:.85rem;color:var(--muted);margin-top:.5rem;">War Is a Racket: Major General Smedley Butler's own reckoning, after 33 years in uniform and two Medals of Honor, with who actually profits from wars like the ones above.</p>
 
     <div class="btn-group">
       <button class="btn btn-dive" onclick="go('dive_iraq')">◆ Deep Dive: The Iraq WMD fabrication, the full story</button>
@@ -570,8 +594,9 @@
       <div class="t-item red">
         <p class="t-year">1953–1973, United States and Canada</p>
         <p class="t-title">Project MKUltra</p>
-        <p class="t-hit">The CIA director ordered every file burned. We only know about it because 20,000 pages were misfiled.
-          <em>LSD and electroshock on people who never agreed. One death attributed to it</em>
+        <p class="t-hit">The CIA ran mind-control experiments on its own citizens, dosing them with LSD and electroshock without consent
+          <em>The director ordered every file burned. We only know because <b>20,000</b> pages were misfiled</em>
+          <em>One death directly attributed to it</em>
         </p>
         <details class="deep-expand t-expand">
           <summary>What happened</summary>
@@ -616,7 +641,7 @@
 
     <div class="btn-group">
       <button class="btn btn-dive" onclick="go('dive_mkultra')">◆ Deep Dive: MKUltra, the CIA's mind control program</button>
-      <button class="btn btn-dive" onclick="go('dive_northwoods')">◆ Deep Dive: Operation Northwoods, the false flag the president rejected</button>
+      <button class="btn btn-dive" onclick="go('dive_northwoods')">◆ Deep Dive: Operation Northwoods, a false-flag plan to frame Cuba, rejected by JFK</button>
       <button class="btn btn-primary" onclick="go('s4')">Station 4: The Crackdown, how the FBI targeted its own citizens</button>
     </div>
   </div>
@@ -656,7 +681,7 @@
   <!-- ══ DEEP DIVE: NORTHWOODS ══ -->
   <div class="passage" id="passage-dive_northwoods">
     <div class="dive-banner">Deep Dive: Operation Northwoods</div>
-    <h2>The False Flag the President Rejected</h2>
+    <h2>A False-Flag Plan to Frame Cuba, Which JFK Rejected</h2>
 
     <p>Operation Northwoods is significant not because it was carried out (it wasn't) but because it was officially proposed by the highest levels of the US military, written up in formal planning documents, and only stopped by the President of the United States personally rejecting it.</p>
 
@@ -704,10 +729,21 @@
     <details class="claim-card">
       <summary>The FBI's anonymous letter to Martin Luther King Jr. <span class="claim-blurb">Original held at National Archives</span></summary>
       <div class="claim-body">
+        <p>Two days after King's "I Have a Dream" speech in August 1963, William Sullivan, the FBI's head of domestic intelligence, wrote that the Bureau must now "mark him as the most dangerous Negro of the future in this Nation from the standpoint of communism, the Negro and national security." That memo, not a rogue field office but the FBI's own internal judgment at the top of its intelligence division, is what authorized the surveillance and harassment campaign that followed.</p>
         <p>In November 1964, the FBI sent Martin Luther King Jr. an anonymous letter, now known as the "suicide letter", accompanied by recordings from wiretaps that J. Edgar Hoover had personally authorized on King's hotel rooms.</p>
         <p>The letter called King "a colossal fraud and an evil, vicious one at that" and an "abnormal moral imbecile." It continued: "King, there is only one thing left for you to do. You know what it is… You are done. There is but one way out for you. You better take it before your filthy, abnormal fraudulent self is bared to the nation."</p>
         <p>The letter was designed to drive King to suicide. It was sent 34 days before King was to receive the Nobel Peace Prize. The original letter is held at the National Archives. It was sent by the domestic intelligence division of the FBI, the chief law enforcement agency of the United States government.</p>
         <p><strong>Source:</strong> Senate Church Committee Report, Book III (1976); Beverly Gage, "What an Uncensored Letter to M.L.K. Reveals," <em>New York Times Magazine</em> (2014); National Archives.</p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>The 1999 civil verdict, and why it's genuinely contested <span class="claim-blurb">Memphis jury vs. a DOJ review that found the evidence unreliable</span></summary>
+      <div class="claim-body">
+        <p>On December 8, 1999, a Memphis jury heard the King family's wrongful-death suit against Loyd Jowers, a tavern owner near the Lorraine Motel who claimed in a 1993 TV interview that he'd helped arrange King's killing alongside Memphis police and organized-crime figures, and that the fatal shot came from behind his restaurant, not from James Earl Ray's rooming-house window. After four weeks of testimony from more than 70 witnesses, the jury found that Jowers and "others, including governmental agencies," had participated in a conspiracy to kill King. Because it was a civil case, the standard of proof was the lower "preponderance of the evidence," not the criminal standard.</p>
+        <p><strong>Why this is disputed, not settled.</strong> The Department of Justice's Civil Rights Division opened its own review and, in June 2000, concluded the Jowers allegations "were not credible": built on uncorroborated secondhand and thirdhand hearsay, contradicted rather than supported by the physical evidence, and undercut by the fact that Jowers had spent 25 years denying any involvement before changing his story on television in 1993, then kept changing the details afterward. Historian David Garrow, King's Pulitzer-winning biographer, called the verdict "almost meaningless." Journalist Gerald Posner called the trial "callous and farcical," a "rubber stamp" of the King family's prior view.</p>
+        <p>What isn't in dispute is that the FBI spent years trying to destroy King, up to and including a letter urging him to kill himself. What remains genuinely unresolved is whether the state was involved in the killing itself, and the one time that claim was tested in a courtroom, the government's own follow-up review and independent historians found the evidence it rested on too weak to hold.</p>
+        <p><strong>Source:</strong> Loyd Jowers civil trial verdict, Shelby County Circuit Court (Dec. 8, 1999); US Department of Justice, Civil Rights Division, "Investigation of Recent Allegations Regarding the Assassination of Dr. Martin Luther King, Jr." (2000); Gerald Posner, <em>Killing the Dream</em> (1998).</p>
       </div>
     </details>
 
@@ -761,7 +797,7 @@
 
     <p><strong>The reforms, and their erosion.</strong> The Church Committee led to the creation of the Foreign Intelligence Surveillance Act (FISA), the FISA Court, congressional intelligence oversight committees, and executive orders restricting domestic surveillance. These reforms were supposed to prevent a recurrence.</p>
 
-    <p>After September 11, 2001, most of these protections were circumvented or dismantled, through the PATRIOT Act, through secret FISA Court rulings that reinterpreted the law beyond recognition, and through programs that were simply conducted without legal authority and retroactively legalized when discovered. The surveillance state that the Church Committee tried to dismantle was rebuilt, larger and more capable than ever, within a generation.</p>
+    <p><strong>After September 11, 2001, most of these protections were circumvented or dismantled, through the PATRIOT Act, through secret FISA Court rulings that reinterpreted the law beyond recognition, and through programs that were simply conducted without legal authority and retroactively legalized when discovered.</strong> The surveillance state that the Church Committee tried to dismantle was rebuilt, larger and more capable than ever, within a generation.</p>
 
     <div class="btn-group">
       <button class="btn btn-back" onclick="go('s4')">Back to Station 4</button>

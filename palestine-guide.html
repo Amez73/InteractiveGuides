@@ -228,8 +228,19 @@
 
   /* full-bleed out of the 680px column; --mt-sbw is the measured scrollbar width */
   .mt-bleed { width: calc(100vw - var(--mt-sbw, 0px)); margin-left: calc((100% - 100vw + var(--mt-sbw, 0px)) / 2); }
-  .mt-scroller { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; background: #080905; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .mt-scroller { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; background: #080905; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    scrollbar-width: none; -ms-overflow-style: none; }
+  .mt-scroller::-webkit-scrollbar { display: none; height: 0; }
   .mt-canvas { position: relative; width: 10000px; height: 1700px; }
+
+  /* custom top+bottom scrollbars: the native one can't be duplicated above the
+     content, so it's hidden on .mt-scroller and replaced with these two, kept
+     in sync with scrollLeft by JS. Track is clickable, thumb is draggable. */
+  .mt-hscroll { position: relative; height: 11px; background: var(--track); border-left: 1px solid var(--border); border-right: 1px solid var(--border); cursor: pointer; }
+  #mt-hscroll-top { border-bottom: 1px solid var(--border); }
+  #mt-hscroll-bottom { border-top: 1px solid var(--border); }
+  .mt-hscroll-thumb { position: absolute; top: 1px; bottom: 1px; left: 0; min-width: 32px; background: var(--olive-dim); border-radius: 5px; transition: background .15s; }
+  .mt-hscroll-thumb:hover, .mt-hscroll-thumb.mt-dragging { background: var(--olive); }
   #mt-wires { position: absolute; top: 0; left: 0; z-index: 1; pointer-events: none; }
 
   .mt-axis { position: absolute; left: 0; right: 0; height: 26px; border-top: 2px solid #3C4029; z-index: 0; }
@@ -318,13 +329,15 @@
   <span class="nav-sep">·</span>
   <span class="nav-stop" data-passage="s5" onclick="go('s5')">Gaza Now</span>
   <span class="nav-sep">·</span>
-  <span class="nav-stop" data-passage="s6" onclick="go('s6')">The Record</span>
+  <span class="nav-stop" data-passage="s6" onclick="go('s6')">The Evidence</span>
   <span class="nav-sep">·</span>
-  <span class="nav-stop" data-passage="s7" onclick="go('s7')">The Silence</span>
+  <span class="nav-stop" data-passage="s7" onclick="go('s7')">The Record</span>
   <span class="nav-sep">·</span>
-  <span class="nav-stop" data-passage="s8" onclick="go('s8')">The Lies</span>
+  <span class="nav-stop" data-passage="s8" onclick="go('s8')">The Silence</span>
   <span class="nav-sep">·</span>
-  <span class="nav-stop" data-passage="s9" onclick="go('s9')">The Myths</span>
+  <span class="nav-stop" data-passage="s9" onclick="go('s9')">The Lies</span>
+  <span class="nav-sep">·</span>
+  <span class="nav-stop" data-passage="s10" onclick="go('s10')">The Myths</span>
 </nav>
 
 <div id="app">
@@ -349,6 +362,8 @@
           <span class="track-conn">──▶</span>
           <span class="track-stop main">Gaza Now</span>
           <span class="track-conn">──▶</span>
+          <span class="track-stop main">The Evidence</span>
+          <span class="track-conn">──▶</span>
           <span class="track-stop main">The Record</span>
           <span class="track-conn">──▶</span>
           <span class="track-stop main">The Silence</span>
@@ -372,7 +387,7 @@
 
   <!-- ══ STATION 1: THE FRAME ══ -->
   <div class="passage" id="passage-s1">
-    <p class="eyebrow">Station 1 of 9</p>
+    <p class="eyebrow">Station 1 of 10</p>
     <h2>The Frame: Settler Colonialism</h2>
 
     <p class="page-hook">Israel was built as a <strong>settler-colonial project</strong>, one designed not to rule the people already on the land but to replace them. Its own founders said so, in writing. Get this one idea and the rest of the story snaps into focus.</p>
@@ -406,7 +421,7 @@
 
   <!-- ══ STATION 2: THE HISTORY ══ -->
   <div class="passage" id="passage-s2">
-    <p class="eyebrow">Station 2 of 9</p>
+    <p class="eyebrow">Station 2 of 10</p>
     <h2>The History: Ottoman Palestine to the Nakba</h2>
 
     <p class="page-hook">Palestine was never empty. Over a few decades it was turned from an Arab-majority land into a state where the majority had been <strong>expelled or scattered: 750,000 people, 400+ villages destroyed</strong>, none ever allowed home. Here it is, year by year.</p>
@@ -573,7 +588,7 @@
   <!-- ══ DEEP DIVE: HAAVARA ══ -->
   <div class="passage" id="passage-dive_haavara">
     <div class="dive-banner">Deep Dive: The Haavara Agreement</div>
-    <h2>1933: The Deal That Funded the 1930s Settlement Boom</h2>
+    <h2>1933: The Deal Between the Zionist Federation of Germany and Nazi Germany</h2>
 
     <p class="page-hook">In August 1933 the Zionist Federation of Germany signed a transfer deal with Hitler's government. It moved <strong>roughly 60,000 German Jews and about $100 million in capital into Palestine</strong> before the war shut it down. It is the clearest documented answer to the question this guide keeps circling: when rescue and settlement pointed in different directions, <strong>which one did the movement's leadership choose?</strong></p>
 
@@ -600,7 +615,7 @@
       <p><strong>Was it collaboration? Get this exactly right.</strong></p>
       <p>It was cooperation with the Nazi state. That is not a slur, it is the documented record: a signed agreement, six years of trade, mutual benefit. And the people who called it collaboration at the time were Jews. Jabotinsky's Revisionists and the anti-Nazi boycott organisers said that breaking a collective front against Hitler for sectional gain was a betrayal of Jews everywhere. They lost that argument. The side that won, the Labour Zionist mainstream and the Jewish Agency, went on to found the state.</p>
       <p><strong>What it shows is priority.</strong> The movement's leaders did not wish Jews harm. But when saving lives and settling Palestine came apart, they chose Palestine, and paid the persecutor to make it possible.</p>
-      <p><strong>What it does not show is complicity in genocide.</strong> Haavara ended in September 1939. The extermination decision came in 1941. Nothing about a 1933 shipping arrangement enabled or anticipated it, and the 60,000 people who used it were refugees saving their own lives with the only exit available to them. Anyone citing this agreement to argue that Jews took part in their own destruction is lying to you, and that lie is antisemitism wearing the costume of history.</p>
+      <p><strong>What it does not show is complicity in genocide, but it isn't unrelated either. Get this part exactly right too.</strong> Haavara ran from 1933 to September 1939, entirely inside what historians call the Nazi regime's "forced emigration" phase: the policy goal at that point was to make Germany, and later the territory it annexed, <em>Judenrein</em> by pushing Jews out, not yet to kill them where they stood. The regime's shift to systematic mass murder, the Final Solution, was decided in 1941 and industrialised in 1942, after Haavara had already ended. So both things are true at once: the agreement served the same underlying Nazi objective, removing Jews from Europe, and Berlin's motive for signing it was exactly that, not any early hint of extermination. It is accurate to call Haavara part of that earlier eliminationist push. It is not accurate to call it coordination toward mass murder, because that decision had not been made yet by anyone. Nothing about a 1933 shipping arrangement built or anticipated the machinery of 1941, and the 60,000 people who used it were refugees saving their own lives with the only exit the movement's leadership had negotiated open. Anyone citing this agreement to argue that Jews took part in planning their own extermination is lying to you, and that lie is antisemitism wearing the costume of history.</p>
     </div>
 
     <div class="sc-lesson">
@@ -622,7 +637,7 @@
     <div class="dive-banner">Deep Dive: The Massacre Record, 1948–2026</div>
     <h2>Eighty Documented Mass Killings, End to End</h2>
 
-    <p class="page-hook">This record starts <strong>before the state of Israel existed</strong> and runs to this year. Read end to end, it is not a list of unconnected incidents. It is a continuity.</p>
+    <p class="page-hook">This record starts <strong>today</strong> and runs back to before the state of Israel existed. Read end to end, it is not a list of unconnected incidents. It is a continuity.</p>
 
     <p>Station 2 gave you the Nakba as a period: 750,000 expelled, 400+ villages destroyed. This is the same history at the level of the individual event, and then carried forward past 1949, because the pattern did not stop when the war ended.</p>
 
@@ -636,15 +651,17 @@
     </div>
 
     <div class="mt-jump" id="mt-jump"></div>
-    <p class="mt-hint">Scroll sideways · hatched bands are condensed idle years · leader lines mark entries too close together to sit at their exact date →</p>
+    <p class="mt-hint">Starts today, scrolls back through time · hatched bands are condensed idle years · leader lines mark entries too close together to sit at their exact date · scroll or use the bars top and bottom, the mouse wheel works too →</p>
 
     <div class="mt-bleed">
+      <div class="mt-hscroll" id="mt-hscroll-top" role="scrollbar" aria-orientation="horizontal" aria-controls="mt-scroller"><div class="mt-hscroll-thumb" id="mt-hscroll-thumb-top"></div></div>
       <div class="mt-scroller" id="mt-scroller">
         <div class="mt-canvas" id="mt-canvas">
           <svg id="mt-wires"></svg>
           <div class="mt-axis" id="mt-axisline"></div>
         </div>
       </div>
+      <div class="mt-hscroll" id="mt-hscroll-bottom" role="scrollbar" aria-orientation="horizontal" aria-controls="mt-scroller"><div class="mt-hscroll-thumb" id="mt-hscroll-thumb-bottom"></div></div>
     </div>
 
     <div class="mt-roster">
@@ -667,28 +684,18 @@
     </div>
 
     <div class="mt-note mt-gap">
-      <strong>What is still missing.</strong> This is 80 entries against a documented universe orders of magnitude larger. Categories were added in direct response to identified blind spots: protected-site destruction (hospitals, schools), slow-mechanism deaths (infrastructure collapse, detention, starvation), and demographic erasure (entire family lines killed). Each addition surfaced others not yet built out. Religious and cultural sites are one: 227 mosques and 3 churches were damaged or destroyed, per UN figures, and none has an individual entry here. West Bank settler violence is another: it operates through a different mechanism again, and it is not represented on this timeline at all. The hatched bands mark condensed spans of low entry density, not periods without killing:
+      <strong>Honorable mentions.</strong> Eighty entries cannot cover a documented record this large. These are other incidents and patterns worth naming on their own, even without an individual chip on the timeline above. The hatched bands mark condensed spans of low entry density, not periods without killing:
       <ul>
-        <li><strong>1947–56.</strong> Salman Abu Sitta's <em>Atlas of Palestine</em> lists 232 sites of atrocity, massacre, destruction or plunder. Badil's survey of UN and Israeli archives counts more than thirty documented massacres in 1948 alone; one Israeli historian's fuller archival review puts it above a hundred, ten of them major. <strong>Sixteen individual entries are here.</strong></li>
-        <li><strong>1957–1967.</strong> A decade of cross-border shootings of Palestinians attempting to return or cross armistice lines, referenced in Israeli and UN records but never aggregated into a reliable toll. Nothing from this decade is on the timeline.</li>
-        <li><strong>1967 and after.</strong> The 1967 war's village demolitions and killings, and the 1971 Gaza campaign, are represented, but a large share of the underlying archive remains sealed by Israel's own state archivist, so the tolls given are ranges and estimates, not counts.</li>
+        <li><strong>Religious and cultural sites.</strong> 227 mosques and 3 churches were damaged or destroyed in Gaza, per UN figures. None has an individual entry here.</li>
+        <li><strong>West Bank settler violence.</strong> A different mechanism from anything above: organised, state-tolerated attacks on Palestinian communities rather than a military strike, documented at length in this guide's settlements deep dive. It does not appear on this timeline.</li>
+        <li><strong>1947–56.</strong> Salman Abu Sitta's <em>Atlas of Palestine</em> lists 232 sites of atrocity, massacre, destruction or plunder. Badil's survey of UN and Israeli archives counts more than thirty documented massacres in 1948 alone; one Israeli historian's fuller archival review puts it above a hundred, ten of them major. Sixteen individual entries from this period are here.</li>
+        <li><strong>1957–1967.</strong> A decade of cross-border shootings of Palestinians attempting to return or cross armistice lines, referenced in Israeli and UN records but never aggregated into a reliable toll.</li>
+        <li><strong>1967 and after.</strong> The 1967 war's village demolitions and killings, and the 1971 Gaza campaign, are represented here, but a large share of the underlying archive remains sealed by Israel's own state archivist, so the tolls given are ranges and estimates, not counts.</li>
         <li><strong>1993–2002.</strong> The Oslo years and the run-up to the Second Intifada carry no entries here; B'Tselem's continuous fatality database covers this period in full.</li>
         <li><strong>2019–2023.</strong> Sporadic escalations, including May 2021 beyond the single al-Wehda Street strike listed, are underrepresented.</li>
-        <li><strong>The current war.</strong> Airwars and ACLED log thousands of separate civilian-harm events in Gaza since October 2023. The New Humanitarian's database alone tracks more than 500 incidents involving aid seekers. <strong>Twenty-one individual entries are here.</strong></li>
-        <li><strong>The West Bank</strong> is still substantially underrepresented outside the aggregate entries. B'Tselem's fatality database records Palestinians killed there continuously from 1987 to now, including 1,105 since October 2023, at least 242 of them children.</li>
+        <li><strong>The current war.</strong> Airwars and ACLED log thousands of separate civilian-harm events in Gaza since October 2023. The New Humanitarian's database alone tracks more than 500 incidents involving aid seekers. Twenty-one individual entries from this war are here.</li>
+        <li><strong>The West Bank</strong> is represented here only in the aggregate entries. B'Tselem's fatality database records Palestinians killed there continuously from 1987 to now, including 1,105 since October 2023, at least 242 of them children.</li>
       </ul>
-    </div>
-
-    <div class="mt-note">
-      <strong>On the wording.</strong> The one-line descriptions use plain verbs, shot, shelled, burned, executed, rather than "murdered". Not to soften anything: several entries are contested, and a legal verdict used as a label makes the whole list dismissible on its weakest entry. Where a court, commission or inquiry did reach a finding, it is stated in the detail card, including the UN's 2025 genocide finding.
-    </div>
-
-    <div class="mt-note">
-      <strong>On counting children.</strong> Roughly half these entries carry no child figure because none was ever recorded. That is the record, not a gap in the research. Consistent child counts appear only once UNRWA rolls, health ministry registries and human rights fieldwork exist to produce them, which is to say from the mid-twentieth century onward, and unevenly even then.
-    </div>
-
-    <div class="mt-note">
-      <strong>How this was built.</strong> Incidents with genuinely disputed attribution are excluded: the al-Ahli hospital blast of 17 October 2023, put at 471 dead by Gaza's health ministry, is left off because Israeli and US intelligence attributed it to a misfired Palestinian rocket.
     </div>
 
     <div class="mt-note">
@@ -725,7 +732,7 @@
 
   <!-- ══ STATION 3: THE OCCUPATION ══ -->
   <div class="passage" id="passage-s3">
-    <p class="eyebrow">Station 3 of 9</p>
+    <p class="eyebrow">Station 3 of 10</p>
     <h2>The Occupation: 1967 to the Present</h2>
 
     <p class="page-hook">Since 1967, Israel has run <strong>the longest military occupation in the modern world</strong>, seizing land, planting settlements international law calls illegal, and carving the West Bank into pieces until a Palestinian state became physically impossible. Here's the timeline.</p>
@@ -848,14 +855,14 @@
       <div class="t-item red">
         <p class="t-year">2000–2005</p>
         <p class="t-title">The Second Intifada</p>
-        <p class="t-hit">Palestinian factions bombed Israeli civilians. Israel answered with assassinations, raids and a wall.
-          <em><b>1,000+</b> Israeli civilians killed</em>
-          <em><b>3,000+</b> Palestinians killed. The ICJ ruled the wall illegal</em>
+        <p class="t-hit">Palestinian factions bombed Israeli civilians. Israel's military killed Palestinians at roughly three times the rate.
+          <em><b>~1,000</b> Israelis killed, most of them civilians</em>
+          <em><b>3,200+</b> Palestinians killed, most by Israeli forces. The ICJ ruled the wall illegal</em>
         </p>
         <details class="deep-expand t-expand">
           <summary>What happened</summary>
           <div class="expand-content">
-            <p>Far more violent than the first. Palestinian factions carry out suicide bombings targeting Israeli civilians. <strong>Over 1,000 Israeli civilians killed.</strong> Israel responds with targeted assassinations, raids, and a separation wall. <strong>Over 3,000 Palestinians killed.</strong> The wall, ruled illegal by the ICJ, annexes Palestinian land.</p>
+            <p>Far more violent than the first. From 2001, Palestinian factions carried out roughly 138 suicide bombings, mostly targeting Israeli civilians on buses, in cafés and at a Passover seder; combined with shootings and other attacks, they killed close to 1,000 Israelis, most of them civilians. Israel responded with targeted assassinations, tank and helicopter raids into Palestinian cities, curfews, closures, and a separation wall built across occupied land. Israeli forces killed more than 3,200 Palestinians, roughly three for every Israeli death, and B'Tselem found the large majority of the Palestinian dead had not been participating in the fighting when they were killed. The wall, ruled illegal by the ICJ in 2004, annexed further Palestinian land under the banner of security.</p>
           </div>
         </details>
       </div>
@@ -878,14 +885,14 @@
       <div class="t-item">
         <p class="t-year">2023</p>
         <p class="t-title">Settlements Today</p>
-        <p class="t-hit">700,000 settlers now live on occupied land
-          <em>A contiguous Palestinian state is no longer geographically possible</em>
-          <em>Most of the world considers every one of them illegal</em>
+        <p class="t-hit">700,000 settlers now live on land seized by military force
+          <em>Illegal under the Fourth Geneva Convention and UN Security Council Resolution 2334</em>
+          <em>The ICJ ruled Israel's entire occupation unlawful in July 2024</em>
         </p>
         <details class="deep-expand t-expand">
           <summary>Where it stands</summary>
           <div class="expand-content">
-            <p>Over 700,000 Israeli settlers now live in the West Bank and East Jerusalem. The settlement project has made a contiguous Palestinian state geographically impossible without removing them. Most of the international community considers them illegal.</p>
+            <p>Over 700,000 Israeli settlers now live in the West Bank and East Jerusalem, transferred there in violation of the Fourth Geneva Convention's Article 49, which bars an occupying power from moving its own civilian population into territory it occupies. UN Security Council Resolution 2334 and the International Court of Justice's July 2024 advisory opinion both found the settlements, and Israel's presence in the occupied territories generally, unlawful. That is not a minority legal reading. It is the settled international consensus, over Israel's objection.</p>
           </div>
         </details>
       </div>
@@ -905,11 +912,19 @@
 
     <p class="page-hook">"Settlements" sound small. Many are <strong>cities of tens of thousands</strong>, built on occupied land and linked by roads Palestinians are banned from using. A state-funded system engineered to make a Palestinian state impossible.</p>
 
+    <div class="callout warn">
+      <strong>On legality: no hedge.</strong> These are not disputed real estate. The Fourth Geneva Convention's Article 49 prohibits an occupying power from transferring its own civilian population into territory it occupies, without exception. UN Security Council Resolution 2334, passed in December 2016 with the US abstaining rather than vetoing, states that settlement construction "has no legal validity" and constitutes a "flagrant violation" of international law. In July 2024, the International Court of Justice went further: its advisory opinion found Israel's entire presence in the Occupied Palestinian Territory, not only the settlements, unlawful, and ruled that Israel is obligated to end it, evacuate the settlers, and pay reparations. Israel rejects all three findings. It remains bound by them regardless.
+    </div>
+
     <p>Ariel has a population of 20,000 and a university. Ma'ale Adumim, east of Jerusalem, has 40,000 residents and bisects the West Bank. They have swimming pools, shopping malls, and subsidised housing, all built on land that international law considers Palestinian territory under illegal occupation.</p>
+
+    <p><strong>Why the size is the point.</strong> A university and a mortgage aren't an accident of growth, they're the strategy. A checkpoint or a hilltop outpost can be dismantled in a week. A city of 40,000 cannot, and everyone who approved its budget knew that when they signed off on it. Once a settlement reaches that scale, "return the land" stops being a policy line and becomes a demand to evacuate a population the size of a small city, which is precisely the point at which officials start asking, in genuine or performed helplessness, "what are we supposed to do, forcibly remove families who've lived here for a generation?" That question isn't a rebuttal. It's the mechanism working exactly as designed: settlements are built at a scale calculated to make removal politically unthinkable, which is what makes the land permanently Israeli in practice no matter what any peace process says on paper. The Palestinian families displaced to clear the ground for Ariel and Ma'ale Adumim made the same claim on their own permanence. It didn't save their homes, because the state doing the removing was the one asking the question.</p>
 
     <p><strong>How they expand.</strong> The process is systematic: the Israeli military declares an area "state land" or a "closed military zone." Palestinian landowners are removed or denied access. Infrastructure (roads, electricity, water) is built. Settlers move in, often incentivised by subsidised housing costs 30–40% below Israeli market rates. Over time, the settlement expands, often absorbing more surrounding land through "outposts," small settler encampments that are technically illegal even under Israeli law, but which the Israeli military protects and which are later retroactively legalised.</p>
 
     <p><strong>The road system.</strong> To connect settlements to Israel proper, Israel has built a network of roads across the West Bank that Palestinians are prohibited from using. This "bypass road" system physically fragments Palestinian territory into disconnected enclaves. A Palestinian driving between two West Bank cities must navigate checkpoints and circuitous routes around settlement areas. The same journey for an Israeli settler takes a fraction of the time on direct roads.</p>
+
+    <p><strong>Settler violence, with the military standing beside it.</strong> Settlements don't only expand through paperwork. B'Tselem and UN OCHA have documented, year after year, settlers attacking Palestinian herding and farming communities: torching olive groves, smashing water tanks and cisterns, driving off livestock, and in the worst cases beating and shooting residents, almost always with Israeli soldiers standing by or actively assisting rather than intervening. In Masafer Yatta, a cluster of Palestinian herding villages in the South Hebron Hills, Israel has spent years using a live-fire military training zone designation to empty the land of its residents while nearby outposts expand unhindered; Israel's own Supreme Court upheld the expulsion in 2022. In Sheikh Jarrah, occupied East Jerusalem, settler organisations use a one-directional Israeli property law, Jews can reclaim pre-1948 property in East Jerusalem, Palestinians cannot reclaim property lost in West Jerusalem, to evict Palestinian families who have lived in their homes for generations, with Israeli police escorting the evictions. OCHA has documented at least 117 Palestinian Bedouin and herding communities facing full or partial displacement from settler violence and access restrictions between January 2023 and April 2026, forcing out close to 5,910 people. B'Tselem separately tracks over 95% of Israeli investigations into settler violence closing without indictment. The pattern is consistent across all of it: settlers create the conditions on the ground, the state declines to prosecute, and the resulting empty land becomes available for the next outpost.</p>
 
     <div class="math-block">
       <p class="label">Settlements: the numbers</p>
@@ -926,6 +941,8 @@
     <div class="sc-lesson">
       <strong>The strategic logic:</strong> Settlements are not an accident of individual choices. They are a state policy, funded by the Israeli government, protected by the Israeli military, and continued through every Israeli government regardless of political orientation. Labor governments built settlements. Likud governments built settlements. The settlement project has continued through every peace process, every ceasefire, and every international objection. It is the actual policy, regardless of what Israeli governments say at negotiating tables.
     </div>
+
+    <p style="font-size:.82rem;"><strong>Sources:</strong> Fourth Geneva Convention, Article 49 · UN Security Council Resolution 2334 (2016) · International Court of Justice, <em>Legal Consequences arising from the Policies and Practices of Israel in the Occupied Palestinian Territory</em>, advisory opinion, 19 July 2024 · B'Tselem, settler violence reporting and Masafer Yatta coverage · UN OCHA, West Bank displacement and access data · Ir Amim on Sheikh Jarrah.</p>
 
     <div class="btn-group">
       <button class="btn btn-back" onclick="go('s3')">Back to Station 3</button>
@@ -981,7 +998,7 @@
 
   <!-- ══ STATION 4: US ROLE ══ -->
   <div class="passage" id="passage-s4">
-    <p class="eyebrow">Station 4 of 9</p>
+    <p class="eyebrow">Station 4 of 10</p>
     <h2>The US Role: Why America Does This</h2>
 
     <p class="page-hook">Why does America fund all this? <strong>Over $260 billion to Israel, more than to any country in history</strong>, plus 50+ UN vetoes. Not sentiment. Strategic interest, oil, and a US arms industry that profits from every bomb.</p>
@@ -1041,7 +1058,38 @@
 
     <p>The argument is not that there is a Jewish conspiracy. It is that a well-organised, well-funded domestic lobbying coalition, including organisations like AIPAC (the American Israel Public Affairs Committee), the Anti-Defamation League, and a network of evangelical Christian organisations, exerts disproportionate influence on US foreign policy toward Israel, beyond what US strategic interests alone would dictate.</p>
 
-    <p><strong>AIPAC.</strong> AIPAC is one of the most powerful lobbying organisations in Washington. It does not make direct campaign contributions, but it effectively signals to donors which candidates support Israel's interests, and the money follows. Candidates who break with pro-Israel positions routinely face well-funded primary challenges. The result is a Congress where meaningful criticism of Israeli policy is politically dangerous regardless of party.</p>
+    <p><strong>AIPAC.</strong> AIPAC's own PAC gives directly, and since 2022 it has run a super PAC, the United Democracy Project, that spends independently at a much larger scale. Between the two, AIPAC and its allied channels put roughly $126.9 million into the 2024 election cycle alone, more than $55 million of it as direct contributions to federal candidates. Candidates who break with pro-Israel positions routinely face well-funded primary challenges, most visibly UDP's roughly $21 million spent to defeat Rep. Jamaal Bowman in his 2024 primary. The result is a Congress where meaningful criticism of Israeli policy is politically dangerous regardless of party.</p>
+
+    <details class="deep-expand">
+      <summary>Expand: who Congress's biggest AIPAC-aligned recipients are, by career total</summary>
+      <div class="expand-content">
+        <p>OpenSecrets.org is the standard, nonpartisan source for this kind of data, but its site blocks automated retrieval, so the figures below are drawn from a career-total tracker that aggregates the same underlying FEC filings. Coverage below is not a complete, verified top 50: the source could only be retrieved for members whose states fall alphabetically from Alabama through Florida, so it undercounts recipients from every state after that, including some, like New Jersey's Josh Gottheimer and New York's George Latimer, independently reported elsewhere as large recipients. Treat this as the fullest accurate list this research could verify, not a claim about who ranks 21st through 50th nationally.</p>
+        <div class="math-block">
+          <p class="label">Career total, pro-Israel PAC money (AIPAC &amp; affiliates), by member</p>
+          <div class="math-row"><span class="desc">Adam Schiff, Senator (D-CA)</span><span class="val neg">$5,609,345</span></div>
+          <div class="math-row"><span class="desc">Jimmy Gomez (D-CA-34)</span><span class="val neg">$2,641,199</span></div>
+          <div class="math-row"><span class="desc">Diana DeGette (D-CO-01)</span><span class="val neg">$1,654,229</span></div>
+          <div class="math-row"><span class="desc">Debbie Wasserman-Schultz (D-FL-25)</span><span class="val neg">$1,542,327</span></div>
+          <div class="math-row"><span class="desc">Pete Aguilar (D-CA-33)</span><span class="val neg">$1,534,149</span></div>
+          <div class="math-row"><span class="desc">Juan Ciscomani (R-AZ-06)</span><span class="val neg">$1,224,703</span></div>
+          <div class="math-row"><span class="desc">Yassamin Ansari (D-AZ-03)</span><span class="val neg">$1,161,274</span></div>
+          <div class="math-row"><span class="desc">Tom Cotton, Senator (R-AR)</span><span class="val neg">$1,127,943</span></div>
+          <div class="math-row"><span class="desc">Ken Calvert (R-CA-41)</span><span class="val neg">$1,115,690</span></div>
+          <div class="math-row"><span class="desc">Mike Rogers (R-AL-03)</span><span class="val neg">$1,033,286</span></div>
+          <div class="math-row"><span class="desc">Mario Diaz-Balart (R-FL-26)</span><span class="val neg">$1,025,461</span></div>
+          <div class="math-row"><span class="desc">Brad Sherman (D-CA-32)</span><span class="val neg">$1,024,183</span></div>
+          <div class="math-row"><span class="desc">Ted Lieu (D-CA-36)</span><span class="val neg">$919,240</span></div>
+          <div class="math-row"><span class="desc">Brian Mast (R-FL-21)</span><span class="val neg">$901,030</span></div>
+          <div class="math-row"><span class="desc">Lois Frankel (D-FL-22)</span><span class="val neg">$860,618</span></div>
+          <div class="math-row"><span class="desc">Jared Moskowitz (D-FL-23)</span><span class="val neg">$833,288</span></div>
+          <div class="math-row"><span class="desc">Dan Sullivan, Senator (R-AK)</span><span class="val neg">$789,874</span></div>
+          <div class="math-row"><span class="desc">Kevin Mullin (D-CA-15)</span><span class="val neg">$733,366</span></div>
+          <div class="math-row"><span class="desc">Gabe Evans (R-CO-08)</span><span class="val neg">$724,445</span></div>
+          <div class="math-row"><span class="desc">Chris Coons, Senator (D-DE)</span><span class="val neg">$592,873</span></div>
+        </div>
+        <p style="font-size:.82rem; margin-top:.7rem;"><strong>Source:</strong> <a href="https://www.opensecrets.org/orgs/american-israel-public-affairs-cmte/summary?id=D000046963" target="_blank" rel="noopener" style="color:var(--olive);">OpenSecrets: American Israel Public Affairs Cmte, org profile</a>, cross-referenced against career-total FEC data compiled at <a href="https://www.trackaipac.com/congress" target="_blank" rel="noopener" style="color:var(--olive);">trackaipac.com/congress</a> (data as of 5 July 2026, sourced to fec.gov). Cycle totals ($126.9 million, the $55M direct-contribution figure, and the Bowman-race figure above) are 2023–24 cycle numbers reported by <a href="https://readsludge.com/2025/01/24/here-is-all-the-money-aipac-spent-on-the-2024-elections/" target="_blank" rel="noopener" style="color:var(--olive);">Sludge, from FEC filings</a>.</p>
+      </div>
+    </details>
 
     <p><strong>Evangelical support.</strong> A significant component of pro-Israel political support in the US comes not from Jewish Americans but from evangelical Christians, who hold theological views about Israel's role in end-times prophecy. This constituency forms a core part of the Republican base and has consistently pushed for unconditional US support of Israeli territorial expansion.</p>
 
@@ -1059,10 +1107,10 @@
 
   <!-- ══ STATION 5: GAZA NOW ══ -->
   <div class="passage" id="passage-s5">
-    <p class="eyebrow">Station 5 of 9</p>
+    <p class="eyebrow">Station 5 of 10</p>
     <h2>Gaza Now: October 7 and After</h2>
 
-    <p class="page-hook">On October 7, 2023, Hamas killed 1,139 people in Israel. In response, Israel launched <strong>one of the most destructive military campaigns of the 21st century</strong>: more than 72,000 Palestinians killed, over 21,000 of them children. Both facts are real. Here's how we got here.</p>
+    <p class="page-hook">On October 7, 2023, Hamas-led forces attacked, and 1,139 people died in Israel that day, not all of them at Hamas's hands. In response, Israel launched <strong>one of the most destructive military campaigns of the 21st century</strong>: more than 72,000 Palestinians killed, over 21,000 of them children. Both facts are real. Here's how we got here.</p>
 
     <p>On October 7, 2023, Hamas fighters crossed the fence that seals Gaza and attacked military bases, kibbutzim, and a music festival, killing 1,139 people, most of them Israeli civilians, including children, and taking around 250 people hostage. Israel's own forces caused part of that toll. The military invoked the Hannibal Directive, a protocol ordering overwhelming force to stop a soldier being taken captive even at the cost of their life, at the Erez crossing, the Re'im base, and the Nahal Oz outpost, all within the attack's first hour. Israeli tank shells and helicopter fire hit hostages and civilians alongside Hamas fighters.</p>
 
@@ -1112,14 +1160,13 @@
     <p><strong>Amnesty International formally concluded Israel is committing genocide.</strong> Human Rights Watch titled its report "Extermination and Acts of Genocide." The UN Special Rapporteur found "reasonable grounds"; the ICJ found the claim "plausible" and ordered Israel to halt genocidal acts. Israel continued. The US supplied the weapons throughout and vetoed the ceasefire resolutions, even after its own State Department assessed that Israel had likely used those weapons in violation of international humanitarian law.</p>
 
     <div class="btn-group">
-      <button class="btn btn-dive" onclick="go('dive_genocide')">◆ Deep Dive: The evidence of genocide: what the record actually shows</button>
-      <button class="btn btn-primary" onclick="go('s6')">Continue to Station 6: The Record of Cruelty →</button>
+      <button class="btn btn-primary" onclick="go('s6')">Continue to Station 6: What the Record Actually Shows →</button>
     </div>
   </div>
 
-  <!-- ══ DEEP DIVE: GENOCIDE ══ -->
-  <div class="passage" id="passage-dive_genocide">
-    <div class="dive-banner">Deep Dive: The Evidence of Genocide</div>
+  <!-- ══ STATION 6: THE EVIDENCE ══ -->
+  <div class="passage" id="passage-s6">
+    <p class="eyebrow">Station 6 of 10</p>
     <h2>What the Record Actually Shows</h2>
 
     <p class="page-hook">This is not a legally murky question. Two of the world's most credible human rights organisations have <strong>formally concluded genocide</strong>, backed by 500+ documented statements of intent from Israeli officials themselves.</p>
@@ -1198,14 +1245,13 @@
     </div>
 
     <div class="btn-group">
-      <button class="btn btn-back" onclick="go('s5')">Back to Station 5</button>
-      <button class="btn btn-primary" onclick="go('s6')">Continue to Station 6: The Record of Cruelty →</button>
+      <button class="btn btn-primary" onclick="go('s7')">Continue to Station 7: The Record of Cruelty →</button>
     </div>
   </div>
 
-  <!-- ══ STATION 6: THE RECORD ══ -->
-  <div class="passage" id="passage-s6">
-    <p class="eyebrow">Station 6 of 9</p>
+  <!-- ══ STATION 7: THE RECORD ══ -->
+  <div class="passage" id="passage-s7">
+    <p class="eyebrow">Station 7 of 10</p>
     <h2>The Record of Cruelty</h2>
 
     <p class="page-hook">Here are some of the standout atrocities of Israel's war on Gaza's civilians, documented by the UN, Amnesty, Human Rights Watch, B'Tselem, and the perpetrators' own cameras.</p>
@@ -1377,10 +1423,9 @@
     </details>
 
     <div class="btn-group">
-      <button class="btn btn-dive" onclick="go('dive_genocide')">◆ Deep Dive: The full genocide evidence</button>
       <button class="btn btn-dive" onclick="go('dive_watchlist')">◆ Watch: Verified documentaries, in their own words, on film</button>
       <button class="btn btn-dive" onclick="go('dive_organs')">◆ Deep Dive: Organ harvesting evidence</button>
-      <button class="btn btn-primary" onclick="go('s7')">Continue to Station 7: So Why Doesn't the World Know? →</button>
+      <button class="btn btn-primary" onclick="go('s8')">Continue to Station 8: So Why Doesn't the World Know? →</button>
     </div>
   </div>
 
@@ -1434,9 +1479,9 @@
     </div>
 
     <div class="btn-group">
-      <button class="btn btn-back" onclick="go('s6')">Back to The Record</button>
+      <button class="btn btn-back" onclick="go('s7')">Back to The Record</button>
       <button class="btn btn-dive" onclick="go('dive_organs')">◆ Next: Organ harvesting evidence</button>
-      <button class="btn btn-primary" onclick="go('s7')">Continue to Station 7: So Why Doesn't the World Know? →</button>
+      <button class="btn btn-primary" onclick="go('s8')">Continue to Station 8: So Why Doesn't the World Know? →</button>
     </div>
   </div>
 
@@ -1588,15 +1633,15 @@
     </details>
 
     <div class="btn-group">
-      <button class="btn btn-back" onclick="go('s6')">Back to The Record</button>
+      <button class="btn btn-back" onclick="go('s7')">Back to The Record</button>
       <button class="btn btn-dive" onclick="go('dive_watchlist')">◆ Watch: Verified documentaries, in their own words, on film</button>
-      <button class="btn btn-primary" onclick="go('s7')">Continue to Station 7: So Why Doesn't the World Know? →</button>
+      <button class="btn btn-primary" onclick="go('s8')">Continue to Station 8: So Why Doesn't the World Know? →</button>
     </div>
   </div>
 
-  <!-- ══ STATION 7: CONTROLLING THE NARRATIVE ══ -->
-  <div class="passage" id="passage-s7">
-    <p class="eyebrow">Station 7 of 9</p>
+  <!-- ══ STATION 8: CONTROLLING THE NARRATIVE ══ -->
+  <div class="passage" id="passage-s8">
+    <p class="eyebrow">Station 8 of 10</p>
     <h2>So Why Doesn't the World Know?</h2>
 
     <p class="page-hook">Everything in this guide, the massacres, the starvation, the soldiers filming it under their own names, happened <strong>in plain sight</strong>. Most of the world still doesn't know. That isn't ignorance. It's a well-funded system built to control what you see, what words you're allowed to use, and what it costs you to speak.</p>
@@ -1737,13 +1782,13 @@
     </details>
 
     <div class="btn-group">
-      <button class="btn btn-primary" onclick="go('s8')">Continue to Station 8: The Lies →</button>
+      <button class="btn btn-primary" onclick="go('s9')">Continue to Station 9: The Lies →</button>
     </div>
   </div>
 
-  <!-- ══ STATION 8: THE LIES ══ -->
-  <div class="passage" id="passage-s8">
-    <p class="eyebrow">Station 8 of 9</p>
+  <!-- ══ STATION 9: THE LIES ══ -->
+  <div class="passage" id="passage-s9">
+    <p class="eyebrow">Station 9 of 10</p>
     <h2>The Lies, and How Each One Fell Apart</h2>
 
     <p class="page-hook">A state that spends three-quarters of a billion dollars a year shaping what you believe is not protecting the truth. It's protecting a <strong>record of falsehoods</strong>. Below are the biggest, most consequential ones: not opinions or contested framings, but specific claims later contradicted by the evidence, by independent investigators, or by Israel's own intelligence and admissions.</p>
@@ -1756,25 +1801,13 @@
 
     <details class="claim-card">
       <summary>
-        <span class="claim-headline">"Iran is months from a nuclear bomb," said every few years since 1992</span>
-        <span class="claim-blurb">Netanyahu has predicted an imminent Iranian bomb for over 30 years. His own Mossad and Israel's spy chief said it wasn't true.</span>
+        <span class="claim-headline">"The most moral army in the world" that "doesn't target civilians"</span>
+        <span class="claim-blurb">Six Israeli intelligence sources described an AI system that marked tens of thousands for death, and a tracker called "Where's Daddy?" built to kill them at home with their families.</span>
       </summary>
       <div class="claim-body">
-        <p>In 1992, as a member of the Knesset, Benjamin Netanyahu declared that Iran was "three to five years" from a nuclear bomb. He repeated the warning in his 1995 book, before a US Congressional committee in 2002 (while also pushing the invasion of Iraq), to members of Congress in 2009 ("one or two years"), and most famously at the UN in 2012, where he held up a cartoon bomb and drew a "red line," claiming Iran would have enough enriched uranium for a weapon "by next spring, at most by next summer."</p>
-        <p>It was contradicted by Israel's own intelligence. A top-secret Mossad cable from October 2012, weeks after the UN speech, later leaked to Al Jazeera and The Guardian, assessed that Iran was "not performing the activity necessary to produce weapons." In 2011, departing Mossad chief Meir Dagan had already said an Iranian bomb was not imminent. The 2007 US National Intelligence Estimate found Iran had halted its weapons program in 2003. More than three decades after his first prediction, Iran still has no nuclear weapon. The warning was never a timeline. It was a permanent justification for confrontation.</p>
-        <p style="font-size:.82rem; margin-top:.7rem;"><strong>Source:</strong> <a href="https://www.aljazeera.com/news/2015/2/23/mossad-contradicted-netanyahu-on-iran-nuclear-programme" target="_blank" rel="noopener" style="color:var(--olive);">Al Jazeera: Mossad contradicted Netanyahu on Iran's nuclear programme</a> · <a href="https://theintercept.com/2015/03/02/brief-history-netanyahu-crying-wolf-iranian-nuclear-bomb/" target="_blank" rel="noopener" style="color:var(--olive);">The Intercept: Netanyahu's long history of crying wolf about Iran</a></p>
-      </div>
-    </details>
-
-    <details class="claim-card">
-      <summary>
-        <span class="claim-headline">"Forty beheaded babies"</span>
-        <span class="claim-blurb">The image that shaped the first week of global coverage. Israel's own military couldn't confirm it, and the White House walked back Biden's claim he'd seen the photos.</span>
-      </summary>
-      <div class="claim-body">
-        <p>In the days after October 7, the claim that Hamas had beheaded 40 babies travelled around the world. It originated with a single reporter for the Israeli broadcaster i24News, embedded with soldiers, who said soldiers "believe" 40 babies or children were killed, and it metastasised into a confirmed atrocity. President Biden said he had seen "confirmed pictures of terrorists beheading children." The White House then admitted that neither Biden nor the administration had seen any such images, and that he was referring to media reports and Israeli officials.</p>
-        <p>The Israeli military itself said it could not confirm the "40 beheaded babies" figure; an Israeli official told CNN the government had not confirmed it. Real and terrible killings occurred on October 7, including of children, and that is documented elsewhere in this guide. But this specific, viral image was never substantiated, and it did more to shape opinion in the first crucial week than almost any verified fact. That is what atrocity propaganda is for.</p>
-        <p style="font-size:.82rem; margin-top:.7rem;"><strong>Source:</strong> <a href="https://www.aljazeera.com/news/2023/10/12/white-house-walks-back-bidens-claim-he-saw-children-beheaded-by-hamas" target="_blank" rel="noopener" style="color:var(--olive);">Al Jazeera: White House walks back Biden's claim he saw children beheaded</a></p>
+        <p>Israel has long branded the IDF "the most moral army in the world" and insisted it does not deliberately target civilians. An investigation by journalist Yuval Abraham for +972 Magazine and Local Call, based on six Israeli intelligence officers, revealed an AI system nicknamed "Lavender" that marked tens of thousands of Gazans as targets with minimal human review.</p>
+        <p>A companion system was named, openly, "Where's Daddy?" It tracked marked men and alerted officers when they entered their family homes, so the house could be bombed with the family inside. Sources described pre-authorised "collateral" of 15–20 civilians per low-ranking target, and bombings of homes where the target wasn't even present: "you killed a family for no reason." The slogan and the system are opposites.</p>
+        <p style="font-size:.82rem; margin-top:.7rem;"><strong>Source:</strong> <a href="https://www.972mag.com/lavender-ai-israeli-army-gaza/" target="_blank" rel="noopener" style="color:var(--olive);">+972 Magazine: 'Lavender': The AI machine directing Israel's bombing spree in Gaza</a></p>
       </div>
     </details>
 
@@ -1792,49 +1825,13 @@
 
     <details class="claim-card">
       <summary>
-        <span class="claim-headline">"Palestinian gunmen killed Shireen Abu Akleh"</span>
-        <span class="claim-blurb">Israel's first story blamed militants. The UN, CNN, AP, the NYT, B'Tselem and Bellingcat all found Israeli forces shot the journalist, with no gunmen near her.</span>
+        <span class="claim-headline">"Forty beheaded babies"</span>
+        <span class="claim-blurb">The image that shaped the first week of global coverage. Israel's own military couldn't confirm it, and the White House walked back Biden's claim he'd seen the photos.</span>
       </summary>
       <div class="claim-body">
-        <p>When the veteran Al Jazeera journalist and US citizen was shot dead in the occupied West Bank in May 2022, Israel's first response was to blame Palestinian gunmen and circulate a video it said proved it. Independent investigations by the UN, CNN, the Associated Press, The New York Times, B'Tselem, Bellingcat and Forensic Architecture all concluded she was killed by Israeli fire: no militants or armed clashes were near her, and she was wearing a clearly marked blue PRESS vest.</p>
-        <p>The UN's inquiry found Israeli forces used "lethal force without justification." Months later, Israel conceded there was a "high probability" one of its soldiers killed her, and prosecuted no one. The first official account was false, and Israel was in control of the scene where she died.</p>
-        <p style="font-size:.82rem; margin-top:.7rem;"><strong>Source:</strong> <a href="https://www.aljazeera.com/news/2023/10/16/israeli-forces-killed-abu-akleh-without-justification-un-inquiry-says" target="_blank" rel="noopener" style="color:var(--olive);">Al Jazeera: UN inquiry: Israeli forces killed Abu Akleh "without justification"</a></p>
-      </div>
-    </details>
-
-    <details class="claim-card">
-      <summary>
-        <span class="claim-headline">"The Palestinians left in 1948 on their own, Arab leaders told them to go"</span>
-        <span class="claim-blurb">The founding alibi for the Nakba. Israel's own opened archives, and a search of every 1948 Arab radio broadcast, demolished it.</span>
-      </summary>
-      <div class="claim-body">
-        <p>For decades Israel's official story of 1948 held that 750,000 Palestinians fled voluntarily, on evacuation orders broadcast by Arab leaders, and were not expelled. When Israel's state archives opened, Israeli historians including Benny Morris documented systematic expulsions, massacres such as Deir Yassin, and the military's Plan Dalet.</p>
-        <p>The "Arab radio broadcasts" claim was tested directly. Researcher Erskine Childers searched the BBC and US monitoring records, which had transcribed every Middle East broadcast of 1948, and found not a single Arab order, appeal, or suggestion to evacuate, while finding repeated Arab broadcasts urging civilians to stay put. The voluntary-exodus story was an invention built to explain why the refugees could never be allowed home.</p>
-        <p style="font-size:.82rem; margin-top:.7rem;"><strong>Source:</strong> <a href="https://www.palestine-studies.org/en/node/38640" target="_blank" rel="noopener" style="color:var(--olive);">Institute for Palestine Studies: The Palestinian Exodus in 1948 (Childers' findings)</a></p>
-      </div>
-    </details>
-
-    <details class="claim-card">
-      <summary>
-        <span class="claim-headline">"We don't use white phosphorus on civilians," until they admitted they did</span>
-        <span class="claim-blurb">Denied over Gaza in 2009, then forced to admit it after Human Rights Watch documented it. The same denial-then-admission repeated in 2023.</span>
-      </summary>
-      <div class="claim-body">
-        <p>During the 2008–09 assault on Gaza, Israel repeatedly denied firing white phosphorus over densely populated areas. Human Rights Watch documented the use in a 71-page report, "Rain of Fire," finding a pattern of air-bursting the munition over homes, schools, and hospitals, and Israel was eventually forced to admit it had used it. HRW called it evidence of war crimes.</p>
-        <p>The same cycle repeated in October 2023, when HRW and Amnesty International verified white phosphorus strikes in Gaza and Lebanon that Israel had denied. The denial is the reflex; the admission only comes once the documentation is undeniable.</p>
-        <p style="font-size:.82rem; margin-top:.7rem;"><strong>Source:</strong> <a href="https://www.hrw.org/report/2009/03/25/rain-fire/israels-unlawful-use-white-phosphorus-gaza" target="_blank" rel="noopener" style="color:var(--olive);">Human Rights Watch: Rain of Fire: Israel's Unlawful Use of White Phosphorus in Gaza</a></p>
-      </div>
-    </details>
-
-    <details class="claim-card">
-      <summary>
-        <span class="claim-headline">"The most moral army in the world" that "doesn't target civilians"</span>
-        <span class="claim-blurb">Six Israeli intelligence sources described an AI system that marked tens of thousands for death, and a tracker called "Where's Daddy?" built to kill them at home with their families.</span>
-      </summary>
-      <div class="claim-body">
-        <p>Israel has long branded the IDF "the most moral army in the world" and insisted it does not deliberately target civilians. An investigation by journalist Yuval Abraham for +972 Magazine and Local Call, based on six Israeli intelligence officers, revealed an AI system nicknamed "Lavender" that marked tens of thousands of Gazans as targets with minimal human review.</p>
-        <p>A companion system was named, openly, "Where's Daddy?" It tracked marked men and alerted officers when they entered their family homes, so the house could be bombed with the family inside. Sources described pre-authorised "collateral" of 15–20 civilians per low-ranking target, and bombings of homes where the target wasn't even present: "you killed a family for no reason." The slogan and the system are opposites.</p>
-        <p style="font-size:.82rem; margin-top:.7rem;"><strong>Source:</strong> <a href="https://www.972mag.com/lavender-ai-israeli-army-gaza/" target="_blank" rel="noopener" style="color:var(--olive);">+972 Magazine: 'Lavender': The AI machine directing Israel's bombing spree in Gaza</a></p>
+        <p>In the days after October 7, the claim that Hamas had beheaded 40 babies travelled around the world. It originated with a single reporter for the Israeli broadcaster i24News, embedded with soldiers, who said soldiers "believe" 40 babies or children were killed, and it metastasised into a confirmed atrocity. President Biden said he had seen "confirmed pictures of terrorists beheading children." The White House then admitted that neither Biden nor the administration had seen any such images, and that he was referring to media reports and Israeli officials.</p>
+        <p>The Israeli military itself said it could not confirm the "40 beheaded babies" figure; an Israeli official told CNN the government had not confirmed it. Real and terrible killings occurred on October 7, including of children, and that is documented elsewhere in this guide. But this specific, viral image was never substantiated, and it did more to shape opinion in the first crucial week than almost any verified fact. That is what atrocity propaganda is for.</p>
+        <p style="font-size:.82rem; margin-top:.7rem;"><strong>Source:</strong> <a href="https://www.aljazeera.com/news/2023/10/12/white-house-walks-back-bidens-claim-he-saw-children-beheaded-by-hamas" target="_blank" rel="noopener" style="color:var(--olive);">Al Jazeera: White House walks back Biden's claim he saw children beheaded</a></p>
       </div>
     </details>
 
@@ -1847,30 +1844,6 @@
         <p>As images of starving children emerged, Netanyahu declared in July 2025: "There is no starvation in Gaza, no policy of starvation in Gaza." Within weeks the IPC, the global authority that classifies famines, confirmed famine conditions in Gaza, finding the population facing catastrophic food insecurity and hunger-related deaths rising. The WHO recorded dozens of malnutrition deaths, most of them children, in a single month.</p>
         <p>Israel controlled every crossing into Gaza and the flow of food through them. A siege that the besieging power denies is still a siege, and a famine it manufactured does not stop being a famine because it issues a denial.</p>
         <p style="font-size:.82rem; margin-top:.7rem;"><strong>Source:</strong> <a href="https://www.poynter.org/fact-checking/2025/gaza-famine-starvation-hunger-crisis/" target="_blank" rel="noopener" style="color:var(--olive);">Poynter: Netanyahu's "no starvation" claim contradicts the evidence</a> · <a href="https://time.com/7306189/gaza-famine-level-ipc-israel-aid/" target="_blank" rel="noopener" style="color:var(--olive);">TIME: IPC finds Gaza at worst-case famine level</a></p>
-      </div>
-    </details>
-
-    <details class="claim-card">
-      <summary>
-        <span class="claim-headline">"Israel left Gaza in 2005. It isn't occupied"</span>
-        <span class="claim-blurb">A standard talking point. Israel kept control of Gaza's airspace, waters, borders, population registry, and electricity, and blockaded it. The UN and ICRC never stopped calling it occupied.</span>
-      </summary>
-      <div class="claim-body">
-        <p>The claim that Israel "ended the occupation" by withdrawing settlers in 2005, and therefore bears no responsibility for Gaza, collapses on the facts. After 2005 Israel retained control of Gaza's airspace, territorial waters, population registry, electromagnetic spectrum, and six of seven land crossings, and from 2007 imposed a comprehensive blockade on the movement of people and goods.</p>
-        <p>Under international law, that is occupation by remote control. The UN, the International Committee of the Red Cross, and human rights organisations continued to classify Gaza as occupied throughout, describing it as the world's largest open-air prison. "We left" was a public-relations claim, not a legal or physical reality.</p>
-        <p style="font-size:.82rem; margin-top:.7rem;"><strong>Source:</strong> <a href="https://www.hrw.org/news/2022/06/14/gaza-israels-open-air-prison-15" target="_blank" rel="noopener" style="color:var(--olive);">Human Rights Watch: Gaza: Israel's "Open-Air Prison" at 15</a></p>
-      </div>
-    </details>
-
-    <details class="claim-card">
-      <summary>
-        <span class="claim-headline">A sitting prime minister claimed a Palestinian gave Hitler the idea for the Holocaust</span>
-        <span class="claim-blurb">Netanyahu said the Mufti of Jerusalem talked Hitler into genocide. Israel's own Yad Vashem historians called it false; Germany corrected him; he retracted it.</span>
-      </summary>
-      <div class="claim-body">
-        <p>In October 2015, Netanyahu told a global audience that the Mufti of Jerusalem, Haj Amin al-Husseini, gave Hitler the idea to exterminate Europe's Jews, claiming Hitler had only wanted to expel them until the Mufti said "Burn them." It was a fabrication. Yad Vashem's chief historian Dina Porat called it "completely erroneous, on all counts," noting the Final Solution was already underway. The German government publicly corrected the record.</p>
-        <p>Netanyahu retracted it, conceding "the Nazis decided on that by themselves." The episode is instructive: a sitting Israeli prime minister rewrote the history of the Holocaust itself in order to assign its authorship to Palestinians.</p>
-        <p style="font-size:.82rem; margin-top:.7rem;"><strong>Source:</strong> <a href="https://www.haaretz.com/2015-10-22/ty-article/.premium/yad-vashems-chief-historian-netanyahu-had-it-all-wrong/0000017f-dc50-df62-a9ff-dcd77dd90000" target="_blank" rel="noopener" style="color:var(--olive);">Haaretz: Yad Vashem's chief historian: Netanyahu had it all wrong</a></p>
       </div>
     </details>
 
@@ -1898,20 +1871,92 @@
       </div>
     </details>
 
+    <details class="claim-card">
+      <summary>
+        <span class="claim-headline">"Palestinian gunmen killed Shireen Abu Akleh"</span>
+        <span class="claim-blurb">Abu Akleh was a veteran Al Jazeera correspondent, one of the most recognised faces in Arabic-language news, when Israeli forces shot her dead in 2022. Israel's first story blamed militants. The UN, CNN, AP, the NYT, B'Tselem and Bellingcat all found otherwise.</span>
+      </summary>
+      <div class="claim-body">
+        <p>Shireen Abu Akleh spent a quarter-century covering the occupation for Al Jazeera and was one of the best-known journalists in the Arab world, a household name to millions of viewers who had watched her report from the West Bank and Gaza for a generation. On May 11, 2022, Israeli forces shot her dead while she covered a military raid on the Jenin refugee camp, in the occupied West Bank. She was wearing a helmet and vest clearly marked PRESS, and was a US citizen. Israel's first response was to blame Palestinian gunmen and circulate a video it said proved it. Independent investigations by the UN, CNN, the Associated Press, The New York Times, B'Tselem, Bellingcat and Forensic Architecture all concluded she was killed by Israeli fire: no militants or armed clashes were near her.</p>
+        <p>The UN's inquiry found Israeli forces used "lethal force without justification." Months later, Israel conceded there was a "high probability" one of its soldiers killed her, and prosecuted no one. The first official account was false, and Israel was in control of the scene where she died.</p>
+        <p style="font-size:.82rem; margin-top:.7rem;"><strong>Source:</strong> <a href="https://www.aljazeera.com/news/2023/10/16/israeli-forces-killed-abu-akleh-without-justification-un-inquiry-says" target="_blank" rel="noopener" style="color:var(--olive);">Al Jazeera: UN inquiry: Israeli forces killed Abu Akleh "without justification"</a></p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>
+        <span class="claim-headline">A sitting prime minister claimed a Palestinian gave Hitler the idea for the Holocaust</span>
+        <span class="claim-blurb">Netanyahu said the Mufti of Jerusalem talked Hitler into genocide. Israel's own Yad Vashem historians called it false; Germany corrected him; he retracted it.</span>
+      </summary>
+      <div class="claim-body">
+        <p>In October 2015, Netanyahu told a global audience that the Mufti of Jerusalem, Haj Amin al-Husseini, gave Hitler the idea to exterminate Europe's Jews, claiming Hitler had only wanted to expel them until the Mufti said "Burn them." It was a fabrication. Yad Vashem's chief historian Dina Porat called it "completely erroneous, on all counts," noting the Final Solution was already underway. The German government publicly corrected the record.</p>
+        <p>Netanyahu retracted it, conceding "the Nazis decided on that by themselves." The episode is instructive: a sitting Israeli prime minister rewrote the history of the Holocaust itself in order to assign its authorship to Palestinians.</p>
+        <p style="font-size:.82rem; margin-top:.7rem;"><strong>Source:</strong> <a href="https://www.haaretz.com/2015-10-22/ty-article/.premium/yad-vashems-chief-historian-netanyahu-had-it-all-wrong/0000017f-dc50-df62-a9ff-dcd77dd90000" target="_blank" rel="noopener" style="color:var(--olive);">Haaretz: Yad Vashem's chief historian: Netanyahu had it all wrong</a></p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>
+        <span class="claim-headline">"We don't use white phosphorus on civilians," until they admitted they did</span>
+        <span class="claim-blurb">Denied over Gaza in 2009, then forced to admit it after Human Rights Watch documented it. The same denial-then-admission repeated in 2023.</span>
+      </summary>
+      <div class="claim-body">
+        <p>During the 2008–09 assault on Gaza, Israel repeatedly denied firing white phosphorus over densely populated areas. Human Rights Watch documented the use in a 71-page report, "Rain of Fire," finding a pattern of air-bursting the munition over homes, schools, and hospitals, and Israel was eventually forced to admit it had used it. HRW called it evidence of war crimes.</p>
+        <p>The same cycle repeated in October 2023, when HRW and Amnesty International verified white phosphorus strikes in Gaza and Lebanon that Israel had denied. The denial is the reflex; the admission only comes once the documentation is undeniable.</p>
+        <p style="font-size:.82rem; margin-top:.7rem;"><strong>Source:</strong> <a href="https://www.hrw.org/report/2009/03/25/rain-fire/israels-unlawful-use-white-phosphorus-gaza" target="_blank" rel="noopener" style="color:var(--olive);">Human Rights Watch: Rain of Fire: Israel's Unlawful Use of White Phosphorus in Gaza</a></p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>
+        <span class="claim-headline">"Israel left Gaza in 2005. It isn't occupied"</span>
+        <span class="claim-blurb">A standard talking point. Israel kept control of Gaza's airspace, waters, borders, population registry, and electricity, and blockaded it. The UN and ICRC never stopped calling it occupied.</span>
+      </summary>
+      <div class="claim-body">
+        <p>The claim that Israel "ended the occupation" by withdrawing settlers in 2005, and therefore bears no responsibility for Gaza, collapses on the facts. After 2005 Israel retained control of Gaza's airspace, territorial waters, population registry, electromagnetic spectrum, and six of seven land crossings, and from 2007 imposed a comprehensive blockade on the movement of people and goods.</p>
+        <p>Under international law, that is occupation by remote control. The UN, the International Committee of the Red Cross, and human rights organisations continued to classify Gaza as occupied throughout, describing it as the world's largest open-air prison. "We left" was a public-relations claim, not a legal or physical reality.</p>
+        <p style="font-size:.82rem; margin-top:.7rem;"><strong>Source:</strong> <a href="https://www.hrw.org/news/2022/06/14/gaza-israels-open-air-prison-15" target="_blank" rel="noopener" style="color:var(--olive);">Human Rights Watch: Gaza: Israel's "Open-Air Prison" at 15</a></p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>
+        <span class="claim-headline">"Iran is months from a nuclear bomb," said every few years since 1992</span>
+        <span class="claim-blurb">Netanyahu has predicted an imminent Iranian bomb for over 30 years. His own Mossad and Israel's spy chief said it wasn't true.</span>
+      </summary>
+      <div class="claim-body">
+        <p>In 1992, as a member of the Knesset, Benjamin Netanyahu declared that Iran was "three to five years" from a nuclear bomb. He repeated the warning in his 1995 book, before a US Congressional committee in 2002 (while also pushing the invasion of Iraq), to members of Congress in 2009 ("one or two years"), and most famously at the UN in 2012, where he held up a cartoon bomb and drew a "red line," claiming Iran would have enough enriched uranium for a weapon "by next spring, at most by next summer."</p>
+        <p>It was contradicted by Israel's own intelligence. A top-secret Mossad cable from October 2012, weeks after the UN speech, later leaked to Al Jazeera and The Guardian, assessed that Iran was "not performing the activity necessary to produce weapons." In 2011, departing Mossad chief Meir Dagan had already said an Iranian bomb was not imminent. The 2007 US National Intelligence Estimate found Iran had halted its weapons program in 2003. More than three decades after his first prediction, Iran still has no nuclear weapon. The warning was never a timeline. It was a permanent justification for confrontation.</p>
+        <p style="font-size:.82rem; margin-top:.7rem;"><strong>Source:</strong> <a href="https://www.aljazeera.com/news/2015/2/23/mossad-contradicted-netanyahu-on-iran-nuclear-programme" target="_blank" rel="noopener" style="color:var(--olive);">Al Jazeera: Mossad contradicted Netanyahu on Iran's nuclear programme</a> · <a href="https://theintercept.com/2015/03/02/brief-history-netanyahu-crying-wolf-iranian-nuclear-bomb/" target="_blank" rel="noopener" style="color:var(--olive);">The Intercept: Netanyahu's long history of crying wolf about Iran</a></p>
+      </div>
+    </details>
+
+    <details class="claim-card">
+      <summary>
+        <span class="claim-headline">"The Palestinians left in 1948 on their own, Arab leaders told them to go"</span>
+        <span class="claim-blurb">The founding alibi for the Nakba. Israel's own opened archives, and a search of every 1948 Arab radio broadcast, demolished it.</span>
+      </summary>
+      <div class="claim-body">
+        <p>For decades Israel's official story of 1948 held that 750,000 Palestinians fled voluntarily, on evacuation orders broadcast by Arab leaders, and were not expelled. When Israel's state archives opened, Israeli historians including Benny Morris documented systematic expulsions, massacres such as Deir Yassin, and the military's Plan Dalet.</p>
+        <p>The "Arab radio broadcasts" claim was tested directly. Researcher Erskine Childers searched the BBC and US monitoring records, which had transcribed every Middle East broadcast of 1948, and found not a single Arab order, appeal, or suggestion to evacuate, while finding repeated Arab broadcasts urging civilians to stay put. The voluntary-exodus story was an invention built to explain why the refugees could never be allowed home.</p>
+        <p style="font-size:.82rem; margin-top:.7rem;"><strong>Source:</strong> <a href="https://www.palestine-studies.org/en/node/38640" target="_blank" rel="noopener" style="color:var(--olive);">Institute for Palestine Studies: The Palestinian Exodus in 1948 (Childers' findings)</a></p>
+      </div>
+    </details>
+
     <div class="sc-lesson">
       <strong>The pattern, not the exceptions:</strong> Notice what these have in common. Each lie was not a one-off error. It was stated confidently, used to justify war, siege, or dispossession, and held until independent investigators, leaked intelligence, the historical archive, or Israel's own institutions made it impossible to maintain. Then it was quietly dropped, and a new claim took its place. A government that told the truth would not need the $730-million apparatus documented in the cards above to keep the world from looking too closely.
     </div>
 
     <div class="btn-group">
-      <button class="btn btn-primary" onclick="go('s9')">Continue to Station 9: The Myths →</button>
+      <button class="btn btn-primary" onclick="go('s10')">Continue to Station 10: The Myths →</button>
     </div>
 
     <div class="spacer"></div>
   </div>
 
-  <!-- ══ STATION 9: THE MYTHS ══ -->
-  <div class="passage" id="passage-s9">
-    <p class="eyebrow">Station 9 of 9</p>
+  <!-- ══ STATION 10: THE MYTHS ══ -->
+  <div class="passage" id="passage-s10">
+    <p class="eyebrow">Station 10 of 10</p>
     <h2>The Founding Myths, and What the Record Shows</h2>
 
     <p class="page-hook">Every settler-colonial project needs a mythology. Israel's rests on <strong>ten foundational stories</strong>, repeated so often they function as common sense. Historian Ilan Pappé dismantled each one, using Israel's own archives. Here they are, with the evidence that collapses them.</p>
@@ -2056,12 +2101,12 @@
       <cite>Edward Said, Palestinian-American literary theorist</cite>
     </div>
 
-    <p>This guide cannot resolve where this goes, and does not try to hand you a single tactic. What it can do is make sure that whatever you engage with, you engage with the actual situation, not a version with its most important features removed. And there is one thing worth naming plainly before you go, because it is not a fringe position or a slogan someone made up. It is a documented, public call from the people the previous nine stations have been about.</p>
+    <p>This guide cannot resolve where this goes, and does not try to hand you a single tactic. What it can do is make sure that whatever you engage with, you engage with the actual situation, not a version with its most important features removed. And there is one thing worth naming plainly before you go, because it is not a fringe position or a slogan someone made up. It is a documented, public call from the people the previous ten stations have been about.</p>
 
     <div class="frame-box">
       <p class="fb-label">What Palestinian civil society is actually asking for</p>
       <p>In 2005, more than 170 Palestinian unions, refugee networks, women's associations and professional bodies issued a joint call for Boycott, Divestment and Sanctions, modelled explicitly on the pressure campaign against South African apartheid. It sets out three conditions, unchanged since: end the occupation of the West Bank, Gaza and the Golan; full equality for Palestinian citizens of Israel; and the right of return for refugees, per UN Resolution 194. It is not a demand that Israel cease to exist. It is a demand that the asymmetry named at the start of this guide stop being enforced.</p>
-      <p style="margin-top:.9rem; font-size:.85rem; color:var(--muted);"><strong>Source:</strong> the founding text is public at bdsmovement.net/call. Station 7 of this guide already documents that 38 US states have criminalised complying with it.</p>
+      <p style="margin-top:.9rem; font-size:.85rem; color:var(--muted);"><strong>Source:</strong> the founding text is public at bdsmovement.net/call. Station 8 of this guide already documents that 38 US states have criminalised complying with it.</p>
     </div>
 
     <p>Whether that is the tactic you conclude the record supports, or one of the other threads Part 2, Part 5, or Part 6 points toward, is genuinely yours to decide. What would not be honest is closing thirty-seven thousand words on this history without once naming the position of the people it happened to.</p>
@@ -2086,16 +2131,15 @@
 
 <script>
   const progressMap = {
-    start:0, s1:11, s2:22, s3:33, s4:44, s5:56, s6:67, s7:78, s8:89, s9:100,
-    dive_nakba:22, dive_massacres:22, dive_haavara:22, dive_settlements:33, dive_apartheid:33,
-    dive_lobby:44, dive_genocide:56, dive_watchlist:67, dive_organs:67
+    start:0, s1:10, s2:20, s3:30, s4:40, s5:50, s6:60, s7:70, s8:80, s9:90, s10:100,
+    dive_nakba:20, dive_massacres:20, dive_haavara:20, dive_settlements:30, dive_apartheid:30,
+    dive_lobby:40, dive_watchlist:70, dive_organs:70
   };
   const diveParent = {
     dive_nakba:'s2', dive_massacres:'s2', dive_haavara:'s2',
     dive_settlements:'s3', dive_apartheid:'s3',
     dive_lobby:'s4',
-    dive_genocide:'s5',
-    dive_watchlist:'s6', dive_organs:'s6'
+    dive_watchlist:'s7', dive_organs:'s7'
   };
   const visited = new Set(['start']);
   let current = 'start';
@@ -2807,7 +2851,13 @@ function frac(y){
   }
   return 1;
 }
-const xpx = y => (PAD + frac(y)*(100-2*PAD))/100*W;
+/* frac(y) still measures cumulative effective-time from T0 (oldest), compressed-
+   scale math untouched. xpx mirrors that final pixel onto the canvas so the
+   newest year sits near x=0 (left) and the oldest sits near x=W (right): the
+   timeline now reads present-day first, and scrolling right moves backward
+   through time. Everything downstream (skip bands, lane packing) is written
+   against this already-flipped xpx, not against frac() directly. */
+const xpx = y => W - (PAD + frac(y)*(100-2*PAD))/100*W;
 
 /* ---------- detail sheet ---------- */
 const sheet=document.getElementById('mt-sheet');
@@ -2837,16 +2887,77 @@ function setSbw(){
 }
 setSbw(); window.addEventListener('resize',setSbw);
 
-/* ---------- jump nav ---------- */
+/* ---------- jump nav (ordered newest-first, matching the reading direction) ---------- */
 const scroller=document.getElementById('mt-scroller');
 const jump=document.getElementById('mt-jump');
-[["1948",1948.2],["1953–56",1953.6],["1982",1982.5],["1996",1996.1],
- ["2002–06",2002.1],["2009–14",2008.9],["2018–21",2018.3],["2023→",2023.7]]
+[["2023–26",2023.7],["2018–21",2018.3],["2009–14",2008.9],["2002–06",2002.1],
+ ["1996",1996.1],["1982",1982.5],["1953–56",1953.6],["1948",1948.2]]
 .forEach(([label,yr])=>{
   const b=document.createElement('button'); b.type='button'; b.textContent=label;
   b.onclick=()=>{ build(); scroller.scrollTo({left:xpx(yr)-140,behavior:'smooth'}); };
   jump.appendChild(b);
 });
+
+/* ---------- custom top+bottom scrollbars, synced to #mt-scroller ----------
+   The native scrollbar is hidden on .mt-scroller (see CSS) because a browser
+   can't render one above its own content; these two bars replace it, one
+   above the canvas and one below, both draggable and click-to-jump. */
+const hsTop=document.getElementById('mt-hscroll-top');
+const hsBottom=document.getElementById('mt-hscroll-bottom');
+const thumbTop=document.getElementById('mt-hscroll-thumb-top');
+const thumbBottom=document.getElementById('mt-hscroll-thumb-bottom');
+
+function updateHScroll(){
+  const sw=scroller.scrollWidth, cw=scroller.clientWidth;
+  const track = sw>cw;
+  [hsTop,hsBottom].forEach(t=>t.style.visibility = track ? 'visible' : 'hidden');
+  if(!track) return;
+  const ratio = cw/sw;
+  const maxLeftPct = 100*(1-ratio);
+  const leftPct = maxLeftPct * (scroller.scrollLeft/(sw-cw));
+  [thumbTop,thumbBottom].forEach(t=>{
+    t.style.width=(ratio*100)+'%';
+    t.style.left=leftPct+'%';
+  });
+}
+
+function scrollToTrackPoint(track,clientX){
+  const rect=track.getBoundingClientRect();
+  const ratio=Math.min(1,Math.max(0,(clientX-rect.left)/rect.width));
+  const sw=scroller.scrollWidth, cw=scroller.clientWidth;
+  scroller.scrollLeft = ratio*(sw-cw);
+}
+
+function wireHScroll(track,thumb){
+  let dragging=false;
+  thumb.addEventListener('pointerdown',e=>{
+    dragging=true; thumb.classList.add('mt-dragging');
+    thumb.setPointerCapture(e.pointerId);
+    e.preventDefault(); e.stopPropagation();
+  });
+  thumb.addEventListener('pointermove',e=>{ if(dragging) scrollToTrackPoint(track,e.clientX); });
+  ['pointerup','pointercancel'].forEach(evt=>thumb.addEventListener(evt,()=>{
+    dragging=false; thumb.classList.remove('mt-dragging');
+  }));
+  track.addEventListener('click',e=>{
+    if(e.target===thumb) return;
+    scrollToTrackPoint(track,e.clientX);
+  });
+}
+wireHScroll(hsTop,thumbTop);
+wireHScroll(hsBottom,thumbBottom);
+scroller.addEventListener('scroll',updateHScroll,{passive:true});
+window.addEventListener('resize',updateHScroll);
+
+/* mouse wheel over the timeline scrolls it horizontally, so a reader doesn't
+   need to hold shift or find the scrollbar. preventDefault stops the page
+   itself from scrolling instead. */
+scroller.addEventListener('wheel',e=>{
+  if(e.deltaY===0 && e.deltaX===0) return;
+  const delta = Math.abs(e.deltaY)>=Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+  scroller.scrollLeft += delta;
+  e.preventDefault();
+},{passive:false});
 
 /* ==========================================================================
    BUILD: deferred until the passage is actually on screen. Chip heights are
@@ -2878,11 +2989,17 @@ function build(){
   for(let i=1;i<pts.length;i++){
     const span = pts[i]-pts[i-1];
     if(span <= CAP + 0.05) continue;
+    /* xpx is mirrored (newest at x=0), so the chronologically-later point
+       pts[i] now lands at the SMALLER pixel value. Use min/abs rather than
+       assuming x1<x2, or the band gets a negative width and disappears. */
     const x1=xpx(pts[i-1]), x2=xpx(pts[i]);
+    const bandLeft=Math.min(x1,x2), bandW=Math.abs(x2-x1);
     const band=document.createElement('div');
     band.className='mt-skip';
-    band.style.left=x1+'px'; band.style.width=(x2-x1)+'px';
-    band.innerHTML='<b>'+Math.round(pts[i-1])+' → '+Math.round(pts[i])+' · '+Math.round(span)+' yrs condensed</b>';
+    band.style.left=bandLeft+'px'; band.style.width=bandW+'px';
+    /* label reads newer-year-first to match the band's own left(=newer)-to-
+       right(=older) layout post-mirror */
+    band.innerHTML='<b>'+Math.round(pts[i])+' ← '+Math.round(pts[i-1])+' · '+Math.round(span)+' yrs condensed</b>';
     canvas.appendChild(band);
   }
 
@@ -2892,7 +3009,11 @@ function build(){
   for(let k=0;k<LANES*2;k++)
     lanes.push({side:k%2?'down':'up', idx:Math.floor(k/2), last:-1e9});
 
-  const sortedEV=[...EV].sort((a,b)=>a.y-b.y);
+  /* The packing loop below relies on tx (=xpx(e.y)) being non-decreasing as
+     it iterates, so each lane's "last" edge is a true left-to-right clearance
+     boundary. Since xpx is now mirrored (newest year -> smallest x), that
+     means processing newest-to-oldest, not oldest-to-newest as before. */
+  const sortedEV=[...EV].sort((a,b)=>b.y-a.y);
 
   function chipHTML(e){
     return '<span class="mt-num">'+e.n+'</span><span class="mt-tag">'+e.g+'</span>'+
@@ -2990,6 +3111,7 @@ function build(){
     canvas.style.height=Math.ceil(maxBottom+26-shift)+'px';
   }
   scroller.scrollLeft=0;
+  updateHScroll();
 }
 
 /* the deep dive is display:none until the reader opens it, so wait for it to

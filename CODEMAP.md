@@ -17,7 +17,7 @@ This document is the map: **what is where**, **how the pieces are built**, and t
 | [index.html](index.html) | Landing page. One linked card per guide (rendered from `GUIDES` in guides.js). Static — no passage engine. | ~100 lines |
 | [communist-theory-interactive.html](communist-theory-interactive.html) | **Part 1 · The Engine** — how capitalism works. 8 stations + deep dives + myth cards. | ~1650 lines |
 | [imperialism-guide.html](imperialism-guide.html) | **Part 2 · The Global Picture** — where the wealth went. 5 stations + deep dives. | ~635 lines |
-| [palestine-guide.html](palestine-guide.html) | **Part 3 · The Case Study** — Palestine & Israel. 9 stations + deep dives + claim cards + video embeds + the interactive massacre timeline (§3k). | ~2730 lines |
+| [palestine-guide.html](palestine-guide.html) | **Part 3 · The Case Study** — Palestine & Israel. 10 stations + deep dives + claim cards + video embeds + the interactive massacre timeline (§3k). | ~2730 lines |
 | [deception-guide.html](deception-guide.html) | **Part 4 · The Deception** — what Western governments hid from their own people. 7 stations + deep dives + claim cards. | ~965 lines |
 | [vc-genocide-guide.html](vc-genocide-guide.html) | **Part 5 · The Money** — venture capital, surveillance, and the genocide. 5 stations, claim cards + inline expandables only (no full deep-dive passages). | ~640 lines |
 | [mirror-guide.html](mirror-guide.html) | **Part 6 · The Mirror** — the capstone: unlearning the double standard. 5 stations + 1 deep dive (the 1955 CIA file, dossier-styled) + "Who did it?" quiz cards + liberal/leftist lens matrix. | ~665 lines |
@@ -266,7 +266,7 @@ This is the editorial template the guides converge on (most explicit in the rece
 5. **Stations move in a deliberate arc**, e.g.:
    - Capitalism: Engine → Glitch → Band-Aids → Horizon → Dream → Myths → Now What? → Getting There
    - Imperialism: Thesis → How It Works → The Record → The Propaganda → Now What?
-   - Palestine: The Frame → The History → The Occupation → US Role → Gaza Now → The Record → The Silence → The Lies → The Myths
+   - Palestine: The Frame → The History → The Occupation → US Role → Gaza Now → The Evidence → The Record → The Silence → The Lies → The Myths
    - Deception: The Pattern → The Wars → The Programs → The Crackdown → The Surveillance → The Cover-Ups → The Present
    - Money: The Money → The Weapons → Surveillance → Silencing → The Plan
    - Mirror: The Word → The Mirror → The Pattern → The Two Lenses → Now What?

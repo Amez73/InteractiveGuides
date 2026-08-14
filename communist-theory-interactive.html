@@ -309,7 +309,8 @@
     color: var(--muted);
     white-space: nowrap;
   }
-  .track-stop.main { color: var(--text); border-color: #3A3A3A; }
+  .track-stop.main { color: var(--text); border-color: #3A3A3A; cursor: pointer; transition: color .2s, background .2s, border-color .2s; }
+  .track-stop.main:hover { color: var(--red); border-color: var(--red); background: rgba(224,48,48,.08); }
   .track-conn { color: var(--border); font-size: .8rem; }
 
   /* ── Final quote ── */
@@ -571,26 +572,25 @@
     <div style="padding-top: 4rem;">
       <p class="eyebrow">A Zero-to-Hero Guide</p>
       <h1>How Capitalism <em>Actually</em> Works, and What Comes After</h1>
-      <p class="subtitle">No 19th-century jargon. No dense history lectures. Just the mechanics, explained like you're a human being.</p>
 
       <div class="track-preview">
         <p class="tp-label">Your route</p>
         <div class="track-line">
-          <span class="track-stop main">The Engine</span>
+          <span class="track-stop main" onclick="go('station1')">The Engine</span>
           <span class="track-conn">──▶</span>
-          <span class="track-stop main">The Glitch</span>
+          <span class="track-stop main" onclick="go('station2')">The Glitch</span>
           <span class="track-conn">──▶</span>
-          <span class="track-stop main">The Band-Aids</span>
+          <span class="track-stop main" onclick="go('station3')">The Band-Aids</span>
           <span class="track-conn">──▶</span>
-          <span class="track-stop main">The Horizon</span>
+          <span class="track-stop main" onclick="go('station4')">The Horizon</span>
           <span class="track-conn">──▶</span>
-          <span class="track-stop main">The Dream</span>
+          <span class="track-stop main" onclick="go('station5')">The Dream</span>
           <span class="track-conn">──▶</span>
-          <span class="track-stop main">Myths</span>
+          <span class="track-stop main" onclick="go('station6')">Myths</span>
           <span class="track-conn">──▶</span>
-          <span class="track-stop main">Now What?</span>
+          <span class="track-stop main" onclick="go('station7')">Now What?</span>
           <span class="track-conn">──▶</span>
-          <span class="track-stop main">Getting There</span>
+          <span class="track-stop main" onclick="go('station8')">Getting There</span>
         </div>
         <p style="font-size:.8rem; color: var(--muted); margin-top:.9rem; margin-bottom:0;">Each station has an optional <span style="color:var(--amber)">◆ Deep Dive</span> if you want the full picture. Skip them freely.</p>
       </div>
@@ -633,7 +633,6 @@
     <p>To answer it, you need to know who is standing where. Marxism has precise words for this, and they are worth learning, because the everyday words ("rich," "poor," "middle class") describe how much money someone has, while these describe <em>where someone stands in Game 2</em>. Those are different questions, and only the second one predicts anything.</p>
 
     <div class="term-box">
-      <p class="tb-label">The words, and what they actually mean</p>
       <dl>
         <dt>Means of production</dt>
         <dd>The things you need in order to work: the factory, the machines, the land, the delivery app, the server farm, the building. Not personal possessions. Your house, your car and your toothbrush are not means of production. The coffee machine you cannot make coffee without is.
@@ -970,130 +969,18 @@
     <div class="dive-banner">Deep Dive: The Automation Trap</div>
     <h2>Why Every Firm Automates, and Why That Ruins the Returns for All of Them</h2>
 
-    <p class="page-hook"><strong>Buying the machine is the right move for any single firm and a disaster for the industry once they've all made it.</strong> Nothing here depends on anyone being unable to afford the product. Every item sells, at a profit, and the return on investment still falls.</p>
-
-    <p>Start with the objection, because it's the correct one and most explanations skip past it.</p>
-
-    <div class="callout">
-      <strong>"That's obviously wrong."</strong> You run a workshop. Ten people sew shirts, and after paying them you clear $200,000 a year. You buy sewing robots and let eight of them go. The robots produce the same shirts, the electricity costs almost nothing, and you still clear $200,000. There it is. Profit, no workers. So how can anyone claim only labour produces it?
-    </div>
-
-    <p>That money is real, you did earn it, and it arrived in your account. The question is not whether it exists. The question is <em>where it came from</em>, because it turns out to have three separate sources, and one of them has an expiry date you didn't agree to.</p>
-
-    <h2 style="font-size: clamp(1.15rem, 3vw, 1.5rem); margin: 2rem 0 1rem;">First: what a machine actually gives you</h2>
-
-    <p>You buy a sewing robot for $500,000. It works for ten years, then it's scrap. So each year, roughly $50,000 of that machine wears out and passes into the shirts it made. After ten years you have received $500,000 back through the price of your shirts.</p>
-
-    <p>You got your money back. That is not profit. That is the machine returning to you what you paid for it, in instalments, which is exactly what "depreciation" on your accounts means. A machine hands over the value it already contains and then it is finished. It does not hand over more.</p>
-
-    <div class="callout dark">
-      <strong>Why can't you just buy a machine that gives back more than it cost?</strong> Because the person selling it would notice. A machine's price reflects what it took to build it, and it's set in a market where every other firm is bidding for the same equipment. If a $500,000 robot reliably generated $900,000 of new value out of nothing, every workshop on earth would want one, and the manufacturer would raise the price until it didn't. Nobody sells a money printer for less than the money it prints. Whatever advantage sits in that machine, the machine's <em>seller</em> has already priced it in.
-    </div>
-
-    <p>Which sets up the actual question: is there anything you can buy where that <em>isn't</em> true? Anything whose price and whose output are two different numbers?</p>
-
-    <p>There is exactly one, and it's the whole argument.</p>
-
-    <div class="callout">
-      <strong>Labour is the one purchase where what you buy and what you get are different things.</strong> When you hire someone, you are not buying "a shirt's worth of sewing." You are buying their <em>availability for the day</em>, and its price is set the way every price is set: by what it costs to produce and maintain the thing. Food, rent, transport, raising the next generation of workers. Call that $150 a day. What you receive in exchange is not $150 of sewing. It's a full day of sewing, and a full day of sewing produces whatever it produces, which might be $400. Nobody is being defrauded and no contract is broken. You paid the going rate. But the going rate for a person's day and the output of a person's day are two different magnitudes, and every penny of profit in the system lives in that gap.
-    </div>
-
-    <p>A machine has no such gap. Its price and its contribution are the same number, because both are just what it cost to build. That is the entire reason the tradition says new value comes from labour. Machines are enormously productive. But a machine's productivity is already paid for in its purchase price, and a person's is not.</p>
-
-    <h2 style="font-size: clamp(1.15rem, 3vw, 1.5rem); margin: 2rem 0 1rem;">So where did your $200,000 come from?</h2>
-
-    <p>Three places, and separating them is the point of this whole page.</p>
-
-    <p><strong>Source 1: the two workers you kept.</strong> They still produce more than they cost. There are fewer of them, but you're also running them harder, so this is a real and continuing source. It's just much smaller than it used to be.</p>
-
-    <p><strong>Source 2: the machine's own value coming back.</strong> Your accountant calls this depreciation and does not call it profit, correctly. It's your $500,000 walking home.</p>
-
-    <p><strong>Source 3, and this is the one that matters: the competitors you are currently beating.</strong></p>
-
-    <h2 style="font-size: clamp(1.15rem, 3vw, 1.5rem); margin: 2rem 0 1rem;">The price of a shirt is not set by your workshop</h2>
-
-    <p>This is the step that completes the argument, and leaving it out makes the whole thing sound like mysticism.</p>
-
-    <p>A shirt does not sell for what <em>you</em> spent making it. It sells for roughly what it takes the industry <em>on average</em> to make one. If the trade as a whole needs an hour of work per shirt, that average is baked into the market price, and it does not care that your robots do it in six minutes.</p>
-
-    <p>So while you're the only automated workshop in town, you are producing at six minutes a shirt and selling at the one-hour price. That gap is enormous, and it is not coming from your machine. <strong>It is coming out of the pockets of every competitor still sewing by hand</strong>, because you are taking their customers and their margin while the industry average, and therefore the price, still reflects their slower methods.</p>
-
-    <p>This is why firms automate. Not for a modest efficiency gain. For this, which is one of the largest and fastest sources of profit available to anyone in a competitive market. Watch the numbers.</p>
+    <p class="page-hook"><strong>Automating first is a genuine advantage, but only for as long as you're the only one who's done it.</strong> You buy the machines, your costs drop below what competitors are still paying in wages, and your margin jumps. Then they buy the same machines, because the workshop that doesn't automate gets undersold into bankruptcy by the ones that did. Once the whole industry has caught up, nobody has an edge anymore, and the only lever left is price. Prices fall to match the new, cheaper way of making the product, and the extra margin automation bought gets competed straight back down, because the money that used to pay ten workers is now tied up in machines that only ever return what they cost. Run that cycle industry after industry and margins keep eroding over time: good for a firm in the gap between "we automated" and "everyone else did too," bad for the whole industry once that gap closes. There is exactly one way to escape the squeeze: stop competing. A monopoly, the only seller left in a market, sets its price without anyone underselling it, so its margin never gets ground down. That's the whole reason firms chase monopoly power instead of just trying to out-automate each other forever.</p>
 
     <div class="math-block">
-      <p class="label">Stage 1: nobody has automated yet. This is the industry standard.</p>
-      <div class="math-row"><span class="desc">Capital tied up in premises and equipment</span><span class="val neg">$500,000</span></div>
-      <div class="math-row"><span class="desc">Annual wage bill (ten sewers)</span><span class="val neg">$500,000</span></div>
-      <div class="math-row"><span class="desc">Total capital advanced</span><span class="val neg">$1,000,000</span></div>
-      <div class="math-row"><span class="desc">Surplus produced by those workers</span><span class="val pos">$500,000</span></div>
-      <div class="math-row"><span class="desc">Rate of return: $500,000 ÷ $1,000,000</span><span class="val gap">50%</span></div>
+      <p class="label">Example 1: the sewing workshop's return on investment</p>
+      <div class="math-row"><span class="desc">Before automating (10 sewers)</span><span class="val gap">50%</span></div>
+      <div class="math-row"><span class="desc">First to automate, competitors still sewing by hand (2 sewers + robots)</span><span class="val gap">82%</span></div>
+      <div class="math-row"><span class="desc">Once every workshop in town has the same robots</span><span class="val gap">18%</span></div>
     </div>
 
-    <div class="math-block">
-      <p class="label">Stage 2: you automate first. Everyone else is still sewing by hand.</p>
-      <div class="math-row"><span class="desc">Capital tied up (robots are expensive)</span><span class="val neg">$1,500,000</span></div>
-      <div class="math-row"><span class="desc">Annual wage bill (two sewers left)</span><span class="val neg">$200,000</span></div>
-      <div class="math-row"><span class="desc">Total capital advanced</span><span class="val neg">$1,700,000</span></div>
-      <div class="math-row"><span class="desc">Surplus your own two workers produce</span><span class="val pos">$300,000</span></div>
-      <div class="math-row"><span class="desc">Pulled from slower competitors (your cost is below the price)</span><span class="val pos">$1,100,000</span></div>
-      <div class="math-row"><span class="desc">Total profit realised</span><span class="val pos">$1,400,000</span></div>
-      <div class="math-row"><span class="desc">Rate of return: $1,400,000 ÷ $1,700,000</span><span class="val gap">82%</span></div>
-    </div>
+    <p>You did nothing wrong at any stage, and every shirt still sells, at a profit. Buying the robots was the right call while you were the only one who had them, and it's still the right call once everyone does, because the workshops that don't automate lose to the ones that did. But your return on capital ends up a third of what it was before anyone modernised, because the money that used to pay eight more workers is now sitting in machines that only give back what they cost.</p>
 
-    <p>You have gone from a 50% return to an 82% return. You were right to buy the robots, your competitors are in serious trouble, and every business article written about you will describe this as innovation. Note what is actually happening underneath: the largest line in your profit is not produced in your workshop at all. It is captured from firms that haven't caught up yet.</p>
-
-    <div class="callout dark">
-      <strong>And that is a description of a temporary condition, not a permanent asset.</strong> Your advantage was never "we own robots." It was "we own robots <em>and they don't</em>." The second half of that sentence is not something you control.
-    </div>
-
-    <h2 style="font-size: clamp(1.15rem, 3vw, 1.5rem); margin: 2rem 0 1rem;">Now everyone else buys the robot</h2>
-
-    <p>They have no choice. You are underselling them and they can see their own books. Within a few years every workshop in the trade is automated, which is precisely the outcome your competitors are each individually racing toward for exactly the same reasons you did.</p>
-
-    <p>Now the industry average time to make a shirt <em>is</em> six minutes. The market price falls to match it, because the price always tracks the average and the average has moved. And your entire $1,100,000 disappears, not because you did anything wrong, but because there is no longer anyone slower to take it from.</p>
-
-    <div class="math-block">
-      <p class="label">Stage 3: the whole industry has automated. The price has fallen to the new average cost.</p>
-      <div class="math-row"><span class="desc">Capital tied up in premises and robots</span><span class="val neg">$1,500,000</span></div>
-      <div class="math-row"><span class="desc">Annual wage bill</span><span class="val neg">$200,000</span></div>
-      <div class="math-row"><span class="desc">Total capital advanced</span><span class="val neg">$1,700,000</span></div>
-      <div class="math-row"><span class="desc">Pulled from slower competitors (there aren't any)</span><span class="val neg">$0</span></div>
-      <div class="math-row"><span class="desc">Surplus your own two workers produce</span><span class="val pos">$300,000</span></div>
-      <div class="math-row"><span class="desc">Rate of return: $300,000 ÷ $1,700,000</span><span class="val gap">18%</span></div>
-    </div>
-
-    <p>Fifty percent, then eighty-two, then eighteen.</p>
-
-    <p>Look carefully at what did and didn't happen. Output per worker is far higher than in Stage 1. The two remaining workers are squeezed <em>harder</em> than the original ten were, not more gently: they produce $300,000 of surplus on a $200,000 wage bill, where the original ten produced $500,000 on $500,000. Every shirt sells. Consumers got cheaper shirts, which is a genuine gain and the reason this process isn't simply a swindle.</p>
-
-    <p>And the return on capital is now roughly a third of what it was before anyone modernised, because the money is tied up in machines that only ever give back what they cost, while the workforce that produces the actual gap has been cut by eighty percent.</p>
-
-    <div class="callout">
-      <strong>This is a contradiction in the exact sense Station 1 defined.</strong> Not hypocrisy, and not anyone's mistake. Automating is the correct decision for each firm at the moment it makes it, and every firm making the correct decision produces a worse outcome for all of them than if none of them had. There is no version of this where a firm can opt out, because the firm that doesn't automate dies at Stage 2. The trap is not avoidable from inside.
-    </div>
-
-    <h2 style="font-size: clamp(1.15rem, 3vw, 1.5rem); margin: 2rem 0 1rem;">So does it fall to zero?</h2>
-
-    <p>No, and this is why Marx called it a <em>tendency</em> rather than a law. Undercutting drives the rate down, but several forces push back, and they are the reason capitalism has been running this cycle for two centuries without stalling. Marx listed them himself, in the chapter immediately after the one that makes the argument.</p>
-
-    <p><strong>The machines get cheaper.</strong> Whoever makes sewing robots is going through this exact process in their own industry. When robot prices fall, the denominator in that fraction shrinks, and the rate recovers. This is the most powerful counter-force of the lot, and it's why computing did not end capitalism despite being the most capital-intensive thing ever built.</p>
-
-    <p><strong>The remaining workers get squeezed harder.</strong> Longer hours, faster pace, tighter monitoring, weaker unions, wages pushed below what it actually costs to live. Every one of these raises the numerator. The stopwatch and the productivity dashboard are not incidental features of modern work.</p>
-
-    <p><strong>The work moves somewhere cheaper.</strong> If the rate of return at home is grinding down, capital goes looking for a workforce that costs less, and if necessary it arranges the political conditions to keep it cheap. <strong>This is not a side effect. It is one of the main engines of the story told in Part 2 of this series</strong>, and it is why "why don't they just pay people more" has a structural answer rather than a moral one.</p>
-
-    <p><strong>Somebody's capital gets destroyed.</strong> A recession bankrupts firms, and their machines and premises are bought by survivors at a fraction of their cost. The denominator collapses, the rate recovers, and the cycle restarts. This is the ugliest counter-force and it is also the most reliable, which is a genuinely uncomfortable thing to sit with: the crash is not the system breaking down. It is the system clearing its own blockage.</p>
-
-    <div class="callout dark">
-      <strong>What the tendency predicts, then, is not collapse.</strong> It's a permanent restlessness: constant pressure to cut wages, constant pressure to move production, constant pressure to find new sectors to convert into markets, and periodic crashes that reset the board. That description does not require anyone to be wicked and it does not require consumers to be broke. It falls out of every firm doing the correct thing.
-    </div>
-
-    <p>The pattern is measurable, and it has been measured. Gérard Duménil and Dominique Lévy recomputed the postwar United States profit rate directly from national accounts and found it fell by more than half between the mid-1950s and 1982, driven mainly by exactly the mechanism above: capital per worker rising faster than the return it generated. What followed from 1982 was the counter-force list in action, and you know the period by its other names: offshoring, deregulation, union-breaking and the wage stagnation Station 2's 2008 deep dive traces.<br>
-    <span style="color:var(--muted); font-size:.88rem;">Duménil &amp; Lévy, "The profit rate: where and how much did it fall? Did it recover? (USA 1948&ndash;2000)," <em>Review of Radical Political Economics</em> 34(4), 2002. The original argument is Marx, <em>Capital</em> Volume III, Part III, chapters 13&ndash;15.</span></p>
-
-    <div class="sc-lesson">
-      <strong>Why this matters next to the boot factory:</strong> the boot factory fails because nobody can afford the boots. This one fails while everything sells. They are two independent faults in the same engine, and a policy that fixes one does not touch the other. Put money in people's hands and the warehouse clears, which is real and worth doing. It does nothing at all about a rate of return being ground down by the industry's own modernisation, which is why the pressure to cut wages and move production reappears the moment the stimulus ends.
-    </div>
+    <p><strong>Example 2: the patent.</strong> Now imagine the robot's inventor patents her design and licenses it to no one. Every workshop still has to buy from her, so no rival seller can undercut her price, and her margin doesn't erode the way yours just did. She can hold that price for as long as the patent lasts, which is why firms fight so hard for patents, mergers and exclusive supply contracts: each one is a way of removing a competitor who would otherwise force the price, and the margin, back down.</p>
 
     <div class="btn-group">
       <button class="btn btn-back" onclick="go('station2')">Back to Station 2</button>
