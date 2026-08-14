@@ -65,8 +65,8 @@ landing page is the only exception (it's plain anchor links).
 
 ### Deep-dive wiring (two lookup tables in the `<script>`)
 ```js
-const progressMap = { start:0, s1:20, s2:40, ... dive_cia:40, dive_media:80 };
-const diveParent  = { dive_cia:'s2', dive_debt:'s2', dive_media:'s4' };
+const progressMap = { start:0, s1:20, s2:40, ... dive_debt:40, dive_media:80 };
+const diveParent  = { dive_debt:'s2', dive_congo:'s2', dive_media:'s4' };
 ```
 - `progressMap` gives a deep dive the **same progress %** as the station it belongs to.
 - `diveParent` makes the nav highlight the **parent station** while a dive is open, so
@@ -77,7 +77,7 @@ const diveParent  = { dive_cia:'s2', dive_debt:'s2', dive_media:'s4' };
 guide at DOMContentLoaded — `enhanceGuide()`:
 
 - **Hash routing.** Wraps `window.go()`: each navigation sets `location.hash` to the
-  passage id (`#s4`, `#dive_cia`), so browser back/forward walks the stations, a
+  passage id (`#s4`, `#dive_debt`), so browser back/forward walks the stations, a
   refresh keeps your place, and any station is a shareable link. A `hashchange`
   listener handles back/forward; invalid hashes fall back to `start` and are
   stripped from the URL. Element ids are `passage-s4` while hashes are `s4`, so
